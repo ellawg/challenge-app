@@ -11,7 +11,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>COOL SKEJTAPP</Text>
+        <Text>COOL SK8TAPP</Text>
       </View>
     );
     /* if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
