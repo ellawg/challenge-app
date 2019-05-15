@@ -2,6 +2,7 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
+import HomeScreen from './screens/HomeScreen';
 
 export default class App extends React.Component {
   state = {
@@ -9,12 +10,7 @@ export default class App extends React.Component {
   };
 
   render() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>COOL SK8TAPP</Text>
-      </View>
-    );
-    /* if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
           startAsync={this._loadResourcesAsync}
@@ -29,7 +25,7 @@ export default class App extends React.Component {
           <AppNavigator />
         </View>
       );
-    } */
+    }
   }
 
   _loadResourcesAsync = async () => {
