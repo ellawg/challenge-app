@@ -22,7 +22,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <MapScreen />
+          <AppNavigator />
         </View>
       );
     }
