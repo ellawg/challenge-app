@@ -1,19 +1,34 @@
 import React from 'react';
-import { StyleSheet, Text, Button, View } from 'react-native';
+import { StyleSheet, Text, Button, View, TouchableOpacity, Image } from 'react-native';
 
 export default class SplashScreen extends React.Component {
   render() {
     return (
-      <View>
-        <Text style={styles.splashText}>Hej Splashhhhhhhh</Text>
-        <Button title="Go to Splash" onPress={() => this.props.navigation.navigate('login')} />
-      </View>
+      <TouchableOpacity
+        style={styles.background}
+        onPress={() => this.props.navigation.navigate('login')}>
+        <View style={{ flex: 1 }} />
+        <Image Style={{ flex: 2 }} Source={require('../assets/images/ChallengeMeLogo.png')} />
+        <View style={{ flex: 1, flexDirection: 'column' }} />
+        <Text style={styles.splashText}>CHALLENGE ME</Text>
+        <Text style={styles.splashText}>CHALLENGE ME</Text>
+        <Text style={styles.splashText}>CHALLENGE ME</Text>
+        <Text>Callenge Yourself</Text>
+        <Text>Callenge Others</Text>
+      </TouchableOpacity>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  background: {
+    backgroundColor: '#282829',
+    flex: 1,
+    flexDirection: 'column',
+  },
   splashText: {
     fontSize: 20,
+    textAlign: 'center',
+    color: '#FDFCFA',
   },
 });
