@@ -6,6 +6,7 @@ export default class LoginScreen extends React.Component {
     return (
       <View>
         <Text style={styles.loginText}>Hej Looogiiin</Text>
+        <Button title="Go to map" onPress={() => this.props.navigation.navigate('map')} />
       </View>
     );
   }
