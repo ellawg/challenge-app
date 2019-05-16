@@ -8,7 +8,9 @@ export default class SplashScreen extends React.Component {
         style={styles.background}
         onPress={() => this.props.navigation.navigate('login')}>
         <View style={{ flex: 1 }} />
-        <Image Style={{ flex: 2 }} Source={require('../assets/images/ChallengeMeLogo.png')} />
+        <View>
+          <Image Source={require('../assets/images/challenge-me-logo.png')} />
+        </View>
         <View style={{ flex: 1, flexDirection: 'column' }} />
         <Text style={styles.splashText}>CHALLENGE ME</Text>
         <Text style={styles.splashText}>CHALLENGE ME</Text>
