@@ -1,9 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, Button, View } from 'react-native';
 
 export default class SplashScreen extends React.Component {
   render() {
-    return <Text style={styles.splashText}>Hej Splashhhhhhhh</Text>;
+    return (
+      <View>
+        <Text style={styles.splashText}>Hej Splashhhhhhhh</Text>
+        <Button title="Go to Splash" onPress={() => this.props.navigation.navigate('login')} />
+      </View>
+    );
   }
 }
 
