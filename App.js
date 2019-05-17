@@ -3,6 +3,7 @@ import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import MapScreen from './screens/MapScreen';
+import LoadingScreen from './screens/LoadingScreen';
 
 export default class App extends React.Component {
   state = {
