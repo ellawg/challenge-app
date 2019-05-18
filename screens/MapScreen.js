@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, Text } from 'react-native';
-import MapView from 'react-native-maps';
-import { Icon, Overlay } from 'react-native-elements';
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
+import MapView, { Callout } from 'react-native-maps';
+import { Icon, Tooltip } from 'react-native-elements';
 
 export default class MapScreen extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ export default class MapScreen extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <MapView
-          style={{ flex: 1, zIndex: -1 }}
+          style={{ flex: 1 }}
           region={{
             latitude: this.state.latitude,
             longitude: this.state.longitude,
@@ -40,10 +40,33 @@ export default class MapScreen extends React.Component {
           }}
           showsUserLocation>
           <MapView.Marker
-            coordinate={{ latitude: this.state.latitude + 0.002, longitude: this.state.longitude }}
-            title={'Rail'}
-            description={'Burn the decks for 5 sek'}
-          />
+            coordinate={{ latitude: this.state.latitude - 0.007, longitude: this.state.longitude }}>
+            <Tooltip
+              height={200}
+              width={200}
+              popover={
+                <TouchableOpacity
+                  style={{ height: 180, width: 180 }}
+                  onPress={e => {
+                    alert('Du skickas nu vidare till nästa skärm');
+                  }}>
+                  <Icon reverse name="ambulance" type="font-awesome" color="black" />
+                  <Text style={{ color: 'white' }}>Jump over the ambulance</Text>
+                </TouchableOpacity>
+              }
+              backgroundColor="black">
+              <Icon reverse name="ambulance" type="font-awesome" color="black" />
+            </Tooltip>
+          </MapView.Marker>
+
+          {/*Rendering a list of markers
+          {this.state.markers.map(marker => (
+            <MapView.Marker
+              coordinate={marker.latlng}
+              title={marker.title}
+              description={marker.description}
+            />
+          ))} */}
         </MapView>
         <View style={styles.fab}>
           <Icon reverse name="user" type="font-awesome" color="#C31818" />
@@ -59,6 +82,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     bottom: 20,
-    zIndex: 1,
   },
 });
