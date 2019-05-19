@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
 import MapView from 'react-native-maps';
-import { Icon  } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import { CustomMarker } from '../components/Marker';
 
 export default class MapScreen extends Component {
@@ -17,8 +17,8 @@ export default class MapScreen extends Component {
           title: 'Sick jump',
           description: 'Do a sick jump over the hood of the ambulance',
           latLang: {
-            latitude: 37.793972,
-            longitude: -122.425,
+            latitude: 59.334591,
+            longitude: 18.06324,
           },
           img: require('../assets/images/Testbild.jpg'),
           icon: 'ambulance',
@@ -62,7 +62,7 @@ export default class MapScreen extends Component {
             latitude: this.state.latitude,
             longitude: this.state.longitude,
             latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            longitudeDelta: 0.0922,
           }}
           showsUserLocation>
           {this.state.markers.map(marker => (
