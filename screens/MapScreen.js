@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
-import MapView, { Callout } from 'react-native-maps';
-import { Icon, Tooltip } from 'react-native-elements';
+import MapView from 'react-native-maps';
+import { Icon  } from 'react-native-elements';
+import { CustomMarker } from '../components/Marker';
 
-export default class MapScreen extends React.Component {
+export default class MapScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,40 +66,23 @@ export default class MapScreen extends React.Component {
           }}
           showsUserLocation>
           {this.state.markers.map(marker => (
-            <MapView.Marker coordinate={marker.latLang} key={marker.id}>
-              <Tooltip
-                height={200}
-                width={200}
-                popover={
-                  <TouchableOpacity
-                    style={{
-                      flex: 1,
-                      height: 180,
-                      width: 180,
-                      flexDirection: 'column',
-                    }}
-                    onPress={e => {
-                      alert('Du skickas nu vidare till nästa skärm');
-                    }}>
-                    <Text style={{ color: 'white', fontSize: 20 }}>{marker.title}</Text>
-                    <Image
-                      style={{ flex: 1, height: null, width: null, resizeMode: 'contain' }}
-                      source={marker.img}
-                    />
-
-                    <Text style={{ color: 'white' }}>{marker.description}</Text>
-                  </TouchableOpacity>
-                }
-                backgroundColor="black">
-                <Icon reverse name={marker.icon} type="font-awesome" color="black" />
-              </Tooltip>
-            </MapView.Marker>
+            <CustomMarker
+              key={marker.id}
+              title={marker.title}
+              latLang={marker.latLang}
+              description={marker.description}
+              icon={marker.icon}
+              img={marker.img}
+            />
           ))}
         </MapView>
         <View style={styles.fab}>
           <Icon
-            onPress={e => {
-              alert('Användarprofilen');
+            onPress={() => {
+              alert('Till profilsidan');
+              {
+                /*this.props.navigation.navigate('user')*/
+              }
             }}
             reverse
             name="user"
@@ -106,8 +90,9 @@ export default class MapScreen extends React.Component {
             color="#C31818"
           />
           <Icon
-            onPress={e => {
+            onPress={() => {
               alert('Skapa utmaning');
+              /*this.props.navigation.navigate('createChallenge')*/
             }}
             reverse
             name="plus"
