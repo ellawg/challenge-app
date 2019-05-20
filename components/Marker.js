@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import MapView from 'react-native-maps';
-import { Icon, Tooltip } from 'react-native-elements';
+import { Tooltip } from 'react-native-elements';
 
 /* Must be used inside <Mapview> to create marker
 PROPS

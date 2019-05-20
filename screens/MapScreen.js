@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image } from 'react-native';
-import MapView, { Callout } from 'react-native-maps';
+import { View, StyleSheet  } from 'react-native';
+import MapView from 'react-native-maps';
 import { Icon } from 'react-native-elements';
 import { CustomMarker } from '../components/Marker';
 
