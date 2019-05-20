@@ -10,9 +10,10 @@ export class CustomMarker extends Component {
         <Tooltip
           height={200}
           width={200}
+          backgroundColor="black"
           popover={
             <TouchableOpacity
-              style={styles.popUp}
+              style={styles.popUpInfo}
               onPress={() => {
                 alert('Du skickas nu vidare till nästa skärm');
                 {
@@ -45,10 +46,9 @@ const styles = StyleSheet.create({
     width: null,
     resizeMode: 'contain',
   },
-  popUp: {
+  popUpInfo: {
     flex: 1,
     height: 180,
     width: 180,
-    backgroundColor: 'black',
   },
 });
