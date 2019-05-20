@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
-import MapView from 'react-native-maps';
+import { View, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image } from 'react-native';
+import MapView, { Callout } from 'react-native-maps';
 import { Icon } from 'react-native-elements';
 import { CustomMarker } from '../components/Marker';
+
+const zoomLevel = 0.0922;
 
 export default class MapScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      latitude: 0,
-      longitude: 0,
+      region: {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: zoomLevel,
+        longitudeDelta: zoomLevel,
+      },
+
       error: null,
       markers: [
         {
@@ -21,7 +28,7 @@ export default class MapScreen extends Component {
             longitude: 18.06324,
           },
           img: require('../assets/images/Testbild.jpg'),
-          icon: 'ambulance',
+          icon: require('../assets/images/Stairs.png'),
         },
         {
           id: 2,
@@ -32,7 +39,7 @@ export default class MapScreen extends Component {
             longitude: -122.431297,
           },
           img: require('../assets/images/Testbild2.jpg'),
-          icon: 'apple',
+          icon: require('../assets/images/Stairs.png'),
         },
       ],
     };
@@ -43,8 +50,13 @@ export default class MapScreen extends Component {
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: zoomLevel,
+            longitudeDelta: zoomLevel,
+          },
+
           error: null,
         });
       },
@@ -58,13 +70,10 @@ export default class MapScreen extends Component {
       <View style={{ flex: 1 }}>
         <MapView
           style={{ flex: 1 }}
-          region={{
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0922,
-          }}
-          showsUserLocation>
+          region={this.state.region}
+          onRegionChange={this.onRegionChange}
+          showsUserLocation
+          loadingEnabled>
           {this.state.markers.map(marker => (
             <CustomMarker
               key={marker.id}
@@ -76,6 +85,7 @@ export default class MapScreen extends Component {
             />
           ))}
         </MapView>
+
         <View style={styles.fab}>
           <Icon
             onPress={() => {

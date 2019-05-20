@@ -3,6 +3,16 @@ import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import MapView from 'react-native-maps';
 import { Icon, Tooltip } from 'react-native-elements';
 
+/* Must be used inside <Mapview> to create marker
+PROPS
+id: int 
+title: string
+description: string 
+latLang {latitude: float, longitude: float}
+img: path to image
+icon: path to icon
+*/
+
 export class CustomMarker extends Component {
   render() {
     return (
@@ -26,7 +36,7 @@ export class CustomMarker extends Component {
               <Text style={styles.textColor}>{this.props.description}</Text>
             </TouchableOpacity>
           }>
-          <Icon reverse name={this.props.icon} type="font-awesome" color="black" />
+          <Image source={this.props.icon} style={styles.icon} />
         </Tooltip>
       </MapView.Marker>
     );
@@ -45,6 +55,10 @@ const styles = StyleSheet.create({
     height: null,
     width: null,
     resizeMode: 'contain',
+  },
+  icon: {
+    width: 60,
+    height: 60,
   },
   popUpInfo: {
     flex: 1,
