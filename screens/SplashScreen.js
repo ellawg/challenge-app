@@ -1,5 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, Button, View, TouchableOpacity, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Button,
+  View,
+  TouchableOpacity,
+  Image,
+  Animated,
+  Easing,
+} from 'react-native';
+import { width, height } from '../constants/Layout.js';
 
 export default class SplashScreen extends React.Component {
   render() {
@@ -7,16 +17,21 @@ export default class SplashScreen extends React.Component {
       <TouchableOpacity
         style={styles.background}
         onPress={() => this.props.navigation.navigate('login')}>
-        <View style={{ flex: 1 }} />
-        <View>
-          <Image Source={require('../assets/images/challenge-me-logo.png')} />
+        <View style={{ flex: 2 }} />
+        <View style={{ flex: 3, flexDirection: 'column', alignItems: 'center' }}>
+          <Image
+            style={{ flex: 1, height: undefined, width: '80%' }}
+            source={require('../assets/images/challenge-me-logo.png')}
+            resizeMode="contain"
+          />
         </View>
-        <View style={{ flex: 1, flexDirection: 'column' }} />
-        <Text style={styles.splashText}>CHALLENGE ME</Text>
-        <Text style={styles.splashText}>CHALLENGE ME</Text>
-        <Text style={styles.splashText}>CHALLENGE ME</Text>
-        <Text>Callenge Yourself</Text>
-        <Text>Callenge Others</Text>
+        <View style={{ flex: 2, alignItems: 'center' }}>
+          <Text style={styles.challengeText}>challenge yourself</Text>
+          <Text style={styles.challengeText}>challenge others</Text>
+        </View>
+        <View style={{ flex: 2 }}>
+          <Text style={styles.tapText}>tap to get started...</Text>
+        </View>
       </TouchableOpacity>
     );
   }
@@ -28,9 +43,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  splashText: {
-    fontSize: 20,
+  challengeText: {
+    fontSize: 16,
+    height: undefined,
+    width: '80%',
+    color: '#FDFCFA',
+  },
+  tapText: {
     textAlign: 'center',
     color: '#FDFCFA',
+    fontSize: 16,
   },
 });
