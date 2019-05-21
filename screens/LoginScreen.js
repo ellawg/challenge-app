@@ -147,19 +147,40 @@ export default class LoginScreen extends React.Component {
 
   uploadVideo = async () => {
     var storage = firebase.storage();
+    var storageRef = storage.ref();
+
   }
 
+  state = {
+    image: null,
+  };
 
   render() {
+    let { image } = this.state;
     return (
       <View>
         <Text style={styles.loginText}>Hej Looogiiin</Text>
         <Button title="Sign in" onPress={() => this.signInAsync()} />
         <Button title="Sign out" onPress={() => this.signOut()} />
-        <Button title="Upload vid" onPress={() => this.signOut()} />
+        <Button
+          title="Pick an image from camera roll"
+          onPress={this._pickImage}
+        />
       </View>
     );
   }
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+  };
 }
 
 const styles = StyleSheet.create({
