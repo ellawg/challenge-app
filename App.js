@@ -5,6 +5,10 @@ import AppNavigator from './navigation/AppNavigator';
 import MapScreen from './screens/MapScreen';
 import LoadingScreen from './screens/LoadingScreen';
 
+import * as firebase from 'firebase'
+import {firebaseConfig} from './config.js'
+firebase.initializeApp(firebaseConfig)
+
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
