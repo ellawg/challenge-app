@@ -1,24 +1,21 @@
-
 import React from 'react';
 import { StyleSheet, Text, Button, View, ActivityIndicator } from 'react-native';
-import firebase from 'firebase'
+import firebase from 'firebase';
 
 export default class LoadingScreen extends React.Component {
-
   componentDidMount() {
     this.checkIfLoggedIn();
   }
 
   checkIfLoggedIn = () => {
     firebase.auth().onAuthStateChanged(user => {
-      if (user){
-        this.props.navigation.navigate('map')
+      if (user) {
+        this.props.navigation.navigate('map');
+      } else {
+        this.props.navigation.navigate('login');
       }
-      else {
-        this.props.navigation.navigate('login')
-      }
-    })
-  }
+    });
+  };
 
   render() {
     return (
@@ -33,6 +30,6 @@ const styles = StyleSheet.create({
   conatiner: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });

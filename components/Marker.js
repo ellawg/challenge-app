@@ -12,7 +12,6 @@ latLang {latitude: float, longitude: float}
 img: path to image
 icon: path to icon
 */
-
 export class CustomMarker extends Component {
   render() {
     return (
