@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, Button, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
 import Expo from 'expo';
 import { AsyncStorage } from 'react-native';
 import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { ImagePicker } from 'expo';
+
 
 export default class LoginScreen extends React.Component {
 
@@ -154,9 +156,25 @@ export default class LoginScreen extends React.Component {
     return (
       <View>
         <Text style={styles.loginText}>Hej Looogiiin</Text>
+
+        <Button
+          type="outline"
+          buttonStyle={{
+            borderWidth: 1,
+            borderColor: 'black',
+            borderTopLeftRadius: 1,
+            borderStyle: 'solid',
+            maxWidth: '50%',
+          }}
+          title="Go to map"
+          titleStyle={{ color: 'black' }}
+          onPress={() => this.props.navigation.navigate('map')}
+        />
+
         <Button title="Sign in" onPress={() => this.signInAsync()} />
         <Button title="Sign out" onPress={() => this.signOut()} />
         <Button title="Upload vid" onPress={() => this.signOut()} />
+
       </View>
     );
   }
