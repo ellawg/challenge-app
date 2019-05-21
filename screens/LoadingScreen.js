@@ -1,4 +1,4 @@
-/*
+
 import React from 'react';
 import { StyleSheet, Text, Button, View, ActivityIndicator } from 'react-native';
 import firebase from 'firebase'
@@ -36,4 +36,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
 });
-*/

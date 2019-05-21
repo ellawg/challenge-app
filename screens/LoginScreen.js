@@ -6,8 +6,13 @@ import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { ImagePicker } from 'expo';
+import { Camera, Permissions } from 'expo';
 
 export default class LoginScreen extends React.Component {
+  state = {
+    hasCameraPermission: null,
+    type: Camera.Constants.Type.back,
+  };
 
   /*
    * Notice that Sign-In / Sign-Out aren't operations provided by this module.
@@ -17,6 +22,8 @@ export default class LoginScreen extends React.Component {
    * Likewise if you cannot refresh the tokens, or they don't exist, then you are "Signed-Out"
    */
    async componentDidMount () {
+     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+     this.setState({ hasCameraPermission: status === 'granted' });
      const authState = await this.getCachedAuthAsync();
      if (authState) {
        if (this.checkIfTokenExpired(authState)) {
@@ -150,6 +157,20 @@ export default class LoginScreen extends React.Component {
     var storageRef = storage.ref();
 
   }
+  pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      mediaType: 'video'
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+  }
+
 
   state = {
     image: null,
@@ -162,25 +183,12 @@ export default class LoginScreen extends React.Component {
         <Text style={styles.loginText}>Hej Looogiiin</Text>
         <Button title="Sign in" onPress={() => this.signInAsync()} />
         <Button title="Sign out" onPress={() => this.signOut()} />
-        <Button
-          title="Pick an image from camera roll"
-          onPress={this._pickImage}
+        <Button title="Pick an image from camera roll"
+          onPress={() => this.pickImage()}
         />
       </View>
     );
   }
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
-    }
-  };
 }
 
 const styles = StyleSheet.create({

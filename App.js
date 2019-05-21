@@ -3,7 +3,7 @@ import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import MapScreen from './screens/MapScreen';
-import LoadingScreen from './screens/LoadingScreen';
+import LoginScreen from './screens/LoginScreen';
 
 import * as firebase from 'firebase'
 import {firebaseConfig} from './config.js'
@@ -27,7 +27,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <MapScreen />
+          <LoginScreen />
         </View>
       );
     }
