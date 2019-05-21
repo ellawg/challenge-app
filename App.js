@@ -1,13 +1,12 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
+import * as firebase from 'firebase';
 import AppNavigator from './navigation/AppNavigator';
-import MapScreen from './screens/MapScreen';
 import LoadingScreen from './screens/LoadingScreen';
 
-import * as firebase from 'firebase'
-import {firebaseConfig} from './config.js'
-firebase.initializeApp(firebaseConfig)
+import { firebaseConfig } from './config.js';
+firebase.initializeApp(firebaseConfig);
 
 export default class App extends React.Component {
   state = {
@@ -27,7 +26,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <MapScreen />
+          <AppNavigator />
         </View>
       );
     }
