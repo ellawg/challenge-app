@@ -1,19 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, Button, View } from 'react-native';
-import { ThemeProvider } from 'react-native-elements';
+import { StyleSheet, View, Text, Button } from 'react-native';
 
-const theme = {
-  Button: { type: 'outline' },
-};
 
 export default class SplashScreen extends React.Component {
   render() {
     return (
       <View>
         <Text style={styles.splashText}>Hej Splashhhhhhhh</Text>
-        <ThemeProvider theme={theme}>
-          <Button title="Go to login" onPress={() => this.props.navigation.navigate('login')} />
-        </ThemeProvider>
+        <Button title="Go to login" onPress={() => this.props.navigation.navigate('login')} />
       </View>
     );
   }
