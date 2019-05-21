@@ -48,7 +48,6 @@ export default class MapScreen extends Component {
     this.setState({
       markers,
     });
-    console.log(markers[0].latLang);
   }
 
   fetchMarkerFromFB = async () => {
