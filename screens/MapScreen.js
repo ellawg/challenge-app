@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet  } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import MapView from 'react-native-maps';
 import { Icon } from 'react-native-elements';
+import * as firebase from 'firebase';
 import { CustomMarker } from '../components/Marker';
-
+import 'firebase/firestore';
 const zoomLevel = 0.0922;
+const img = require('../assets/images/Testbild.jpg');
+const icon = require('../assets/images/Stairs.png');
 
 export default class MapScreen extends Component {
   constructor(props) {
@@ -16,36 +19,12 @@ export default class MapScreen extends Component {
         latitudeDelta: zoomLevel,
         longitudeDelta: zoomLevel,
       },
-
+      markers: [],
       error: null,
-      markers: [
-        {
-          id: 1,
-          title: 'Sick jump',
-          description: 'Do a sick jump over the hood of the ambulance',
-          latLang: {
-            latitude: 59.334591,
-            longitude: 18.06324,
-          },
-          img: require('../assets/images/Testbild.jpg'),
-          icon: require('../assets/images/Stairs.png'),
-        },
-        {
-          id: 2,
-          title: 'Bite the apple',
-          description: 'Ride the rails outside the Apple store',
-          latLang: {
-            latitude: 37.773972,
-            longitude: -122.431297,
-          },
-          img: require('../assets/images/Testbild2.jpg'),
-          icon: require('../assets/images/Stairs.png'),
-        },
-      ],
     };
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     /*Sets the position to the users position*/
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -56,14 +35,40 @@ export default class MapScreen extends Component {
             latitudeDelta: zoomLevel,
             longitudeDelta: zoomLevel,
           },
-
           error: null,
         });
       },
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 }
     );
+    this.fetchMarkerFromFB();
+  };
+
+  setMarkers(markers) {
+    this.setState({
+      markers,
+    });
+    console.log(markers[0].latLang);
   }
+
+  fetchMarkerFromFB = async () => {
+    let db = await firebase.firestore();
+    let newMarkers = [];
+
+    let markers = await db
+      .collection('markers')
+      .get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          newMarkers.push(doc.data());
+        });
+        return newMarkers;
+      })
+      .catch(function(error) {
+        console.log('Error getting documents: ', error);
+      });
+    this.setMarkers(markers);
+  };
 
   render() {
     return (
@@ -80,8 +85,8 @@ export default class MapScreen extends Component {
               title={marker.title}
               latLang={marker.latLang}
               description={marker.description}
-              icon={marker.icon}
-              img={marker.img}
+              icon={icon}
+              img={img}
             />
           ))}
         </MapView>
