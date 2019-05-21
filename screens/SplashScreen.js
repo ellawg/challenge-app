@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
-
+import { StyleSheet, View, Text } from 'react-native';
+import { Button } from 'react-native-elements';
 
 export default class SplashScreen extends React.Component {
   render() {

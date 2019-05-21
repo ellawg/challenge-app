@@ -1,12 +1,27 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import * as firebase from 'firebase';
+import { ThemeProvider } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
-import LoadingScreen from './screens/LoadingScreen';
-
 import { firebaseConfig } from './config.js';
 firebase.initializeApp(firebaseConfig);
+
+const theme = {
+  Button: {
+    type: 'outline',
+    titleStyle: {
+      color: 'black',
+    },
+    buttonStyle: {
+      borderWidth: 1,
+      borderColor: 'black',
+      borderTopLeftRadius: 1,
+      borderStyle: 'solid',
+      maxWidth: '50%',
+    },
+  },
+};
 
 export default class App extends React.Component {
   state = {
@@ -26,7 +41,9 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
+          <ThemeProvider theme={theme}>
+            <AppNavigator />
+          </ThemeProvider>
         </View>
       );
     }

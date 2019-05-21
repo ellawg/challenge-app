@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
-import { AppAuth } from 'expo-app-auth';
+import { AppAuth, ImagePicker } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 
@@ -142,12 +142,10 @@ export default class LoginScreen extends React.Component {
   uploadVideo = async () => {
     var storage = firebase.storage();
     var storageRef = storage.ref();
-
-  }
+  };
 
   state = {
     image: null,
-
   };
 
   render() {
@@ -155,27 +153,10 @@ export default class LoginScreen extends React.Component {
     return (
       <View>
         <Text style={styles.loginText}>Hej Looogiiin</Text>
-
-        <Button
-          type="outline"
-          buttonStyle={{
-            borderWidth: 1,
-            borderColor: 'black',
-            borderTopLeftRadius: 1,
-            borderStyle: 'solid',
-            maxWidth: '50%',
-          }}
-          title="Go to map"
-          titleStyle={{ color: 'black' }}
-          onPress={() => this.props.navigation.navigate('map')}
-        />
-
+        <Button title="Go to map" onPress={() => this.props.navigation.navigate('map')} />
         <Button title="Sign in" onPress={() => this.signInAsync()} />
         <Button title="Sign out" onPress={() => this.signOut()} />
-        <Button
-          title="Pick an image from camera roll"
-          onPress={this._pickImage}
-        />
+        <Button title="Pick an image from camera roll" onPress={this._pickImage} />
       </View>
     );
   }
