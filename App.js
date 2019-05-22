@@ -10,13 +10,13 @@ firebase.initializeApp(firebaseConfig);
 const theme = {
   Button: {
     titleStyle: {
-      color: 'white',
+      color: '#FDFCFA',
       letterSpacing: 1,
       fontFamily: 'raleway-mediumitalic',
       textTransform: 'uppercase',
     },
     buttonStyle: {
-      backgroundColor: 'black',
+      backgroundColor: '#282829',
       maxWidth: '50%',
       margin: 2,
     },
