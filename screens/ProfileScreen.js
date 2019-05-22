@@ -1,12 +1,20 @@
 import React from 'react';
 
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import { Button } from 'react-native-elements';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  KeyboardAvoidingView,
+} from 'react-native';
+import { Button, Avatar, Input } from 'react-native-elements';
 
 export default class ProfileScreen extends React.Component {
   render() {
     return (
-      <View style={styles.background}>
+      <KeyboardAvoidingView behavior="padding" enabled style={styles.background}>
         <View style={{ flex: 1, alignSelf: 'flex-start', marginTop: '10%', marginLeft: '4%' }}>
           <Button
             title="<"
@@ -21,22 +29,29 @@ export default class ProfileScreen extends React.Component {
             <Text style={styles.nameHead}>Linda Lovelace</Text>
           </View>
           <View style={{ flex: 3, flexDirection: 'column', alignItems: 'center' }}>
-            <Image
-              style={{ flex: 5, height: undefined, width: '80%' }}
+            <Avatar
               source={require('../assets/images/robot-prod.png')}
+              showEditButton
+              size={'xlarge'}
+              style={styles.avatar}
               resizeMode="contain"
             />
-            <Button title="Change picture" style={{ flex: 1 }} />
           </View>
-          <View style={{ flex: 2 }}>
-            <Text style={styles.bodyText}>Add some information about yourself...</Text>
+          <View style={{ flex: 2, marginBottom: '2%', marginTop: '2%' }}>
+            <TextInput
+              numberOfLines={4}
+              placeholder="Add some information about yourself..."
+              fontSize={16}
+              scrollEnabled
+              multiline
+            />
           </View>
           <View style={{ flex: 3 }}>
-            <Text style={styles.completedHead}>COMPLETED CHALLENGES...</Text>
+            <Text style={styles.completedHead}>COMPLETED CHALLENGES</Text>
             <Text style={styles.bodyText}>Crazy awesome challenges! Frekkin rad shit..</Text>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -55,6 +70,11 @@ const styles = StyleSheet.create({
   nameHead: {
     color: '#282829',
     fontSize: 32,
+  },
+  avatar: {
+    flex: 5,
+    height: undefined,
+    width: '80%',
   },
   bodyText: {
     fontSize: 16,
