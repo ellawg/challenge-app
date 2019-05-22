@@ -4,7 +4,6 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import * as firebase from 'firebase';
 import { ThemeProvider } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
-import MapScreen from './screens/MapScreen';
 import { firebaseConfig } from './config.js';
 firebase.initializeApp(firebaseConfig);
 

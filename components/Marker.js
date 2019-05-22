@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 import MapView, { Callout } from 'react-native-maps';
 
 /* Must be used inside <Mapview> to create marker
