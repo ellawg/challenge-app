@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  Button,
-  View,
-  TouchableOpacity,
-  Image,
-  Animated,
-  Easing,
-} from 'react-native';
-import { width, height } from '../constants/Layout.js';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 export default class SplashScreen extends React.Component {
   render() {
@@ -48,10 +38,11 @@ const styles = StyleSheet.create({
     height: undefined,
     width: '80%',
     color: '#FDFCFA',
+    fontStyle: 'italic',
   },
   tapText: {
     textAlign: 'center',
-    color: '#FDFCFA',
+    color: '#929287',
     fontSize: 16,
   },
 });
