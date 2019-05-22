@@ -1,27 +1,37 @@
 import React from 'react';
 
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { Button } from 'react-native-elements';
 
 export default class ProfileScreen extends React.Component {
   render() {
     return (
       <View style={styles.background}>
+        <View style={{ flex: 1, alignSelf: 'flex-start', marginTop: '10%', marginLeft: '4%' }}>
+          <Button
+            title="<"
+            type="clear"
+            buttonStyle={{ borderWidth: 0, maxWidth: '100%' }}
+            titleStyle={{ fontSize: 30 }}
+            onPress={() => this.props.navigation.goBack()}
+          />
+        </View>
         <View style={styles.container}>
-          <View style={{ flex: 1 }} />
           <View style={{ flex: 1 }}>
             <Text style={styles.nameHead}>Linda Lovelace</Text>
           </View>
           <View style={{ flex: 3, flexDirection: 'column', alignItems: 'center' }}>
             <Image
-              style={{ flex: 1, height: undefined, width: '80%' }}
+              style={{ flex: 5, height: undefined, width: '80%' }}
               source={require('../assets/images/robot-prod.png')}
               resizeMode="contain"
             />
+            <Button title="Change picture" style={{ flex: 1 }} />
           </View>
           <View style={{ flex: 2 }}>
             <Text style={styles.bodyText}>Add some information about yourself...</Text>
           </View>
-          <View style={{ flex: 2 }}>
+          <View style={{ flex: 3 }}>
             <Text style={styles.completedHead}>COMPLETED CHALLENGES...</Text>
             <Text style={styles.bodyText}>Crazy awesome challenges! Frekkin rad shit..</Text>
           </View>
@@ -39,7 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    flex: 1,
+    flex: 9,
     width: '70%',
   },
   nameHead: {
