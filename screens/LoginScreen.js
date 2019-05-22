@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  Button,
-  View,
-  ActivityIndicator,
-  Image,
-  AsyncStorage,
-} from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, Image, AsyncStorage } from 'react-native';
+import { Button, ThemeProvider } from 'react-native-elements';
 import { Permissions, ImagePicker } from 'expo';
 import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
