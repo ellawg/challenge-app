@@ -14,10 +14,12 @@ const theme = {
       letterSpacing: 1,
       fontFamily: 'raleway-mediumitalic',
       textTransform: 'uppercase',
+      fontSize: 25,
     },
     buttonStyle: {
-      backgroundColor: 'black',
-      maxWidth: '50%',
+      backgroundColor: '#282829',
+      maxWidth: '56%',
+      margin: 2,
     },
   },
 };
