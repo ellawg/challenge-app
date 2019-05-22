@@ -1,13 +1,27 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
+import * as firebase from 'firebase';
+import { ThemeProvider } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
-import MapScreen from './screens/MapScreen';
-import LoginScreen from './screens/LoginScreen';
+import { firebaseConfig } from './config.js';
+firebase.initializeApp(firebaseConfig);
 
-import * as firebase from 'firebase'
-import {firebaseConfig} from './config.js'
-firebase.initializeApp(firebaseConfig)
+const theme = {
+  Button: {
+    titleStyle: {
+      color: '#FDFCFA',
+      letterSpacing: 1,
+      fontFamily: 'raleway-mediumitalic',
+      textTransform: 'uppercase',
+    },
+    buttonStyle: {
+      backgroundColor: '#282829',
+      maxWidth: '50%',
+      margin: 2,
+    },
+  },
+};
 
 export default class App extends React.Component {
   state = {
@@ -27,7 +41,9 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <LoginScreen />
+          <ThemeProvider theme={theme}>
+            <AppNavigator />
+          </ThemeProvider>
         </View>
       );
     }
@@ -44,7 +60,9 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+        'Raleway-SemiBold': require('./assets/fonts/Raleway-SemiBold.ttf'),
+        'Raleway-SemiBoldItalic': require('./assets/fonts/Raleway-SemiBoldItalic.ttf'),
+        'raleway-mediumitalic': require('./assets/fonts/Raleway-MediumItalic.ttf'),
       }),
     ]);
   };
