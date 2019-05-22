@@ -9,15 +9,14 @@ firebase.initializeApp(firebaseConfig);
 
 const theme = {
   Button: {
-    type: 'outline',
     titleStyle: {
-      color: 'black',
+      color: 'white',
+      letterSpacing: 1,
+      fontFamily: 'raleway-mediumitalic',
+      textTransform: 'uppercase', 
     },
     buttonStyle: {
-      borderWidth: 1,
-      borderColor: 'black',
-      borderTopLeftRadius: 1,
-      borderStyle: 'solid',
+      backgroundColor: 'black',
       maxWidth: '50%',
     },
   },
@@ -60,7 +59,7 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+        'raleway-mediumitalic': require('./assets/fonts/Raleway-MediumItalic.ttf'),
       }),
     ]);
   };
