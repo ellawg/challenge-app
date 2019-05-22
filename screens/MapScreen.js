@@ -105,8 +105,7 @@ export default class MapScreen extends Component {
           />
           <Icon
             onPress={() => {
-              alert('Skapa utmaning');
-              /*this.props.navigation.navigate('createChallenge')*/
+              this.props.navigation.navigate('create');
             }}
             reverse
             name="plus"
