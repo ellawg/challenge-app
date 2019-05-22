@@ -1,26 +1,49 @@
 import React from 'react';
-import { StyleSheet, Text, Button, View } from 'react-native';
-import { ThemeProvider } from 'react-native-elements';
 
-const theme = {
-  Button: { type: 'outline' },
-};
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 export default class SplashScreen extends React.Component {
   render() {
     return (
-      <View>
-        <Text style={styles.splashText}>Hej Splashhhhhhhh</Text>
-        <ThemeProvider theme={theme}>
-          <Button title="Go to login" onPress={() => this.props.navigation.navigate('login')} />
-        </ThemeProvider>
-      </View>
+      <TouchableOpacity
+        style={styles.background}
+        onPress={() => this.props.navigation.navigate('login')}>
+        <View style={{ flex: 2 }} />
+        <View style={{ flex: 3, flexDirection: 'column', alignItems: 'center' }}>
+          <Image
+            style={{ flex: 1, height: undefined, width: '80%' }}
+            source={require('../assets/images/challenge-me-logo.png')}
+            resizeMode="contain"
+          />
+        </View>
+        <View style={{ flex: 2, alignItems: 'center' }}>
+          <Text style={styles.challengeText}>challenge yourself</Text>
+          <Text style={styles.challengeText}>challenge others</Text>
+        </View>
+        <View style={{ flex: 2 }}>
+          <Text style={styles.tapText}>tap to get started...</Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  splashText: {
-    fontSize: 20,
+  background: {
+    backgroundColor: '#282829',
+    flex: 1,
+    flexDirection: 'column',
+  },
+  challengeText: {
+    fontSize: 16,
+    height: undefined,
+    width: '80%',
+    color: '#FDFCFA',
+    fontStyle: 'italic',
+  },
+  tapText: {
+    textAlign: 'center',
+    color: '#929287',
+    fontSize: 16,
   },
 });
