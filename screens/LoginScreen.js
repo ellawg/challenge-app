@@ -159,6 +159,7 @@ export default class LoginScreen extends React.Component {
           type="clear"
           buttonStyle={{ borderWidth: 0, maxWidth: '10%' }}
           titleStyle={{ fontSize: 30 }}
+          onPress={() => this.props.navigation.goBack()}
         />
         <Button title="Sign in" onPress={() => this.signInAsync()} />
         <Button title="Sign out" onPress={() => this.signOut()} />
