@@ -6,9 +6,6 @@ import ConfirmScreen from '../screens/ConfirmScreen';
 
 const AppNavigator = createStackNavigator(
   {
-    confirm: {
-      screen: ConfirmScreen,
-    },
     splash: {
       // `SplashScreen` is a React component that will be the splash screen of the app.
       screen: SplashScreen,
@@ -18,6 +15,9 @@ const AppNavigator = createStackNavigator(
     },
     map: {
       screen: MapScreen,
+    },
+    confirm: {
+      screen: ConfirmScreen,
     },
   },
   {
