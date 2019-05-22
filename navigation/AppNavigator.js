@@ -3,7 +3,7 @@ import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
 import MapScreen from '../screens/MapScreen';
 import CreateChallengeScreen from '../screens/CreateChallengeScreen';
-import ConfirmScreen from '../screens/ConfirmScreen';
+import ConfirmChallengeScreen from '../screens/ConfirmChallengeScreen';
 
 const AppNavigator = createStackNavigator(
   {
@@ -17,11 +17,11 @@ const AppNavigator = createStackNavigator(
     map: {
       screen: MapScreen,
     },
-    confirm: {
-      screen: ConfirmScreen,
-    },
     create: {
       screen: CreateChallengeScreen,
+    },
+    confirm: {
+      screen: ConfirmChallengeScreen,
     },
   },
   {

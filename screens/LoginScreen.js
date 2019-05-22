@@ -1,27 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
-import { Button } from 'react-native-elements';
-import { AppAuth, ImagePicker } from 'expo-app-auth';
+import { StyleSheet, Text, View, ActivityIndicator, Image, AsyncStorage } from 'react-native';
+import { Button, ThemeProvider } from 'react-native-elements';
+import { Permissions, ImagePicker } from 'expo';
+import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import uuid from 'uuid';
 
 export default class LoginScreen extends React.Component {
-  /*
-   * Notice that Sign-In / Sign-Out aren't operations provided by this module.
-   * We emulate them by using authAsync / revokeAsync.
-   * For instance if you wanted an "isAuthenticated" flag, you would observe your local tokens.
-   * If the tokens exist then you are "Signed-In".
-   * Likewise if you cannot refresh the tokens, or they don't exist, then you are "Signed-Out"
-   */
-  async componentDidMount() {
-    const authState = await this.getCachedAuthAsync();
-    if (authState) {
-      if (this.checkIfTokenExpired(authState)) {
-      } else {
-        this.props.navigation.navigate('map');
-      }
-    }
-  }
+  state = {
+    permittedCameraRoll: false,
+    image: null,
+    uploading: false,
+  };
 
   config = {
     issuer: 'https://accounts.google.com',
@@ -31,6 +22,24 @@ export default class LoginScreen extends React.Component {
   };
 
   storageKey = '@ChallengeMe:GoogleOAuthKey';
+
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status === 'granted') {
+      this.state.permittedCameraRoll = true;
+    } else {
+      /*eslint-disable*/
+      alert('Camera Roll permission not granted, we will need it!');
+      /*eslint-enable*/
+    }
+    const authState = await this.getCachedAuthAsync();
+    if (authState) {
+      if (this.checkIfTokenExpired(authState)) {
+      } else {
+        this.props.navigation.navigate('map');
+      }
+    }
+  }
 
   signInAsync = async () => {
     const authState = await AppAuth.authAsync(this.config);
@@ -116,7 +125,9 @@ export default class LoginScreen extends React.Component {
       await AsyncStorage.removeItem(this.storageKey);
       return null;
     } catch ({ message }) {
+      /*eslint-disable*/
       alert(`Failed to revoke token: ${message}`);
+      /*eslint-enable*/
     }
   };
 
@@ -139,46 +150,124 @@ export default class LoginScreen extends React.Component {
       });
   };
 
-  uploadVideo = async () => {
-    var storage = firebase.storage();
-    var storageRef = storage.ref();
+  //IMAGE/VIDEO UPLOAD
+  maybeRenderUploadingOverlay = () => {
+    if (this.state.uploading) {
+      return (
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+          ]}>
+          <ActivityIndicator color="#fff" animating size="large" />
+        </View>
+      );
+    }
   };
 
-  state = {
-    image: null,
+  maybeRenderImage = () => {
+    let { image } = this.state;
+    if (!image) {
+      return;
+    }
+
+    return (
+      <View
+        style={{
+          marginTop: 30,
+          width: 250,
+          borderRadius: 3,
+          elevation: 2,
+        }}>
+        <View
+          style={{
+            borderTopRightRadius: 3,
+            borderTopLeftRadius: 3,
+            shadowColor: 'rgba(0,0,0,1)',
+            shadowOpacity: 0.2,
+            shadowOffset: { width: 4, height: 4 },
+            shadowRadius: 5,
+            overflow: 'hidden',
+          }}>
+          <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
+        </View>
+      </View>
+    );
+  };
+
+  pickImage = async () => {
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      mediaTypes: 'All',
+    });
+
+    this.handleImagePicked(pickerResult);
+  };
+
+  handleImagePicked = async pickerResult => {
+    try {
+      this.setState({ uploading: true });
+
+      if (!pickerResult.cancelled) {
+        let uploadUrl = await uploadImageAsync(pickerResult.uri);
+        this.setState({ image: uploadUrl });
+      }
+    } catch (e) {
+      console.log(e);
+      /*eslint-disable*/
+      alert('Upload failed, sorry :(');
+      /*eslint-enable*/
+    } finally {
+      this.setState({ uploading: false });
+    }
   };
 
   render() {
-    let { image } = this.state;
     return (
-      <View>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={styles.loginText}>Hej Looogiiin</Text>
-        <Button title="Go to map" onPress={() => this.props.navigation.navigate('map')} />
-        <Button
-          title="<"
-          type="clear"
-          buttonStyle={{ borderWidth: 0, maxWidth: '10%' }}
-          titleStyle={{ fontSize: 30 }}
-          onPress={() => this.props.navigation.goBack()}
-        />
         <Button title="Sign in" onPress={() => this.signInAsync()} />
         <Button title="Sign out" onPress={() => this.signOut()} />
-        <Button title="Pick an image from camera roll" onPress={this._pickImage} />
+        <Button title="Pick an image from camera roll" onPress={() => this.pickImage()} />
+        {this.maybeRenderImage()}
+        {this.maybeRenderUploadingOverlay()}
       </View>
     );
   }
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
+}
 
-    console.log(result);
+async function uploadImageAsync(uri) {
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function(e) {
+      console.log(e);
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
 
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
-    }
-  };
+  const ref = firebase
+    .storage()
+    .ref()
+    .child(uuid.v4());
+  const snapshot = await ref.put(blob);
+
+  // We're done with the blob, close and release it
+  blob.close();
+
+  return await snapshot.ref.getDownloadURL();
 }
 
 const styles = StyleSheet.create({
