@@ -18,6 +18,7 @@ const theme = {
     buttonStyle: {
       backgroundColor: 'black',
       maxWidth: '50%',
+      margin: 2,
     },
   },
 };
