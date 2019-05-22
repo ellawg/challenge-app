@@ -154,6 +154,12 @@ export default class LoginScreen extends React.Component {
       <View>
         <Text style={styles.loginText}>Hej Looogiiin</Text>
         <Button title="Go to map" onPress={() => this.props.navigation.navigate('map')} />
+        <Button
+          title="<"
+          type="clear"
+          buttonStyle={{ borderWidth: 0, maxWidth: '10%' }}
+          titleStyle={{ fontSize: 30 }}
+        />
         <Button title="Sign in" onPress={() => this.signInAsync()} />
         <Button title="Sign out" onPress={() => this.signOut()} />
         <Button title="Pick an image from camera roll" onPress={this._pickImage} />
