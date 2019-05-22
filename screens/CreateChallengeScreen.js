@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Input, ButtonGroup, Button } from 'react-native-elements';
 
 export default class CreateChallengeScreen extends React.Component {
@@ -20,19 +20,27 @@ export default class CreateChallengeScreen extends React.Component {
     const { selectedIndex } = this.state;
 
     return (
-      <View>
-        <View style={{ height: '30%' }}>
-          <Image
-            style={{ height: '100%', width: undefined, backgroundColor: 'green' }}
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <ImageBackground
+            style={{ flex: 1, width: undefined, backgroundColor: 'green' }}
             source={require('../assets/images/coolcroc.jpg')}
-            resizeMode="contain"
-          />
+            resizeMode="contain">
+            <Button
+              style={{ top: '30%', left: '4%' }}
+              title="<"
+              type="clear"
+              buttonStyle={{ borderWidth: 0, maxWidth: '10%' }}
+              titleStyle={{ fontSize: 30 }}
+              onPress={() => this.props.navigation.goBack()}
+            />
+          </ImageBackground>
         </View>
-        <View style={{ margin: '15%' }}>
+        <View style={{ flex: 2, margin: 45, marginTop: 20 }}>
           <Text style={styles.titleText}>Create a challenge</Text>
           <Text style={styles.labelText}>Challenge name</Text>
           <View>
-            <Input placeholder="Give your challenge a name" />
+            <Input placeholder="Name" />
           </View>
           <Text style={styles.labelText}>Level</Text>
           <ButtonGroup
@@ -40,17 +48,17 @@ export default class CreateChallengeScreen extends React.Component {
             selectedIndex={selectedIndex}
             selectedButtonStyle={styles.selectedButtonStyle}
             buttons={buttons}
-            containerStyle={{ height: '10%' }}
+            containerStyle={{ height: 50 }}
           />
           <Text style={styles.labelText}>Description</Text>
           <Input
             style={{
               justifyContent: 'center',
             }}
-            placeholder="Describe the challenge. Drag down keyboard when finished."
+            placeholder="Describe challenge"
           />
-          <Button style={{ alignItems: 'center', margin: '10%' }} title="Submit" />
         </View>
+        <Button style={{ alignSelf: 'center', bottom: 40 }} title="Submit" />
       </View>
     );
   }
@@ -68,7 +76,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Raleway-SemiBold',
     fontSize: 12,
     textTransform: 'uppercase',
-    margin: 5,
+    marginTop: 25,
   },
   selectedButtonStyle: {
     backgroundColor: 'black',
