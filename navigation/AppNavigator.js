@@ -5,7 +5,6 @@ import MapScreen from '../screens/MapScreen';
 import CreateChallengeScreen from '../screens/CreateChallengeScreen';
 import ConfirmChallengeScreen from '../screens/ConfirmChallengeScreen';
 
-
 const AppNavigator = createStackNavigator(
   {
     splash: {
@@ -23,9 +22,6 @@ const AppNavigator = createStackNavigator(
     },
     confirm: {
       screen: ConfirmChallengeScreen,
-    },
-    create: {
-      screen: CreateChallengeScreen,
     },
   },
   {
