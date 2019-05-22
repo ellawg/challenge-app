@@ -3,9 +3,10 @@ import { View, StyleSheet } from 'react-native';
 import MapView from 'react-native-maps';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
-import { CustomMarker } from '../components/Marker';
+import CustomMarker from '../components/Marker';
 import 'firebase/firestore';
-const zoomLevel = 0.0922;
+
+const zoomLevel = 0.0822;
 const img = require('../assets/images/Testbild.jpg');
 const icon = require('../assets/images/Stairs.png');
 
@@ -105,8 +106,7 @@ export default class MapScreen extends Component {
           />
           <Icon
             onPress={() => {
-              alert('Skapa utmaning');
-              /*this.props.navigation.navigate('createChallenge')*/
+              this.props.navigation.navigate('create');
             }}
             reverse
             name="plus"
