@@ -13,7 +13,7 @@ const theme = {
       color: 'white',
       letterSpacing: 1,
       fontFamily: 'raleway-mediumitalic',
-      textTransform: 'uppercase', 
+      textTransform: 'uppercase',
     },
     buttonStyle: {
       backgroundColor: 'black',
