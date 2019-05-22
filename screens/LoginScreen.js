@@ -18,7 +18,7 @@ export default class LoginScreen extends React.Component {
   state = {
     permittedCameraRoll: false,
     image: null,
-    uploading: false
+    uploading: false,
   };
 
   config = {
@@ -43,7 +43,7 @@ export default class LoginScreen extends React.Component {
     if (authState) {
       if (this.checkIfTokenExpired(authState)) {
       } else {
-        this.props.navigation.navigate('map')
+        this.props.navigation.navigate('map');
       }
     }
   }
@@ -54,14 +54,14 @@ export default class LoginScreen extends React.Component {
     if (this.checkIfTokenExpired(authState)) {
     } else {
       this.writeUserToFB(authState);
-      this.props.navigation.navigate('map')
+      this.props.navigation.navigate('map');
     }
-  }
+  };
 
   /* Let's save our user tokens so when the app resets we can try and get them later */
   cacheAuthAsync = authState => {
     return AsyncStorage.setItem(this.storageKey, JSON.stringify(authState));
-  }
+  };
 
   /* Before we start our app, we should check to see if a user is signed-in or not */
   getCachedAuthAsync = async () => {
@@ -77,13 +77,13 @@ export default class LoginScreen extends React.Component {
          * Let's try and refresh it using the refresh token that some
          * OAuth providers will return when we sign-in initially.
          */
-        return //this.refreshAuthAsync(authState.refreshToken);
+        return; //this.refreshAuthAsync(authState.refreshToken);
       } else {
-        return authState
+        return authState;
       }
     }
     return null;
-  }
+  };
 
   /*
    * You might be familiar with the term "Session Expired", this method will check if our session has expired.
@@ -93,7 +93,7 @@ export default class LoginScreen extends React.Component {
    */
   checkIfTokenExpired = ({ accessTokenExpirationDate }) => {
     return new Date(accessTokenExpirationDate) < new Date();
-  }
+  };
 
   /*
    * Some OAuth providers will return a "Refresh Token" when you sign-in initially.
@@ -108,7 +108,7 @@ export default class LoginScreen extends React.Component {
     console.log('refreshAuthAsync', authState);
     await this.cacheAuthAsync(authState);
     return authState;
-  }
+  };
 
   /*
    * To sign-out we want to revoke our tokens.
@@ -118,7 +118,7 @@ export default class LoginScreen extends React.Component {
     const authState = await this.getCachedAuthAsync();
     const token = authState.accessToken;
     this.signOutAsync(token);
-  }
+  };
   signOutAsync = async accessToken => {
     try {
       await AppAuth.revokeAsync(this.config, {
@@ -136,7 +136,7 @@ export default class LoginScreen extends React.Component {
       alert(`Failed to revoke token: ${message}`);
       /*eslint-enable*/
     }
-  }
+  };
 
   writeUserToFB = async authState => {
     let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
@@ -146,17 +146,16 @@ export default class LoginScreen extends React.Component {
     let response = await userInfoResponse.json();
     let db = await firebase.firestore();
     db.collection('users')
-    .doc(response.id)
+      .doc(response.id)
       .set({
         id: response.id,
         name: response.name,
-        pic: response.picture
+        pic: response.picture,
       })
       .catch(function(error) {
         console.error('Error adding document: ', error);
       });
-  }
-
+  };
 
   //IMAGE/VIDEO UPLOAD
   maybeRenderUploadingOverlay = () => {
@@ -211,7 +210,7 @@ export default class LoginScreen extends React.Component {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
-      mediaTypes: 'All'
+      mediaTypes: 'All',
     });
 
     this.handleImagePicked(pickerResult);
