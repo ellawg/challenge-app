@@ -4,6 +4,7 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import * as firebase from 'firebase';
 import { ThemeProvider } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
+import MapScreen from './screens/MapScreen';
 import { firebaseConfig } from './config.js';
 firebase.initializeApp(firebaseConfig);
 
@@ -40,7 +41,8 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar hidden={true} />}
+          {Platform.OS === 'ios' && <StatusBar hidden />}
+
           <ThemeProvider theme={theme}>
             <AppNavigator />
           </ThemeProvider>
