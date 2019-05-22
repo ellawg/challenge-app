@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { Input, ButtonGroup } from 'react-native-elements';
+import { Input, ButtonGroup, Button } from 'react-native-elements';
 
 export default class CreateChallengeScreen extends React.Component {
   constructor() {
@@ -38,6 +38,7 @@ export default class CreateChallengeScreen extends React.Component {
           <ButtonGroup
             onPress={this.updateIndex}
             selectedIndex={selectedIndex}
+            selectedButtonStyle={styles.selectedButtonStyle}
             buttons={buttons}
             containerStyle={{ height: '10%' }}
           />
@@ -48,6 +49,7 @@ export default class CreateChallengeScreen extends React.Component {
             }}
             placeholder="Describe the challenge. Drag down keyboard when finished."
           />
+          <Button style={{ alignItems: 'center', margin: '10%' }} title="Submit" />
         </View>
       </View>
     );
@@ -67,5 +69,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textTransform: 'uppercase',
     margin: 5,
+  },
+  selectedButtonStyle: {
+    backgroundColor: 'black',
   },
 });
