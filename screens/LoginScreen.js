@@ -1,40 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, Button, View } from 'react-native';
-import Expo from 'expo';
-import { AsyncStorage } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Button,
+  View,
+  ActivityIndicator,
+  Image,
+  AsyncStorage,
+} from 'react-native';
+import { Permissions, ImagePicker } from 'expo';
 import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import { ImagePicker } from 'expo';
-import { Camera, Permissions } from 'expo';
+import uuid from 'uuid';
 
 export default class LoginScreen extends React.Component {
   state = {
-    hasCameraPermission: null,
-    type: Camera.Constants.Type.back,
+    permittedCameraRoll: false,
+    image: null,
+    uploading: false
   };
 
-  /*
-   * Notice that Sign-In / Sign-Out aren't operations provided by this module.
-   * We emulate them by using authAsync / revokeAsync.
-   * For instance if you wanted an "isAuthenticated" flag, you would observe your local tokens.
-   * If the tokens exist then you are "Signed-In".
-   * Likewise if you cannot refresh the tokens, or they don't exist, then you are "Signed-Out"
-   */
-   async componentDidMount () {
-     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-     this.setState({ hasCameraPermission: status === 'granted' });
-     const authState = await this.getCachedAuthAsync();
-     if (authState) {
-       if (this.checkIfTokenExpired(authState)) {
-       }
-       else {
-         this.props.navigation.navigate('map')
-       }
-     }
-   }
-
-   config = {
+  config = {
     issuer: 'https://accounts.google.com',
     scopes: ['openid', 'profile'],
     /* This is the CLIENT_ID generated from a Firebase project */
@@ -43,13 +30,29 @@ export default class LoginScreen extends React.Component {
 
   storageKey = '@ChallengeMe:GoogleOAuthKey';
 
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status === 'granted') {
+      this.state.permittedCameraRoll = true;
+    } else {
+      /*eslint-disable*/
+      alert('Camera Roll permission not granted, we will need it!');
+      /*eslint-enable*/
+    }
+    const authState = await this.getCachedAuthAsync();
+    if (authState) {
+      if (this.checkIfTokenExpired(authState)) {
+      } else {
+        this.props.navigation.navigate('map')
+      }
+    }
+  }
+
   signInAsync = async () => {
     const authState = await AppAuth.authAsync(this.config);
     await this.cacheAuthAsync(authState);
     if (this.checkIfTokenExpired(authState)) {
-
-    }
-    else {
+    } else {
       this.writeUserToFB(authState);
       this.props.navigation.navigate('map')
     }
@@ -88,7 +91,7 @@ export default class LoginScreen extends React.Component {
    * You can learn more about why on the internet: https://www.quora.com/Why-do-web-sessions-expire
    * > Fun Fact: Charlie Cheever the creator of Expo also made Quora :D
    */
-  checkIfTokenExpired = ({ accessTokenExpirationDate }) =>  {
+  checkIfTokenExpired = ({ accessTokenExpirationDate }) => {
     return new Date(accessTokenExpirationDate) < new Date();
   }
 
@@ -100,7 +103,7 @@ export default class LoginScreen extends React.Component {
    * Not every provider (very few actually) will return a new "Refresh Token".
    * This just means the user will have to Sign-In more often.
    */
-  refreshAuthAsync = async (refreshToken) =>  {
+  refreshAuthAsync = async refreshToken => {
     const authState = await AppAuth.refreshAsync(this.config, refreshToken);
     console.log('refreshAuthAsync', authState);
     await this.cacheAuthAsync(authState);
@@ -116,7 +119,7 @@ export default class LoginScreen extends React.Component {
     const token = authState.accessToken;
     this.signOutAsync(token);
   }
-  signOutAsync = async (accessToken) => {
+  signOutAsync = async accessToken => {
     try {
       await AppAuth.revokeAsync(this.config, {
         token: accessToken,
@@ -129,66 +132,150 @@ export default class LoginScreen extends React.Component {
       await AsyncStorage.removeItem(this.storageKey);
       return null;
     } catch ({ message }) {
+      /*eslint-disable*/
       alert(`Failed to revoke token: ${message}`);
+      /*eslint-enable*/
     }
   }
 
-  writeUserToFB = async (authState) => {
+  writeUserToFB = async authState => {
     let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
       headers: { Authorization: `Bearer ${authState.accessToken}` },
     });
 
     let response = await userInfoResponse.json();
-    let db =  await firebase.firestore();
-    db.collection("users")
+    let db = await firebase.firestore();
+    db.collection('users')
     .doc(response.id)
-    .set({
+      .set({
         id: response.id,
         name: response.name,
         pic: response.picture
-    })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-    });
+      })
+      .catch(function(error) {
+        console.error('Error adding document: ', error);
+      });
   }
 
-  uploadVideo = async () => {
-    var storage = firebase.storage();
-    var storageRef = storage.ref();
 
-  }
+  //IMAGE/VIDEO UPLOAD
+  maybeRenderUploadingOverlay = () => {
+    if (this.state.uploading) {
+      return (
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+          ]}>
+          <ActivityIndicator color="#fff" animating size="large" />
+        </View>
+      );
+    }
+  };
+
+  maybeRenderImage = () => {
+    let { image } = this.state;
+    if (!image) {
+      return;
+    }
+
+    return (
+      <View
+        style={{
+          marginTop: 30,
+          width: 250,
+          borderRadius: 3,
+          elevation: 2,
+        }}>
+        <View
+          style={{
+            borderTopRightRadius: 3,
+            borderTopLeftRadius: 3,
+            shadowColor: 'rgba(0,0,0,1)',
+            shadowOpacity: 0.2,
+            shadowOffset: { width: 4, height: 4 },
+            shadowRadius: 5,
+            overflow: 'hidden',
+          }}>
+          <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
+        </View>
+      </View>
+    );
+  };
+
   pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
-      mediaType: 'video'
+      mediaTypes: 'All'
     });
 
-    console.log(result);
+    this.handleImagePicked(pickerResult);
+  };
 
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
+  handleImagePicked = async pickerResult => {
+    try {
+      this.setState({ uploading: true });
+
+      if (!pickerResult.cancelled) {
+        let uploadUrl = await uploadImageAsync(pickerResult.uri);
+        this.setState({ image: uploadUrl });
+      }
+    } catch (e) {
+      console.log(e);
+      /*eslint-disable*/
+      alert('Upload failed, sorry :(');
+      /*eslint-enable*/
+    } finally {
+      this.setState({ uploading: false });
     }
-  }
-
-
-  state = {
-    image: null,
   };
 
   render() {
-    let { image } = this.state;
     return (
-      <View>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={styles.loginText}>Hej Looogiiin</Text>
         <Button title="Sign in" onPress={() => this.signInAsync()} />
         <Button title="Sign out" onPress={() => this.signOut()} />
-        <Button title="Pick an image from camera roll"
-          onPress={() => this.pickImage()}
-        />
+        <Button title="Pick an image from camera roll" onPress={() => this.pickImage()} />
+        {this.maybeRenderImage()}
+        {this.maybeRenderUploadingOverlay()}
       </View>
     );
   }
+}
+
+async function uploadImageAsync(uri) {
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function(e) {
+      console.log(e);
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+
+  const ref = firebase
+    .storage()
+    .ref()
+    .child(uuid.v4());
+  const snapshot = await ref.put(blob);
+
+  // We're done with the blob, close and release it
+  blob.close();
+
+  return await snapshot.ref.getDownloadURL();
 }
 
 const styles = StyleSheet.create({
