@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 export default class SplashScreen extends React.Component {
   render() {
     return (
+
       <TouchableOpacity
         style={styles.background}
         onPress={() => this.props.navigation.navigate('login')}>
@@ -23,6 +25,7 @@ export default class SplashScreen extends React.Component {
           <Text style={styles.tapText}>tap to get started...</Text>
         </View>
       </TouchableOpacity>
+
     );
   }
 }
