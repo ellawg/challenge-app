@@ -14,6 +14,7 @@ const theme = {
       letterSpacing: 1,
       fontFamily: 'raleway-mediumitalic',
       textTransform: 'uppercase',
+      fontSize: 25,
     },
     buttonStyle: {
       backgroundColor: '#282829',
