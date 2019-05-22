@@ -60,6 +60,8 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
+        'Raleway-SemiBold': require('./assets/fonts/Raleway-SemiBold.ttf'),
+        'Raleway-SemiBoldItalic': require('./assets/fonts/Raleway-SemiBoldItalic.ttf'),
         'raleway-mediumitalic': require('./assets/fonts/Raleway-MediumItalic.ttf'),
       }),
     ]);
