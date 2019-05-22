@@ -40,7 +40,7 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar hidden={true} />}
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <ThemeProvider theme={theme}>
             <AppNavigator />
           </ThemeProvider>
