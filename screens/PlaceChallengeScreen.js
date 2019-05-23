@@ -112,7 +112,6 @@ export default class CreateChallengeScreen extends React.Component {
           </View>
           <MapView
             style={{ flex: 7 }}
-            mapType={'hybrid'}
             region={this.state.region}
             onRegionChange={region => this.onRegionChange()}
             loadingEnabled
