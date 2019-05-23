@@ -3,14 +3,15 @@ import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from 'rea
 import { Button } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import CustomMarker from '../components/Marker';
+import CreateChallengeScreen from './CreateChallengeScreen';
 
 const { width, height } = Dimensions.get('window');
 const aspectRatio = width / height;
 const latitudeDelta = 0.0022; //zoomlevel
 const longitudeDelta = latitudeDelta * aspectRatio;
-export default class CreateChallengeScreen extends React.Component {
-  constructor() {
-    super();
+export default class PlaceChallengeScreen extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
       region: {
         latitude: 0,
@@ -58,6 +59,7 @@ export default class CreateChallengeScreen extends React.Component {
 
   componentDidMount = async () => {
     this.setUserPosition();
+    console.log(this.props.navigation.getParam('product'));
   };
 
   setMarker(e) {

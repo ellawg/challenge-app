@@ -62,7 +62,12 @@ export default class CreateChallengeScreen extends React.Component {
           style={{ alignSelf: 'center', bottom: 40 }}
           title="Next step"
           onPress={() => {
-            this.props.navigation.navigate('place');
+            this.props.navigation.navigate('place', {
+              title: '',
+              description: '',
+              image: '',
+              level: '',
+            });
           }}
         />
       </View>
