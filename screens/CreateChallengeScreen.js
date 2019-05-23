@@ -58,7 +58,13 @@ export default class CreateChallengeScreen extends React.Component {
             placeholder="Describe challenge"
           />
         </View>
-        <Button style={{ alignSelf: 'center', bottom: 40 }} title="Submit" />
+        <Button
+          style={{ alignSelf: 'center', bottom: 40 }}
+          title="Next step"
+          onPress={() => {
+            this.props.navigation.navigate('place');
+          }}
+        />
       </View>
     );
   }

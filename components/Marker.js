@@ -11,11 +11,12 @@ latLang {latitude: float, longitude: float}
 img: path to image
 icon: path to icon
 */
+
 export default class CustomMarker extends Component {
-  render() {
-    return (
-      <MapView.Marker coordinate={this.props.latLang} key={this.props.id}>
-        <Image style={styles.icon} source={this.props.icon} />
+  showPopUp() {
+    /* If the prop popUp is added the marker will show a popup */
+    if (this.props.popUp) {
+      return (
         <Callout
           style={{ flex: 1 }}
           onPress={() => {
@@ -30,6 +31,18 @@ export default class CustomMarker extends Component {
             <Text>{this.props.description}</Text>
           </View>
         </Callout>
+      );
+    }
+  }
+
+  render() {
+    return (
+      <MapView.Marker
+        draggable={this.props.draggable}
+        coordinate={this.props.latLang}
+        key={this.props.id}>
+        <Image style={styles.icon} source={this.props.icon} />
+        {this.showPopUp()}
       </MapView.Marker>
     );
   }
