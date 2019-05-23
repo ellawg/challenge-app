@@ -1,29 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Input, ButtonGroup, Button } from 'react-native-elements';
-import CustomModal from '../components/Modal.js';
 
-export default class CreateChallengeScreen extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedIndex: 1,
-      submissionData: '',
-    };
-    this.updateIndex = this.updateIndex.bind(this);
-  }
-  updateIndex(selectedIndex) {
-    this.setState({ selectedIndex });
-  }
-
-  componentCallback = modalData => {
-    this.setState({ submissionData: modalData });
-  };
-
+export default class LoginScreen extends React.Component {
   render() {
-    const buttons = ['Easy', 'Average', 'Difficult'];
-    const { selectedIndex } = this.state;
-
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
@@ -42,26 +22,29 @@ export default class CreateChallengeScreen extends React.Component {
           </ImageBackground>
         </View>
         <View style={{ flex: 2, margin: 45, marginTop: 20 }}>
-          <Text style={styles.titleText}>Create a challenge</Text>
-          <Text style={styles.labelText}>Challenge name</Text>
-          <View>
-            <Input placeholder="Name" />
-          </View>
+          <Text style={styles.titleText}>Challenge name</Text>
           <Text style={styles.labelText}>Level</Text>
-          <ButtonGroup
-            onPress={this.updateIndex}
-            selectedIndex={selectedIndex}
-            selectedButtonStyle={styles.selectedButtonStyle}
-            buttons={buttons}
-            containerStyle={{ height: 50 }}
-          />
           <Text style={styles.labelText}>Description</Text>
-          <CustomModal
-            placeholder={'Describe the challenge'}
-            callbackFromParent={this.componentCallback}
+        </View>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Button
+            title="Nailed it"
+            onPress={() => this.props.navigation.navigate('confirm', { confirmState: 'nailed' })}
+          />
+          <Button
+            titleStyle={{ color: 'black' }}
+            buttonStyle={{
+              borderWidth: 1,
+              borderColor: 'black',
+              borderTopLeftRadius: 1,
+              borderStyle: 'solid',
+              backgroundColor: 'white',
+            }}
+            title="Bailed it"
+            onPress={() => this.props.navigation.navigate('confirm', { confirmState: 'bailed' })}
+            confirmState={'bailed'}
           />
         </View>
-        <Button style={{ alignSelf: 'center', bottom: 40 }} title="Submit" />
       </View>
     );
   }
@@ -80,8 +63,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textTransform: 'uppercase',
     marginTop: 25,
-  },
-  selectedButtonStyle: {
-    backgroundColor: 'black',
   },
 });
