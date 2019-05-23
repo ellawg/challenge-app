@@ -29,10 +29,16 @@ export default class LoginScreen extends React.Component {
                 borderColor: 'black',
                 borderTopLeftRadius: 1,
                 borderStyle: 'solid',
-                maxWidth: '50%',
+                maxWidth: '100%',
+                margin: 0,
+                height: 150,
               }}
             />
-            <TextInput style={{ height: 40, borderColor: 'black', borderWidth: 1 }} />
+            <TextInput
+              placeholder="Tell us what happened..."
+              placeholderTextColor="#6d6d6d"
+              style={{ height: 40, borderColor: 'black', borderWidth: 1, marginTop: 20 }}
+            />
           </View>
         </View>
         <Button style={styles.bottom} title="UPLOAD" />
@@ -53,8 +59,9 @@ const styles = StyleSheet.create({
     fontFamily: 'raleway-mediumitalic',
   },
   inputContainer: {
+    marginRight: '10%',
     height: '70%',
-    width: '100%',
+    width: '80%',
   },
   textContainer: {
     flex: 1,
