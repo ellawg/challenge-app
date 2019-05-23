@@ -1,4 +1,7 @@
 import React from 'react';
+import { Button, Avatar, Input } from 'react-native-elements';
+import { Permissions, ImagePicker } from 'expo';
+import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 
@@ -6,28 +9,34 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   Image,
   TextInput,
   KeyboardAvoidingView,
-  Modal,
-  Alert,
-  TouchableHighlight,
+  AsyncStorage,
 } from 'react-native';
-import { Button, Avatar, Input } from 'react-native-elements';
+import uuid from 'uuid';
+import CustomModal from '../components/Modal.js';
 
 export default class ProfileScreen extends React.Component {
-  state = {
-    permittedCameraRoll: false,
-    image: null,
-    uploading: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      permittedCameraRoll: false,
+      image: null,
+      uploading: false,
+      submissionData: '',
+    };
+  }
+
+  componentCallback = modalData => {
+    this.setState({ submissionData: modalData });
   };
 
   getUser = async id => {
     let db = await firebase.firestore();
     let user = await db
       .collection('users')
-      .doc(id)
+      .doc('103617752635945553386')
       .get()
       .then(docSnapshot => {
         if (docSnapshot.exists) {
@@ -39,7 +48,54 @@ export default class ProfileScreen extends React.Component {
     return user;
   };
 
+  async componentWillMount() {
+    console.log('hej');
+    let profilePic = await this.getUser();
+    this.state.image = profilePic;
+    console.log(this.state.image);
+    console.log(profilePic);
+  }
+
+  pickImage = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status === 'granted') {
+      this.state.permittedCameraRoll = true;
+    } else {
+      /*eslint-disable*/
+      alert('Camera Roll permission not granted, we will need it!');
+      /*eslint-enable*/
+    }
+    if (this.state.permittedCameraRoll) {
+      let pickerResult = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        mediaTypes: 'All',
+      });
+
+      this.handleImagePicked(pickerResult);
+    }
+  };
+
+  handleImagePicked = async pickerResult => {
+    try {
+      this.setState({ uploading: true });
+
+      if (!pickerResult.cancelled) {
+        let uploadUrl = await uploadImageAsync(pickerResult.uri);
+        this.setState({ image: uploadUrl });
+      }
+    } catch (e) {
+      console.log(e);
+      /*eslint-disable*/
+      alert('Upload failed, sorry :(');
+      /*eslint-enable*/
+    } finally {
+      this.setState({ uploading: false });
+    }
+  };
+
   render() {
+    let { image } = this.state;
     return (
       <KeyboardAvoidingView behavior="padding" enabled style={styles.background}>
         <View style={{ flex: 1, alignSelf: 'flex-start', marginTop: '10%', marginLeft: '4%' }}>
@@ -53,28 +109,24 @@ export default class ProfileScreen extends React.Component {
         </View>
         <View style={styles.container}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nameHead}>Linda Lovelace</Text>
+            <Text style={styles.nameHead}>Belinda Lovelace</Text>
           </View>
-          <View style={{ flex: 3, flexDirection: 'column', alignItems: 'center' }}>
+          <View style={{ flex: 3, alignItems: 'center' }}>
             <Avatar
-              source={require('../assets/images/challenge-me-logo.png')}
+              source={{ uri: image }}
               showEditButton
               size={'xlarge'}
               style={styles.avatar}
               resizeMode="contain"
+              onPress={() => this.pickImage()}
             />
           </View>
+
           <View style={{ flex: 2, marginBottom: '2%', marginTop: '2%' }}>
-            <TextInput
-              numberOfLines={4}
-              placeholder="Add some information about yourself..."
-              fontSize={16}
-              scrollEnabled
-              multiline
+            <CustomModal
+              placeholder={'Upload some information about yourself'}
+              callbackFromParent={this.componentCallback}
             />
-            <View style={{ alignItems: 'center' }}>
-              <Button title="Upload" style={{ alignSelf: 'center' }} />
-            </View>
           </View>
           <View style={{ flex: 3 }}>
             <Text style={styles.completedHead}>COMPLETED CHALLENGES</Text>
@@ -84,6 +136,35 @@ export default class ProfileScreen extends React.Component {
       </KeyboardAvoidingView>
     );
   }
+}
+
+async function uploadImageAsync(uri) {
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function(e) {
+      console.log(e);
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+
+  const ref = firebase
+    .storage()
+    .ref()
+    .child(uuid.v4());
+  const snapshot = await ref.put(blob);
+
+  // We're done with the blob, close and release it
+  blob.close();
+
+  return await snapshot.ref.getDownloadURL();
 }
 
 const styles = StyleSheet.create({
