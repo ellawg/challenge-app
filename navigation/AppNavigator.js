@@ -13,20 +13,20 @@ const AppNavigator = createStackNavigator(
       // `SplashScreen` is a React component that will be the splash screen of the app.
       screen: SplashScreen,
     },
-    confirm: {
-      screen: ConfirmChallengeScreen,
+    challenge: {
+      screen: ChallengeScreen,
     },
     create: {
       screen: CreateChallengeScreen,
+    },
+    confirm: {
+      screen: ConfirmChallengeScreen,
     },
     login: {
       screen: LoginScreen,
     },
     map: {
       screen: MapScreen,
-    },
-    challenge: {
-      screen: ChallengeScreen,
     },
     profile: {
       screen: ProfileScreen,
