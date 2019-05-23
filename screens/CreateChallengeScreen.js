@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { Input, ButtonGroup, Button } from 'react-native-elements';
+import { StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
+import { Input, ButtonGroup, Button, Icon } from 'react-native-elements';
 
 export default class CreateChallengeScreen extends React.Component {
   constructor() {
@@ -20,13 +20,9 @@ export default class CreateChallengeScreen extends React.Component {
     const { selectedIndex } = this.state;
 
     return (
-      <View>
-        <View style={{ height: '30%' }}>
-          <Image
-            style={{ height: '100%', width: undefined, backgroundColor: 'green' }}
-            source={require('../assets/images/coolcroc.jpg')}
-            resizeMode="contain"
-          />
+      <KeyboardAvoidingView behavior="padding" enabled>
+        <View style={{ height: '30%', backgroundColor: 'gray', flexDirection: 'column' }}>
+          <Text style={{ alignSelf: 'center', justifyContent: 'center' }}>+</Text>
         </View>
         <View style={{ margin: '15%' }}>
           <Text style={styles.titleText}>Create a challenge</Text>
@@ -49,9 +45,12 @@ export default class CreateChallengeScreen extends React.Component {
             }}
             placeholder="Describe the challenge. Drag down keyboard when finished."
           />
-          <Button style={{ alignItems: 'center', margin: '10%' }} title="Submit" />
+          <Button
+            style={{ alignItems: 'center', justifyContent: 'flex-end', margin: '10%' }}
+            title="Submit"
+          />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

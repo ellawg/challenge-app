@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
-import { AppAuth, ImagePicker } from 'expo-app-auth';
+import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { Permissions, ImagePicker } from 'expo';
 
 export default class LoginScreen extends React.Component {
   /*
@@ -168,6 +169,7 @@ export default class LoginScreen extends React.Component {
     );
   }
   _pickImage = async () => {
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
