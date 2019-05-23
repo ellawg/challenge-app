@@ -75,7 +75,7 @@ export default class CreateChallengeScreen extends React.Component {
     let markerStyles = [];
     let chosenMarker = null;
     this.state.markerStyles.map(marker => {
-      if (marker === chosen) {
+      if (marker.name === chosen) {
         markerStyles.push({
           name: marker.name,
           style: styles.iconChosen,
@@ -111,6 +111,7 @@ export default class CreateChallengeScreen extends React.Component {
           </View>
           <MapView
             style={{ flex: 7 }}
+            mapType={'hybrid'}
             region={this.state.region}
             onRegionChange={region => this.onRegionChange()}
             loadingEnabled
@@ -122,7 +123,7 @@ export default class CreateChallengeScreen extends React.Component {
 
           <View style={{ flex: 2, flexDirection: 'row', marginTop: 15, alignSelf: 'center' }}>
             {this.state.markerStyles.map(marker => (
-              <TouchableOpacity key={marker.name} onPress={() => this.markerSelected(marker)}>
+              <TouchableOpacity key={marker.name} onPress={() => this.markerSelected(marker.name)}>
                 <Image source={marker.image} style={marker.style} />
               </TouchableOpacity>
             ))}
