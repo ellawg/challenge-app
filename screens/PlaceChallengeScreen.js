@@ -9,6 +9,7 @@ const { width, height } = Dimensions.get('window');
 const aspectRatio = width / height;
 const latitudeDelta = 0.0022; //zoomlevel
 const longitudeDelta = latitudeDelta * aspectRatio;
+
 export default class PlaceChallengeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -59,7 +60,6 @@ export default class PlaceChallengeScreen extends React.Component {
 
   componentDidMount = async () => {
     this.setUserPosition();
-    console.log(this.props.navigation.getParam('product'));
   };
 
   setMarker(e) {
