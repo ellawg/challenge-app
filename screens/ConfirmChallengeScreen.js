@@ -1,11 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
 import { ThemeProvider, Button } from 'react-native-elements';
 
 export default class LoginScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, marginTop: '10%', marginLeft: '4%' }}>
+      <KeyboardAvoidingView
+        behavior="padding"
+        keyboardVerticalOffset={-150}
+        style={{ flex: 1, marginTop: '10%', marginLeft: '4%' }}>
         <Button
           title="<"
           type="clear"
@@ -42,7 +45,7 @@ export default class LoginScreen extends React.Component {
           </View>
         </View>
         <Button style={styles.bottom} title="UPLOAD" />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
