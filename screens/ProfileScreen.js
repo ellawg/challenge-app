@@ -1,4 +1,6 @@
 import React from 'react';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
 import {
   StyleSheet,
@@ -8,10 +10,35 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
+  Modal,
+  Alert,
+  TouchableHighlight,
 } from 'react-native';
 import { Button, Avatar, Input } from 'react-native-elements';
 
 export default class ProfileScreen extends React.Component {
+  state = {
+    permittedCameraRoll: false,
+    image: null,
+    uploading: false,
+  };
+
+  getUser = async id => {
+    let db = await firebase.firestore();
+    let user = await db
+      .collection('users')
+      .doc(id)
+      .get()
+      .then(docSnapshot => {
+        if (docSnapshot.exists) {
+          return docSnapshot.data().pic;
+        } else {
+          return false;
+        }
+      });
+    return user;
+  };
+
   render() {
     return (
       <KeyboardAvoidingView behavior="padding" enabled style={styles.background}>
@@ -30,7 +57,7 @@ export default class ProfileScreen extends React.Component {
           </View>
           <View style={{ flex: 3, flexDirection: 'column', alignItems: 'center' }}>
             <Avatar
-              source={require('../assets/images/robot-prod.png')}
+              source={require('../assets/images/challenge-me-logo.png')}
               showEditButton
               size={'xlarge'}
               style={styles.avatar}
@@ -45,6 +72,9 @@ export default class ProfileScreen extends React.Component {
               scrollEnabled
               multiline
             />
+            <View style={{ alignItems: 'center' }}>
+              <Button title="Upload" style={{ alignSelf: 'center' }} />
+            </View>
           </View>
           <View style={{ flex: 3 }}>
             <Text style={styles.completedHead}>COMPLETED CHALLENGES</Text>
