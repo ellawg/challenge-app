@@ -5,7 +5,6 @@ import MapView from 'react-native-maps';
 import CustomMarker from '../components/Marker';
 
 const { width, height } = Dimensions.get('window');
-
 const aspectRatio = width / height;
 const latitudeDelta = 0.0022; //zoomlevel
 const longitudeDelta = latitudeDelta * aspectRatio;
@@ -56,6 +55,7 @@ export default class CreateChallengeScreen extends React.Component {
       { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 }
     );
   };
+
   componentDidMount = async () => {
     this.setUserPosition();
   };
@@ -67,6 +67,7 @@ export default class CreateChallengeScreen extends React.Component {
       },
     });
   }
+
   onRegionChange(region) {
     this.setState({ region });
   }
