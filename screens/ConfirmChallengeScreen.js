@@ -3,7 +3,13 @@ import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { ThemeProvider, Button } from 'react-native-elements';
 
 export default class LoginScreen extends React.Component {
+  setTextString(prop) {
+    return prop === 'nailed' ? 'Nailed it, huh?' : 'Bailed it, huh?';
+  }
   render() {
+    const { navigation } = this.props;
+    const confirmState = navigation.getParam('confirmState');
+    const textString = this.setTextString(confirmState);
     return (
       <View style={{ flex: 1, marginTop: '10%', marginLeft: '4%' }}>
         <Button
@@ -15,7 +21,7 @@ export default class LoginScreen extends React.Component {
         />
         <View style={styles.container}>
           <View style={styles.textContainer}>
-            <Text style={styles.text}>Nailed it, huh?</Text>
+            <Text style={styles.text}>{textString}</Text>
             <Text style={styles.text}>Prove it</Text>
           </View>
           <View style={styles.inputContainer}>

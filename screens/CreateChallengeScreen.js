@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Input, ButtonGroup, Button } from 'react-native-elements';
-
+import CustomModal from '../components/Modal.js';
 export default class CreateChallengeScreen extends React.Component {
   constructor() {
     super();
@@ -57,6 +57,7 @@ export default class CreateChallengeScreen extends React.Component {
             }}
             placeholder="Describe challenge"
           />
+          <CustomModal />
         </View>
         <Button style={{ alignSelf: 'center', bottom: 40 }} title="Submit" />
       </View>
