@@ -3,12 +3,12 @@ import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from 'rea
 import { Button } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import CustomMarker from '../components/Marker';
-import CreateChallengeScreen from './CreateChallengeScreen';
 
 const { width, height } = Dimensions.get('window');
 const aspectRatio = width / height;
 const latitudeDelta = 0.0022; //zoomlevel
 const longitudeDelta = latitudeDelta * aspectRatio;
+
 export default class PlaceChallengeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -29,11 +29,11 @@ export default class PlaceChallengeScreen extends React.Component {
         { name: 'Rail', style: styles.icon, image: require('../assets/images/Rail.png') },
         { name: 'Jump', style: styles.icon, image: require('../assets/images/Jump.png') },
       ],
-      chosenMarker: require('../assets/images/Stairs.png'),
+      chosenMarker: { name: 'Stairs', image: require('../assets/images/Stairs.png') },
       error: null,
     };
   }
-
+  e;
   setUserPosition = async () => {
     /*Sets the position to the users position*/
     navigator.geolocation.getCurrentPosition(
@@ -59,7 +59,6 @@ export default class PlaceChallengeScreen extends React.Component {
 
   componentDidMount = async () => {
     this.setUserPosition();
-    console.log(this.props.navigation.getParam('product'));
   };
 
   setMarker(e) {
@@ -84,7 +83,7 @@ export default class PlaceChallengeScreen extends React.Component {
           style: styles.iconChosen,
           image: marker.image,
         });
-        chosenMarker = marker.image;
+        chosenMarker = { name: marker.name, image: marker.image };
       } else {
         markerStyles.push({
           name: marker.name,
@@ -94,6 +93,15 @@ export default class PlaceChallengeScreen extends React.Component {
       }
     });
     this.setState({ markerStyles, chosenMarker });
+  }
+
+  sendToDb() {
+    console.log(this.props.navigation.getParam('title'));
+    console.log(this.props.navigation.getParam('description'));
+    console.log(this.props.navigation.getParam('images'));
+    console.log(this.props.navigation.getParam('level'));
+
+    console.log(this.state.chosenMarker.name);
   }
 
   render() {
@@ -120,7 +128,10 @@ export default class PlaceChallengeScreen extends React.Component {
             onPress={e => {
               this.setMarker(e);
             }}>
-            <CustomMarker latLang={this.state.marker.coordinate} icon={this.state.chosenMarker} />
+            <CustomMarker
+              latLang={this.state.marker.coordinate}
+              icon={this.state.chosenMarker.image}
+            />
           </MapView>
 
           <View style={{ flex: 2, flexDirection: 'row', marginTop: 15, alignSelf: 'center' }}>
@@ -135,6 +146,7 @@ export default class PlaceChallengeScreen extends React.Component {
               style={{ alignSelf: 'center', marginBottom: 40, width: '80%' }}
               title="Submit challenge"
               onPress={() => {
+                this.sendToDb();
                 this.props.navigation.navigate('map');
               }}
             />
