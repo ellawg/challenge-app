@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
-import { Button, ButtonGroup } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import CustomMarker from '../components/Marker';
 
-const icon = require('../assets/images/Stairs.png');
 const { width, height } = Dimensions.get('window');
 
 const aspectRatio = width / height;
@@ -169,8 +168,5 @@ const styles = StyleSheet.create({
   iconChosen: {
     width: 80,
     height: 80,
-  },
-  selectedButtonStyle: {
-    backgroundColor: 'transparent',
   },
 });
