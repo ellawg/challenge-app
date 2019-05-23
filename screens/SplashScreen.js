@@ -1,8 +1,114 @@
 import React from 'react';
-
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import { StyleSheet, Text, View, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import { AppAuth } from 'expo-app-auth';
 
 export default class SplashScreen extends React.Component {
+  config = {
+    issuer: 'https://accounts.google.com',
+    scopes: ['openid', 'profile'],
+    /* This is the CLIENT_ID generated from a Firebase project */
+    clientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
+  };
+
+  storageKey = '@ChallengeMe:GoogleOAuthKey';
+
+  async componentDidMount() {
+    const authState = await this.getCachedAuthAsync();
+    if (authState) {
+      if (!this.checkIfTokenExpired(authState)) {
+        this.checkUserExists(authState);
+      } else {
+        await this.refreshAuthAsync(authState.refreshToken);
+        if (!this.checkIfTokenExpired(authState)) {
+          console.log('token refreshed');
+        }
+      }
+    }
+  }
+
+  cacheAuthAsync = authState => {
+    return AsyncStorage.setItem(this.storageKey, JSON.stringify(authState));
+  };
+
+  /* Before we start our app, we should check to see if a user is signed-in or not */
+  getCachedAuthAsync = async () => {
+    /* First we will try and get the cached auth */
+    const value = await AsyncStorage.getItem(this.storageKey);
+    /* Async Storage stores data as strings, we should parse our data back into a JSON */
+    const authState = JSON.parse(value);
+    if (authState) {
+      /* If our data exists, than we should see if it's expired */
+      if (this.checkIfTokenExpired(authState)) {
+        /*
+         * The session has expired.
+         * Let's try and refresh it using the refresh token that some
+         * OAuth providers will return when we sign-in initially.
+         */
+        return; //this.refreshAuthAsync(authState.refreshToken);
+      } else {
+        return authState;
+      }
+    }
+    return null;
+  };
+
+  /*
+   * You might be familiar with the term "Session Expired", this method will check if our session has expired.
+   * An expired session means that we should reauthenticate our user.
+   * You can learn more about why on the internet: https://www.quora.com/Why-do-web-sessions-expire
+   * > Fun Fact: Charlie Cheever the creator of Expo also made Quora :D
+   */
+  checkIfTokenExpired = ({ accessTokenExpirationDate }) => {
+    return new Date(accessTokenExpirationDate) < new Date();
+  };
+
+  /*
+   * Some OAuth providers will return a "Refresh Token" when you sign-in initially.
+   * When our session expires, we can exchange the refresh token to get new auth tokens.
+   * > Auth tokens are not the same as a Refresh token
+   *
+   * Not every provider (very few actually) will return a new "Refresh Token".
+   * This just means the user will have to Sign-In more often.
+   */
+  refreshAuthAsync = async refreshToken => {
+    const authState = await AppAuth.refreshAsync(this.config, refreshToken);
+    console.log('refreshAuthAsync', authState);
+    await this.cacheAuthAsync(authState);
+    return authState;
+  };
+
+  checkUserExists = async authState => {
+    let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+      headers: { Authorization: `Bearer ${authState.accessToken}` },
+    });
+
+    let response = await userInfoResponse.json();
+    let user = await this.getUser(response.id);
+    if (user) {
+      this.props.navigation.navigate('map', { userid: response.id });
+    } else {
+      this.props.navigation.navigate('createUser', { googleData: response });
+    }
+  };
+
+  getUser = async id => {
+    let db = await firebase.firestore();
+    let user = await db
+      .collection('users')
+      .doc(id)
+      .get()
+      .then(docSnapshot => {
+        if (docSnapshot.exists) {
+          return docSnapshot.data().username;
+        } else {
+          return false;
+        }
+      });
+    return user;
+  };
+
   render() {
     return (
       <TouchableOpacity

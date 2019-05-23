@@ -1,6 +1,7 @@
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
+import CreateUserScreen from '../screens/CreateUserScreen';
 import MapScreen from '../screens/MapScreen';
 import CreateChallengeScreen from '../screens/CreateChallengeScreen';
 import ConfirmChallengeScreen from '../screens/ConfirmChallengeScreen';
@@ -13,6 +14,9 @@ const AppNavigator = createStackNavigator(
     },
     login: {
       screen: LoginScreen,
+    },
+    createUser: {
+      screen: CreateUserScreen,
     },
     map: {
       screen: MapScreen,
