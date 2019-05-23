@@ -21,12 +21,12 @@ export default class CreateChallengeScreen extends React.Component {
       marker: { coordinate: { latitude: 0, longitude: 0 } },
       markerStyles: [
         {
-          name: 'stairs',
+          name: 'Stairs',
           style: styles.iconChosen,
           image: require('../assets/images/Stairs.png'),
         },
-        { name: 'rail', style: styles.icon, image: require('../assets/images/robot-dev.png') },
-        { name: 'ramp', style: styles.icon, image: require('../assets/images/robot-prod.png') },
+        { name: 'Rail', style: styles.icon, image: require('../assets/images/Rail.png') },
+        { name: 'Jump', style: styles.icon, image: require('../assets/images/Jump.png') },
       ],
       chosenMarker: require('../assets/images/Stairs.png'),
       error: null,
