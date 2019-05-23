@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
-import { Input, ButtonGroup, Button, Icon } from 'react-native-elements';
-
+import { Input, ButtonGroup, Button } from 'react-native-elements';
+import CustomModal from '../components/Modal.js';
 export default class CreateChallengeScreen extends React.Component {
   constructor() {
     super();
@@ -20,9 +20,23 @@ export default class CreateChallengeScreen extends React.Component {
     const { selectedIndex } = this.state;
 
     return (
-      <KeyboardAvoidingView behavior="padding" enabled>
-        <View style={{ height: '30%', backgroundColor: 'gray', flexDirection: 'column' }}>
-          <Text style={{ alignSelf: 'center', justifyContent: 'center' }}>+</Text>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset="-500" enabled>
+        <View style={{ height: '30%' }}>
+          <Button
+            title="+"
+            type="outline"
+            titleStyle={{ color: 'black' }}
+            buttonStyle={{
+              backgroundColor: '#6D6D6D',
+              borderWidth: 1,
+              borderColor: 'black',
+              borderTopLeftRadius: 1,
+              borderStyle: 'solid',
+              maxWidth: '100%',
+              margin: 0,
+              height: '100%',
+            }}
+          />
         </View>
         <View style={{ margin: '15%' }}>
           <Text style={styles.titleText}>Create a challenge</Text>
@@ -45,6 +59,7 @@ export default class CreateChallengeScreen extends React.Component {
             }}
             placeholder="Describe the challenge. Drag down keyboard when finished."
           />
+          <CustomModal />
           <Button
             style={{ alignItems: 'center', justifyContent: 'flex-end', margin: '10%' }}
             title="Submit"
