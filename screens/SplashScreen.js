@@ -21,7 +21,7 @@ export default class SplashScreen extends React.Component {
           <Text style={styles.challengeText}>challenge others</Text>
         </View>
         <View style={{ flex: 2 }}>
-          <Text style={styles.tapText}>tap to get started...</Text>
+          <Text style={styles.tapText}>tap to get started</Text>
         </View>
       </TouchableOpacity>
     );
