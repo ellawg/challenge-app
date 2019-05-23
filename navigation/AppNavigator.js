@@ -8,6 +8,9 @@ import ConfirmChallengeScreen from '../screens/ConfirmChallengeScreen';
 
 const AppNavigator = createStackNavigator(
   {
+    confirm: {
+      screen: ConfirmChallengeScreen,
+    },
     create: {
       screen: CreateChallengeScreen,
     },
@@ -23,9 +26,6 @@ const AppNavigator = createStackNavigator(
     },
     challenge: {
       screen: ChallengeScreen,
-    },
-    confirm: {
-      screen: ConfirmChallengeScreen,
     },
   },
   {
