@@ -70,7 +70,10 @@ export default class CreateChallengeScreen extends React.Component {
             containerStyle={{ height: 50 }}
           />
           <Text style={styles.labelText}>Description</Text>
-          <CustomModal callbackFromParent={this.componentCallback} />
+          <CustomModal
+            placeholder={'Describe the challenge'}
+            callbackFromParent={this.componentCallback}
+          />
         </View>
         <Button
           style={{ alignSelf: 'center', marginBottom: '5%', width: '78%' }}
