@@ -18,7 +18,6 @@ const theme = {
     },
     buttonStyle: {
       backgroundColor: '#282829',
-      maxWidth: '100%',
       margin: 2,
     },
   },

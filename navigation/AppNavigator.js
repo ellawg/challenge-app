@@ -6,6 +6,7 @@ import MapScreen from '../screens/MapScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ChallengeScreen from '../screens/ChallengeScreen';
 import CreateChallengeScreen from '../screens/CreateChallengeScreen';
+import PlaceChallengeScreen from '../screens/PlaceChallengeScreen';
 import ConfirmChallengeScreen from '../screens/ConfirmChallengeScreen';
 
 const AppNavigator = createStackNavigator(
@@ -19,6 +20,10 @@ const AppNavigator = createStackNavigator(
     },
     create: {
       screen: CreateChallengeScreen,
+    },
+    place: {
+      screen: PlaceChallengeScreen,
+      params: { title: '', description: '', image: '', level: '' },
     },
     confirm: {
       screen: ConfirmChallengeScreen,
