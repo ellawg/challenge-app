@@ -2,7 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import MapView from 'react-native-maps';
+import * as firebase from 'firebase';
 import CustomMarker from '../components/Marker';
+import 'firebase/firestore';
+import uuid from 'uuid';
 
 const { width, height } = Dimensions.get('window');
 const aspectRatio = width / height;
@@ -95,14 +98,29 @@ export default class PlaceChallengeScreen extends React.Component {
     this.setState({ markerStyles, chosenMarker });
   }
 
-  sendToDb() {
-    console.log(this.props.navigation.getParam('title'));
-    console.log(this.props.navigation.getParam('description'));
+  sendToDb = async () => {
     console.log(this.props.navigation.getParam('images'));
-    console.log(this.props.navigation.getParam('level'));
-
-    console.log(this.state.chosenMarker.name);
-  }
+    let latLang = {
+      latitude: this.state.marker.coordinate.latitude,
+      longitude: this.state.marker.coordinate.longitude,
+    };
+    let db = await firebase.firestore();
+    let id = uuid.v4();
+    db.collection('markers')
+      .doc(id)
+      .set({
+        id,
+        title: this.props.navigation.getParam('title'),
+        description: this.props.navigation.getParam('description'),
+        latLang,
+        image: 'url',
+        icon: this.state.chosenMarker.name,
+        level: this.props.navigation.getParam('level'),
+      })
+      .catch(function(error) {
+        console.error('Error adding document: ', error);
+      });
+  };
 
   render() {
     return (

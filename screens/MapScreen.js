@@ -44,10 +44,10 @@ export default class MapScreen extends Component {
     );
   };
 
-  componentDidMount = async () => {
+  componentDidMount() {
     this.setUserPosition();
     this.fetchMarkerFromFB();
-  };
+  }
 
   setMarkers(markers) {
     this.setState({
@@ -71,8 +71,23 @@ export default class MapScreen extends Component {
       .catch(function(error) {
         console.log('Error getting documents: ', error);
       });
+
+    markers.forEach(function(marker) {
+      if (marker.icon === 'Stairs') {
+        marker.icon = require('../assets/images/Stairs.png');
+      } else if (marker.icon === 'Jump') {
+        marker.icon = require('../assets/images/Jump.png');
+      } else if (marker.icon === 'Rail') {
+        marker.icon = require('../assets/images/Rail.png');
+      }
+    });
     this.setMarkers(markers);
   };
+
+  setIcon(marker) {
+    console.log(marker);
+    return require('../assets/images/Stairs.png');
+  }
 
   render() {
     return (
@@ -82,6 +97,7 @@ export default class MapScreen extends Component {
           region={this.state.region}
           onRegionChange={this.onRegionChange}
           showsUserLocation
+          userLocationAnnotationTitle={''}
           loadingEnabled>
           {this.state.markers.map(marker => (
             <CustomMarker
@@ -90,7 +106,7 @@ export default class MapScreen extends Component {
               title={marker.title}
               latLang={marker.latLang}
               description={marker.description}
-              icon={icon}
+              icon={marker.icon}
               img={img}
             />
           ))}
