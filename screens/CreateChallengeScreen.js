@@ -9,6 +9,8 @@ export default class CreateChallengeScreen extends React.Component {
     this.state = {
       selectedIndex: 1,
       submissionData: '',
+      challengeName: '',
+      images: [require('../assets/images/coolcroc.jpg')],
     };
     this.updateIndex = this.updateIndex.bind(this);
   }
@@ -29,7 +31,7 @@ export default class CreateChallengeScreen extends React.Component {
         <View style={{ flex: 1 }}>
           <ImageBackground
             style={{ flex: 1, width: undefined, backgroundColor: 'green' }}
-            source={require('../assets/images/coolcroc.jpg')}
+            source={this.state.images[0]}
             resizeMode="contain">
             <Button
               style={{ top: '30%', left: '4%' }}
@@ -45,7 +47,10 @@ export default class CreateChallengeScreen extends React.Component {
           <Text style={styles.titleText}>Create a challenge</Text>
           <Text style={styles.labelText}>Challenge name</Text>
           <View>
-            <Input placeholder="Name" />
+            <Input
+              placeholder="Name"
+              onChangeText={challengeName => this.setState({ challengeName })}
+            />
           </View>
           <Text style={styles.labelText}>Level</Text>
           <ButtonGroup
@@ -61,7 +66,18 @@ export default class CreateChallengeScreen extends React.Component {
             callbackFromParent={this.componentCallback}
           />
         </View>
-        <Button style={{ alignSelf: 'center', bottom: 40 }} title="Submit" />
+        <Button
+          style={{ alignSelf: 'center', bottom: 40 }}
+          title="Next step"
+          onPress={() => {
+            this.props.navigation.navigate('place', {
+              title: this.state.challengeName,
+              description: this.state.submissionData,
+              images: this.state.images,
+              level: buttons[this.state.selectedIndex],
+            });
+          }}
+        />
       </View>
     );
   }
