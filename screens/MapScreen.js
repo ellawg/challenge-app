@@ -25,7 +25,7 @@ export default class MapScreen extends Component {
     };
   }
 
-  componentDidMount = async () => {
+  setUserPosition = async () => {
     /*Sets the position to the users position*/
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -42,6 +42,10 @@ export default class MapScreen extends Component {
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 }
     );
+  };
+
+  componentDidMount = async () => {
+    this.setUserPosition();
     this.fetchMarkerFromFB();
   };
 
@@ -81,6 +85,7 @@ export default class MapScreen extends Component {
           loadingEnabled>
           {this.state.markers.map(marker => (
             <CustomMarker
+              popUp
               key={marker.id}
               title={marker.title}
               latLang={marker.latLang}

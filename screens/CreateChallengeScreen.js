@@ -61,7 +61,18 @@ export default class CreateChallengeScreen extends React.Component {
             callbackFromParent={this.componentCallback}
           />
         </View>
-        <Button style={{ alignSelf: 'center', bottom: 40 }} title="Submit" />
+        <Button
+          style={{ alignSelf: 'center', bottom: 40 }}
+          title="Next step"
+          onPress={() => {
+            this.props.navigation.navigate('place', {
+              title: '',
+              description: '',
+              image: '',
+              level: '',
+            });
+          }}
+        />
       </View>
     );
   }
