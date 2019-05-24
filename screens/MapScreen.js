@@ -125,7 +125,7 @@ export default class MapScreen extends Component {
         <View style={styles.fab}>
           <Icon
             onPress={() => {
-              this.props.navigation.navigate('profile');
+              this.props.navigation.navigate('profile', { userid: this.props.userid });
             }}
             reverse
             name="user"
