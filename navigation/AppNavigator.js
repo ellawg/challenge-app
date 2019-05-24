@@ -11,6 +11,7 @@ import ConfirmChallengeScreen from '../screens/ConfirmChallengeScreen';
 
 const AppNavigator = createStackNavigator(
   {
+
     splash: {
       // `SplashScreen` is a React component that will be the splash screen of the app.
       screen: SplashScreen,
@@ -40,6 +41,7 @@ const AppNavigator = createStackNavigator(
     profile: {
       screen: ProfileScreen,
     },
+
   },
   {
     headerMode: 'none',

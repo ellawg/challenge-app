@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+
 import MapView from 'react-native-maps';
 import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
@@ -74,6 +75,8 @@ export default class LoginScreen extends React.Component {
   };
 
   render() {
+    const { navigation } = this.props;
+    const title = navigation.getParam('title');
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
@@ -93,8 +96,11 @@ export default class LoginScreen extends React.Component {
         </View>
         <View style={{ flex: 2, margin: 45, marginTop: 20 }}>
           <Text style={styles.titleText}>Challenge name</Text>
+          <Text>{title}</Text>
           <Text style={styles.labelText}>Level</Text>
-          <Text style={styles.labelText}>Description</Text>
+        </View>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+
           <Button
             title="See who nailed this challenge"
             titleStyle={{ fontSize: 12, color: 'black' }}
@@ -129,6 +135,7 @@ export default class LoginScreen extends React.Component {
             flexDirection: 'row',
             margin: '5%',
           }}>
+
           <Button
             title="Nailed it"
             onPress={() => this.props.navigation.navigate('confirm', { confirmState: 'nailed' })}
