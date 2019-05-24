@@ -15,7 +15,6 @@ icon: path to icon
 
 export default class CustomMarker extends Component {
   showPopUp() {
-    console.log(this.props.img);
     /* If the prop popUp is added the marker will show a popup */
     if (this.props.popUp) {
       return (
@@ -34,7 +33,7 @@ export default class CustomMarker extends Component {
           }>
           <View style={styles.popUpInfo}>
             <Text style={{ fontSize: 20 }}>{this.props.title}</Text>
-            <Image style={styles.img} source={this.props.img} />
+            <Image style={styles.img} source={{ uri: this.props.img }} />
             <Text>{this.props.description}</Text>
           </View>
         </Callout>

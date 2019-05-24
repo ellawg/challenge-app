@@ -57,7 +57,7 @@ export default class LoginScreen extends React.Component {
         <View style={{ flex: 2 }}>
           <ImageBackground
             style={{ flex: 1, width: undefined, backgroundColor: '#6d6d6d' }}
-            source={img}>
+            source={{ uri: img }}>
             <Button
               style={{ top: '30%', left: '4%' }}
               title="<"

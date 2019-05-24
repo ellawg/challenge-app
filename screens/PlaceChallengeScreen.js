@@ -97,24 +97,11 @@ export default class PlaceChallengeScreen extends React.Component {
     this.setState({ markerStyles, chosenMarker });
   }
 
-  getImageFromDb = async () => {
-    let db = await firebase.firestore();
-    let id = this.props.navigation.getParam('id');
-    let image = await db
-      .collection('markers')
-      .doc(id)
-      .get()
-      .then(docSnapshot => {
-        return docSnapshot.data().image;
-      });
-    return image;
-  };
   sendToDb = async () => {
     let latLang = {
       latitude: this.state.marker.coordinate.latitude,
       longitude: this.state.marker.coordinate.longitude,
     };
-    let image = this.getImageFromDb();
     let db = await firebase.firestore();
     let id = this.props.navigation.getParam('id');
     db.collection('markers')

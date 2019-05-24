@@ -32,7 +32,7 @@ export default class ImageComponent extends Component {
       this.setState({ image: challengePic });
       this.setState({ data: marker });
       this.setState({ loading: false });
-      console.log(this.state.data);
+      //console.log(this.state.data);
     }
   }
 
@@ -189,6 +189,4 @@ async function uploadImageAsync(uri) {
   return await snapshot.ref.getDownloadURL();
 }
 
-const styles = StyleSheet.create({
-
-});
+const styles = StyleSheet.create({});
