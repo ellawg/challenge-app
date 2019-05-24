@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
 import MapView from 'react-native-maps';
 import { Button } from 'react-native-elements';
 import CustomMarker from '../components/Marker';
+import ScoreModal from '../components/ScoreModal';
+import 'firebase/firestore';
 
 const zoomLevel = 0.0822;
 
@@ -52,7 +54,7 @@ export default class LoginScreen extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 2 }}>
           <ImageBackground
             style={{ flex: 1, width: undefined, backgroundColor: '#6d6d6d' }}
             source={img}>
@@ -68,17 +70,16 @@ export default class LoginScreen extends React.Component {
         </View>
         <View style={{ flex: 2, margin: 45, marginTop: 20 }}>
           <Text style={styles.titleText}>{title}</Text>
-          <Text style={styles.labelText}>Level</Text>
-          <Text>{level}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+            <Text style={styles.labelText}>Level: </Text>
+            <Text>{level}</Text>
+          </View>
+
           <Text style={styles.labelText}>Description</Text>
-          <Text>{description}</Text>
-        </View>
-        <View style={{ flex: 1, alignItems: 'center' }}>
-          <Button
-            title="See who nailed this challenge"
-            titleStyle={{ fontSize: 12, color: 'black' }}
-            buttonStyle={{ backgroundColor: 'lightgray' }}
-          />
+          <ScrollView style={{ height: '100%' }}>
+            <Text>{description}</Text>
+          </ScrollView>
+          <ScoreModal />
         </View>
         <View style={{ flex: 1 }}>
           <MapView
@@ -101,7 +102,7 @@ export default class LoginScreen extends React.Component {
           style={{
             flex: 1,
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             flexDirection: 'row',
             margin: '5%',
           }}>
@@ -138,8 +139,8 @@ const styles = StyleSheet.create({
   },
   labelText: {
     fontFamily: 'Raleway-SemiBold',
-    fontSize: 12,
+    fontSize: 13,
     textTransform: 'uppercase',
-    marginTop: 25,
+    marginTop: '5%',
   },
 });

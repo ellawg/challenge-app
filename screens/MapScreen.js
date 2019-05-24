@@ -8,7 +8,6 @@ import 'firebase/firestore';
 
 const zoomLevel = 0.0822;
 const img = require('../assets/images/Testbild.jpg');
-const icon = require('../assets/images/Stairs.png');
 
 export default class MapScreen extends Component {
   constructor(props) {
@@ -46,7 +45,16 @@ export default class MapScreen extends Component {
 
   componentDidMount() {
     this.setUserPosition();
-    this.fetchMarkerFromFB();
+
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      this.fetchMarkerFromFB();
+    });
+  }
+
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
   }
 
   setMarkers(markers) {
@@ -90,6 +98,8 @@ export default class MapScreen extends Component {
   }
 
   render() {
+    const { navigation } = this.props;
+    const userid = navigation.getParam('userid');
     return (
       <View style={{ flex: 1 }}>
         <MapView
@@ -117,10 +127,7 @@ export default class MapScreen extends Component {
         <View style={styles.fab}>
           <Icon
             onPress={() => {
-              alert('Till profilsidan');
-              {
-                /*this.props.navigation.navigate('user')*/
-              }
+              this.props.navigation.navigate('profile', { userid });
             }}
             reverse
             name="user"
