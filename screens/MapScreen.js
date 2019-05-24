@@ -7,7 +7,6 @@ import CustomMarker from '../components/Marker';
 import 'firebase/firestore';
 
 const zoomLevel = 0.0822;
-const img = require('../assets/images/Testbild.jpg');
 
 export default class MapScreen extends Component {
   constructor(props) {
