@@ -253,13 +253,20 @@ export default class LoginScreen extends React.Component {
           justifyContent: 'center',
         }}>
         <Button title="Sign in with Google" onPress={() => this.signInAsync()} />
-        <ImageComponent userid={'103617752635945553386'} />
+        <View style={{
+            width: '100%',
+            height: 250,
+          }}>
+          <ImageComponent userid={'103617752635945553386'} profile />
+        </View>
       </View>
     );
   }
 }
 
 async function uploadImageAsync(uri) {
+  //userid: 103617752635945553386
+  //markerid: 032abb98-c794-4b39-b673-b09f2ace2ec4
   // Why are we using XMLHttpRequest? See:
   // https://github.com/expo/expo/issues/2402#issuecomment-443726662
   const blob = await new Promise((resolve, reject) => {

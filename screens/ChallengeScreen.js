@@ -2,14 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
 import MapView from 'react-native-maps';
 import { Button } from 'react-native-elements';
-import * as firebase from 'firebase';
 import CustomMarker from '../components/Marker';
 import ScoreModal from '../components/ScoreModal';
 import 'firebase/firestore';
 
 const zoomLevel = 0.0822;
-const img = require('../assets/images/Testbild.jpg');
-const icon = require('../assets/images/Stairs.png');
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -25,63 +22,42 @@ export default class LoginScreen extends React.Component {
       error: null,
     };
   }
-  setUserPosition = async () => {
-    /*Sets the position to the users position*/
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.setState({
-          region: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: zoomLevel,
-            longitudeDelta: zoomLevel,
-          },
-          error: null,
-        });
-      },
-      error => this.setState({ error: error.message }),
-      { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 }
-    );
-  };
 
-  componentDidMount = async () => {
-    this.setUserPosition();
-    this.fetchMarkerFromFB();
-  };
-
-  setMarkers(markers) {
+  setlatLang(latLang) {
     this.setState({
-      markers,
+      region: {
+        latitude: latLang.latitude,
+        longitude: latLang.longitude,
+        latitudeDelta: zoomLevel,
+        longitudeDelta: zoomLevel,
+      },
     });
   }
-
-  fetchMarkerFromFB = async () => {
-    let db = await firebase.firestore();
-    let newMarkers = [];
-
-    let markers = await db
-      .collection('markers')
-      .get()
-      .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          newMarkers.push(doc.data());
-        });
-        return newMarkers;
-      })
-      .catch(function(error) {
-        console.log('Error getting documents: ', error);
-      });
-    this.setMarkers(markers);
-  };
+  componentDidMount() {
+    const { navigation } = this.props;
+    const latLang = navigation.getParam('latLang');
+    this.setlatLang(latLang);
+  }
 
   render() {
+    const { navigation } = this.props;
+    const title = navigation.getParam('title');
+    const description = navigation.getParam('description');
+    const img = navigation.getParam('img');
+    const level = navigation.getParam('level');
+    const icon = navigation.getParam('icon');
+    const id = navigation.getParam('id');
+    let latLang = navigation.getParam('latLang');
+    if (latLang === undefined) {
+      latLang = { longitude: 0, latitude: 0 };
+    }
+
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 2 }}>
           <ImageBackground
-            style={{ flex: 1, width: undefined, backgroundColor: 'green' }}
-            source={require('../assets/images/coolcroc.jpg')}
-            resizeMode="contain">
+            style={{ flex: 1, width: undefined, backgroundColor: '#6d6d6d' }}
+            source={img}>
             <Button
               style={{ top: '30%', left: '4%' }}
               title="<"
@@ -92,12 +68,13 @@ export default class LoginScreen extends React.Component {
             />
           </ImageBackground>
         </View>
-        <View style={{ flex: 2, margin: 45, marginTop: 20, marginBottom: 10 }}>
-          <Text style={styles.titleText}>Challenge name</Text>
-          <Text style={styles.labelText}>Level: </Text>
+        <View style={{ flex: 2, margin: 45, marginTop: 20 }}>
+          <Text style={styles.titleText}>{title}</Text>
+          <Text style={styles.labelText}>Level</Text>
+          <Text>{level}</Text>
           <Text style={styles.labelText}>Description</Text>
           <ScrollView style={{ height: '100%' }}>
-            <Text>Lorem Ipsum kjsjskfljazlfjl ddkhjjkdhkjfhkshdjkfhsk dkdjflsjdljflsd</Text>
+          <Text>{description}</Text>
           </ScrollView>
           <ScoreModal />
         </View>
@@ -108,17 +85,14 @@ export default class LoginScreen extends React.Component {
             onRegionChange={this.onRegionChange}
             showsUserLocation
             loadingEnabled>
-            {this.state.markers.map(marker => (
-              <CustomMarker
-                popUp
-                key={marker.id}
-                title={marker.title}
-                latLang={marker.latLang}
-                description={marker.description}
-                icon={icon}
-                img={img}
-              />
-            ))}
+            <CustomMarker
+              popUp
+              key={id}
+              title={title}
+              latLang={latLang}
+              description={description}
+              icon={icon}
+            />
           </MapView>
         </View>
         <View

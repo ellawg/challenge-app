@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ActivityIndicator, Image, AsyncStorage } from 'react-native';
-import { Button, Avatar } from 'react-native-elements';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { Avatar } from 'react-native-elements';
 import { Permissions, ImagePicker } from 'expo';
-import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import uuid from 'uuid';
@@ -14,32 +13,33 @@ export default class ImageComponent extends Component {
       image: null,
       loading: true,
       user: {},
+      data: {},
     };
   }
 
-  config = {
-    issuer: 'https://accounts.google.com',
-    scopes: ['openid', 'profile'],
-    /* This is the CLIENT_ID generated from a Firebase project */
-    clientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
-  };
-
-  storageKey = '@ChallengeMe:GoogleOAuthKey';
-
   async componentWillMount() {
-    if (this.props.userid) {
-      let user = await this.getUser(this.props.userid);
-      let profilePic = user.pic;
+    if (this.props.profile) {
+      let user = await this.getData(this.props.userid, 'users');
+      let profilePic = user.image;
       this.setState({ user });
       this.setState({ image: profilePic });
+      this.setState({ data: user });
       this.setState({ loading: false });
+    }
+    if (this.props.marker) {
+      let marker = await this.getData(this.props.markerid, 'markers');
+      let challengePic = marker.image;
+      this.setState({ image: challengePic });
+      this.setState({ data: marker });
+      this.setState({ loading: false });
+      console.log(this.state.data);
     }
   }
 
-  getUser = async id => {
+  getData = async (id, coll) => {
     let db = await firebase.firestore();
     let user = await db
-      .collection('users')
+      .collection(coll)
       .doc(id)
       .get()
       .then(docSnapshot => {
@@ -50,54 +50,6 @@ export default class ImageComponent extends Component {
         }
       });
     return user;
-  };
-
-  //IMAGE/VIDEO UPLOAD
-  maybeRenderImage = () => {
-    let { image } = this.state;
-    if (!image) {
-      return (
-        <View style={{
-            width: 250,
-            height: 250,
-            borderRadius: 3,
-            elevation: 2,
-          }}>
-          <Avatar
-            onPress={() => this.pickImage()}
-            source={{ uri: image }}
-            style={{ width: 250, height: 250 }}
-            showEditButton
-            size={'xlarge'}
-          />
-        </View>
-      );
-    }
-
-    return (
-      <View
-        style={{
-          width: 250,
-          borderRadius: 3,
-          elevation: 2,
-        }}>
-        <View
-          style={{
-            borderTopRightRadius: 5,
-            shadowOffset: { width: 4, height: 4 },
-            shadowRadius: 5,
-            overflow: 'hidden',
-          }}>
-          <Avatar
-            onPress={() => this.pickImage()}
-            source={{ uri: image }}
-            style={{ width: '100%', height: 250 }}
-            showEditButton
-            size={'xlarge'}
-          />
-        </View>
-      </View>
-    );
   };
 
   pickImage = async () => {
@@ -127,15 +79,32 @@ export default class ImageComponent extends Component {
       if (!pickerResult.cancelled) {
         let uploadUrl = await uploadImageAsync(pickerResult.uri);
         this.setState({ image: uploadUrl });
+        let coll = '';
+        let docu = '';
+        if (this.props.profile) {
+          coll = 'users';
+          docu = this.props.userid;
+        }
+        if (this.props.marker) {
+          coll = 'markers';
+          docu = this.props.markerid;
+        }
+        this.setState({
+          data: {
+            ...this.state.data,
+            image: uploadUrl,
+          },
+        });
+        this.setState({
+          data: Object.assign({}, this.state.data, {
+            image: uploadUrl,
+          }),
+        });
+        let thedata = this.state.data;
         let db = await firebase.firestore();
-        db.collection('users')
-          .doc(this.props.userid)
-          .set({
-            id: this.props.userid,
-            name: this.state.user.name,
-            pic: uploadUrl,
-            username: this.state.user.name,
-          })
+        db.collection(coll)
+          .doc(docu)
+          .set(thedata)
           .catch(function(error) {
             console.error('Error adding document: ', error);
           });
@@ -150,42 +119,44 @@ export default class ImageComponent extends Component {
     }
   };
 
+  //IMAGE/VIDEO UPLOAD
+  maybeRenderImage = () => {
+    let { image } = this.state;
+
+    return (
+      <View
+        style={{
+          width: '100%',
+          height: '100%',
+        }}>
+        <Avatar
+          onPress={() => this.pickImage()}
+          source={{ uri: image }}
+          style={{ width: '100%', height: '100%', borderRadius: 5, overflow: 'hidden' }}
+          showEditButton
+          size={'xlarge'}
+        />
+      </View>
+    );
+  };
+
   render() {
     if (this.state.loading) {
       return (
         <View
           style={{
-            flexDirection: 'column',
-            flex: 1,
+            width: '100%',
+            height: '100%',
+            borderRadius: 5,
+            backgroundColor: 'rgba(0,0,0,0.4)',
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <View
-            style={{
-              width: 250,
-              height: 250,
-              borderRadius: 3,
-              elevation: 2,
-              backgroundColor: 'rgba(0,0,0,0.4)',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <ActivityIndicator color="#fff" animating size="large" />
-          </View>
+          <ActivityIndicator color="#fff" animating size="large" />
         </View>
       );
     }
-    return (
-      <View
-        style={{
-          flexDirection: 'column',
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        {this.maybeRenderImage()}
-      </View>
-    );
+    return <View>{this.maybeRenderImage()}</View>;
   }
 }
 

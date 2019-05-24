@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { MarkerAnimated } from 'react-native-maps';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
 import CustomMarker from '../components/Marker';
@@ -8,7 +8,6 @@ import 'firebase/firestore';
 
 const zoomLevel = 0.0822;
 const img = require('../assets/images/Testbild.jpg');
-const icon = require('../assets/images/Stairs.png');
 
 export default class MapScreen extends Component {
   constructor(props) {
@@ -44,10 +43,19 @@ export default class MapScreen extends Component {
     );
   };
 
-  componentDidMount = async () => {
+  componentDidMount() {
     this.setUserPosition();
-    this.fetchMarkerFromFB();
-  };
+
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      this.fetchMarkerFromFB();
+    });
+  }
+
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
+  }
 
   setMarkers(markers) {
     this.setState({
@@ -71,8 +79,23 @@ export default class MapScreen extends Component {
       .catch(function(error) {
         console.log('Error getting documents: ', error);
       });
+
+    markers.forEach(function(marker) {
+      if (marker.icon === 'Stairs') {
+        marker.icon = require('../assets/images/Stairs.png');
+      } else if (marker.icon === 'Jump') {
+        marker.icon = require('../assets/images/Jump.png');
+      } else if (marker.icon === 'Rail') {
+        marker.icon = require('../assets/images/Rail.png');
+      }
+    });
     this.setMarkers(markers);
   };
+
+  setIcon(marker) {
+    console.log(marker);
+    return require('../assets/images/Stairs.png');
+  }
 
   render() {
     return (
@@ -82,6 +105,7 @@ export default class MapScreen extends Component {
           region={this.state.region}
           onRegionChange={this.onRegionChange}
           showsUserLocation
+          userLocationAnnotationTitle={''}
           loadingEnabled>
           {this.state.markers.map(marker => (
             <CustomMarker
@@ -90,8 +114,10 @@ export default class MapScreen extends Component {
               title={marker.title}
               latLang={marker.latLang}
               description={marker.description}
-              icon={icon}
+              icon={marker.icon}
               img={img}
+              navigation={this.props.navigation}
+              level={marker.level}
             />
           ))}
         </MapView>
@@ -99,10 +125,7 @@ export default class MapScreen extends Component {
         <View style={styles.fab}>
           <Icon
             onPress={() => {
-              alert('Till profilsidan');
-              {
-                /*this.props.navigation.navigate('user')*/
-              }
+              this.props.navigation.navigate('profile', { userid: this.props.userid });
             }}
             reverse
             name="user"
