@@ -1,18 +1,22 @@
 import React from 'react';
-import { StyleSheet, Button, Text, View, ActivityIndicator, Image, AsyncStorage } from 'react-native';
-import { ThemeProvider } from 'react-native-elements';
+import { StyleSheet, View, ActivityIndicator, Image, AsyncStorage } from 'react-native';
+import { Button } from 'react-native-elements';
 import { Permissions, ImagePicker } from 'expo';
 import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import uuid from 'uuid';
+import ImageComponent from '../components/ImageComponent';
 
 export default class LoginScreen extends React.Component {
-  state = {
-    permittedCameraRoll: false,
-    image: null,
-    uploading: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      permittedCameraRoll: false,
+      image: false,
+      uploading: false,
+    };
+  }
 
   config = {
     issuer: 'https://accounts.google.com',
@@ -248,12 +252,8 @@ export default class LoginScreen extends React.Component {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Text style={styles.loginText}>Hej Looogiiin</Text>
-        <Button title="Sign in" onPress={() => this.signInAsync()} />
-        <Button title="Sign out" onPress={() => this.signOut()} />
-        <Button title="Pick an image from camera roll" onPress={() => this.pickImage()} />
-        {this.maybeRenderImage()}
-        {this.maybeRenderUploadingOverlay()}
+        <Button title="Sign in with Google" onPress={() => this.signInAsync()} />
+        <ImageComponent userid={'103617752635945553386'} />
       </View>
     );
   }
