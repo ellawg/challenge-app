@@ -26,7 +26,7 @@ export default class ProfileScreen extends React.Component {
       user: {},
       uploading: false,
       submissionData: '',
-      userid: null,
+      userid: 0,
     };
   }
 
@@ -53,8 +53,12 @@ export default class ProfileScreen extends React.Component {
   async componentDidMount() {
     const { navigation } = this.props;
     const userid = navigation.getParam('userid');
+    this.setState({ userid });
     let user = await this.getUser(userid);
-    this.state.user = user;
+    this.setState({ user });
+
+    console.log(this.state.user.id);
+    console.log(this.state.user.username);
   }
 
   pickImage = async () => {
@@ -96,7 +100,6 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
-    let { image } = this.state;
     return (
       <KeyboardAvoidingView behavior="padding" enabled style={styles.background}>
         <View style={{ flex: 1, alignSelf: 'flex-start', marginTop: '10%', marginLeft: '4%' }}>
@@ -110,10 +113,10 @@ export default class ProfileScreen extends React.Component {
         </View>
         <View style={styles.container}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nameHead}>Belinda Lovelace</Text>
+            <Text style={styles.nameHead}>{this.state.user.username}</Text>
           </View>
           <View style={{ flex: 3, height: undefined, width: undefined }}>
-            <ImageComponent userid={this.state.userid} profile />
+            <ImageComponent userid={this.state.user.id} profile />
           </View>
 
           <View style={{ flex: 2, marginBottom: '2%', marginTop: '2%' }}>
