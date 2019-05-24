@@ -1,9 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Button } from 'react-native-elements';
 
 export default class LoginScreen extends React.Component {
   render() {
+    const { navigation } = this.props;
+    const title = navigation.getParam('title');
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
@@ -23,9 +25,8 @@ export default class LoginScreen extends React.Component {
         </View>
         <View style={{ flex: 2, margin: 45, marginTop: 20 }}>
           <Text style={styles.titleText}>Challenge name</Text>
-          <Text>{this.props.title}</Text>
+          <Text>{title}</Text>
           <Text style={styles.labelText}>Level</Text>
-          <Text style={styles.labelText}>Description</Text>
         </View>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Button
@@ -50,3 +51,19 @@ export default class LoginScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  titleText: {
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    fontSize: 20,
+    textTransform: 'uppercase',
+    margin: 5,
+  },
+  labelText: {
+    fontFamily: 'Raleway-SemiBold',
+    fontSize: 12,
+    textTransform: 'uppercase',
+    marginTop: 25,
+  },
+});

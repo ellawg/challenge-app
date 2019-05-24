@@ -81,12 +81,13 @@ export default class MapScreen extends Component {
           loadingEnabled>
           {this.state.markers.map(marker => (
             <CustomMarker
-              key={marker.id}
+              key={marker.title}
               title={marker.title}
               latLang={marker.latLang}
               description={marker.description}
               icon={icon}
               img={img}
+              navigation={this.props.navigation}
             />
           ))}
         </MapView>
