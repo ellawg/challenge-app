@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-import { Button, ThemeProvider } from 'react-native-elements';
 import MapView, { Callout } from 'react-native-maps';
 
 /* Must be used inside <Mapview> to create marker
@@ -32,9 +31,9 @@ export default class CustomMarker extends Component {
             })
           }>
           <View style={styles.popUpInfo}>
-            <Text style={{ fontSize: 20 }}>{this.props.title}</Text>
+            <Text style={{ fontSize: 20, alignSelf: 'center' }}>{this.props.title}</Text>
             <Image style={styles.img} source={{ uri: this.props.img }} />
-            <Text>{this.props.description}</Text>
+            <Text style={{ alignSelf: 'center' }}>{'Tap to take challenge'}</Text>
           </View>
         </Callout>
       );
