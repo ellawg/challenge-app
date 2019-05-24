@@ -76,7 +76,7 @@ export default class CustomModal extends React.Component {
           onPress={() => {
             this.setModalVisible(true);
           }}>
-          <Text style={{ backgroundColor: '#D3D3D3', height: 70 }}>{this.state.inputText}</Text>
+          <Text style={{ backgroundColor: '#D3D3D3', height: '55%' }}>{this.state.inputText}</Text>
         </TouchableHighlight>
       </View>
     );

@@ -161,7 +161,7 @@ export default class PlaceChallengeScreen extends React.Component {
           </View>
           <View style={{ flex: 2 }}>
             <Button
-              style={{ alignSelf: 'center', marginBottom: 40, width: '80%' }}
+              style={{ alignSelf: 'center', marginBottom: '5%', width: '80%' }}
               title="Submit challenge"
               onPress={() => {
                 this.sendToDb();

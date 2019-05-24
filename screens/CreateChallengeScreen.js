@@ -71,10 +71,9 @@ export default class CreateChallengeScreen extends React.Component {
           />
           <Text style={styles.labelText}>Description</Text>
           <CustomModal callbackFromParent={this.componentCallback} />
-
         </View>
         <Button
-          style={{ alignSelf: 'center', bottom: 40 }}
+          style={{ alignSelf: 'center', marginBottom: '5%', width: '78%' }}
           title="Next step"
           disabled={this.done()}
           onPress={() => {

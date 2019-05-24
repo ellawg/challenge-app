@@ -105,7 +105,7 @@ export default class MapScreen extends Component {
           region={this.state.region}
           onRegionChange={this.onRegionChange}
           showsUserLocation
-          userLocationAnnotationTitle={''}
+          userLocationAnnotationTitle={'Your position'}
           loadingEnabled>
           {this.state.markers.map(marker => (
             <CustomMarker
