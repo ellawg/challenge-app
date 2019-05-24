@@ -21,7 +21,11 @@ export default class CustomMarker extends Component {
         <Callout
           style={{ flex: 1 }}
           onPress={() =>
-            this.props.navigation.navigate('challenge', { title: `${this.props.title}` })
+            this.props.navigation.navigate('challenge', {
+              title: `${this.props.title}`,
+              description: `${this.props.description}`,
+              img: `${this.props.img}`,
+            })
           }>
           <View style={styles.popUpInfo}>
             <Text style={{ fontSize: 20 }}>{this.props.title}</Text>
