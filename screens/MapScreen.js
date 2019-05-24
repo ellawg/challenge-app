@@ -93,7 +93,6 @@ export default class MapScreen extends Component {
   };
 
   setIcon(marker) {
-    console.log(marker);
     return require('../assets/images/Stairs.png');
   }
 
@@ -117,7 +116,7 @@ export default class MapScreen extends Component {
               latLang={marker.latLang}
               description={marker.description}
               icon={marker.icon}
-              img={img}
+              img={marker.image}
               navigation={this.props.navigation}
               level={marker.level}
             />
