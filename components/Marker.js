@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
+import { Button, ThemeProvider } from 'react-native-elements';
 import MapView, { Callout } from 'react-native-maps';
 
 /* Must be used inside <Mapview> to create marker
@@ -19,12 +20,13 @@ export default class CustomMarker extends Component {
       return (
         <Callout
           style={{ flex: 1 }}
-          onPress={() => {
-            alert('Du skickas nu vidare till nästa skärm');
-            {
-              /*this.props.navigation.navigate('challenge + {this.props.id}')*/
-            }
-          }}>
+          onPress={() =>
+            this.props.navigation.navigate('challenge', {
+              title: `${this.props.title}`,
+              description: `${this.props.description}`,
+              img: `${this.props.img}`,
+            })
+          }>
           <View style={styles.popUpInfo}>
             <Text style={{ fontSize: 20 }}>{this.props.title}</Text>
             <Image style={styles.img} source={this.props.img} />
