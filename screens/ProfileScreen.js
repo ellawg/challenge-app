@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import uuid from 'uuid';
 import CustomModal from '../components/Modal.js';
+import ImageComponent from '../components/ImageComponent';
 
 export default class ProfileScreen extends React.Component {
   constructor(props) {
@@ -109,14 +110,7 @@ export default class ProfileScreen extends React.Component {
             <Text style={styles.nameHead}>Belinda Lovelace</Text>
           </View>
           <View style={{ flex: 3, alignItems: 'center' }}>
-            <Avatar
-              source={{ uri: image }}
-              showEditButton
-              size={'xlarge'}
-              style={styles.avatar}
-              resizeMode="contain"
-              onPress={() => this.pickImage()}
-            />
+            <ImageComponent userid="103617752635945553386" />
           </View>
 
           <View style={{ flex: 2, marginBottom: '2%', marginTop: '2%' }}>
