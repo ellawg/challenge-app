@@ -77,6 +77,7 @@ export default class LoginScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     const title = navigation.getParam('title');
+    const description = navigation.getParam('description');
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
@@ -98,6 +99,8 @@ export default class LoginScreen extends React.Component {
           <Text style={styles.titleText}>Challenge name</Text>
           <Text>{title}</Text>
           <Text style={styles.labelText}>Level</Text>
+          <Text style={styles.labelText}>Description</Text>
+          <Text>{description}</Text>
         </View>
         <View style={{ flex: 1, alignItems: 'center' }}>
 
