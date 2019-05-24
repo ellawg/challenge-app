@@ -3,15 +3,17 @@ import { Modal, Text, TouchableHighlight, View, Alert } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 
 export default class CustomModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { modalVisible: false, inputText: 'Describe the challenge' };
+  }
+
   sendProps = () => {
     const listInfo = this.state.inputText;
     this.props.callbackFromParent(listInfo);
+    this.setModalVisible(!this.state.modalVisible);
   };
 
-  constructor(props) {
-    super(props);
-    this.state = { modalVisible: false, inputText: 'Tell us what happened' };
-  }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
@@ -63,7 +65,7 @@ export default class CustomModal extends React.Component {
                   title="Submit"
                   style={{ maxWidth: '100%' }}
                   onPress={() => {
-                    this.setModalVisible(!this.state.modalVisible);
+                    this.sendProps();
                   }}
                 />
               </View>
@@ -74,7 +76,7 @@ export default class CustomModal extends React.Component {
           onPress={() => {
             this.setModalVisible(true);
           }}>
-          <Text>{this.props.placeholder}</Text>
+          <Text style={{ backgroundColor: '#D3D3D3', height: 70 }}>{this.state.inputText}</Text>
         </TouchableHighlight>
       </View>
     );
