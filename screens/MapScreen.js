@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { MarkerAnimated } from 'react-native-maps';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
 import CustomMarker from '../components/Marker';
@@ -117,6 +117,7 @@ export default class MapScreen extends Component {
               icon={marker.icon}
               img={img}
               navigation={this.props.navigation}
+              level={marker.level}
             />
           ))}
         </MapView>

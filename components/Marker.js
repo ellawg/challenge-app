@@ -25,6 +25,7 @@ export default class CustomMarker extends Component {
               title: `${this.props.title}`,
               description: `${this.props.description}`,
               img: `${this.props.img}`,
+              level: `${this.props.level}`,
             })
           }>
           <View style={styles.popUpInfo}>
