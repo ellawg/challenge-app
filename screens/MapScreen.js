@@ -46,7 +46,16 @@ export default class MapScreen extends Component {
 
   componentDidMount() {
     this.setUserPosition();
-    this.fetchMarkerFromFB();
+
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      this.fetchMarkerFromFB();
+    });
+  }
+
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
   }
 
   setMarkers(markers) {
