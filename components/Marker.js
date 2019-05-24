@@ -15,6 +15,7 @@ icon: path to icon
 
 export default class CustomMarker extends Component {
   showPopUp() {
+    console.log(this.props.img);
     /* If the prop popUp is added the marker will show a popup */
     if (this.props.popUp) {
       return (
