@@ -37,7 +37,6 @@ const AppNavigator = createStackNavigator(
     createUser: {
       screen: CreateUserScreen,
     },
-
     profile: {
       screen: ProfileScreen,
     },
