@@ -125,10 +125,7 @@ export default class MapScreen extends Component {
         <View style={styles.fab}>
           <Icon
             onPress={() => {
-              alert('Till profilsidan');
-              {
-                /*this.props.navigation.navigate('user')*/
-              }
+              this.props.navigation.navigate('profile');
             }}
             reverse
             name="user"
