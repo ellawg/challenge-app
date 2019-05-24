@@ -23,7 +23,7 @@ export default class ProfileScreen extends React.Component {
     super(props);
     this.state = {
       permittedCameraRoll: false,
-      image: null,
+      user: null,
       uploading: false,
       submissionData: '',
     };
@@ -37,11 +37,11 @@ export default class ProfileScreen extends React.Component {
     let db = await firebase.firestore();
     let user = await db
       .collection('users')
-      .doc('103617752635945553386')
+      .doc(id)
       .get()
       .then(docSnapshot => {
         if (docSnapshot.exists) {
-          return docSnapshot.data().pic;
+          return docSnapshot.data();
         } else {
           return false;
         }
@@ -50,8 +50,8 @@ export default class ProfileScreen extends React.Component {
   };
 
   async componentWillMount() {
-    let profilePic = await this.getUser();
-    this.state.image = profilePic;
+    let user = await this.getUser();
+    this.state.user = user;
   }
 
   pickImage = async () => {
@@ -109,8 +109,8 @@ export default class ProfileScreen extends React.Component {
           <View style={{ flex: 1 }}>
             <Text style={styles.nameHead}>Belinda Lovelace</Text>
           </View>
-          <View style={{ flex: 3, alignItems: 'center' }}>
-            <ImageComponent userid="103617752635945553386" />
+          <View style={{ flex: 3, height: undefined, width: undefined }}>
+            <ImageComponent userid={'103617752635945553386'} profile />
           </View>
 
           <View style={{ flex: 2, marginBottom: '2%', marginTop: '2%' }}>
