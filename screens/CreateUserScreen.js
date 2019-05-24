@@ -68,11 +68,23 @@ export default class CreateUserScreen extends React.Component {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
+          height: '100%',
+          width: '100%',
         }}>
-        <Text>So it's your first time here, huh? Choose your nick.</Text>
+        <Text style={{
+            fontSize: 15,
+            margin: 10,
+            textAlign: 'center',
+            fontFamily: 'raleway-mediumitalic',
+            textTransform: 'uppercase',
+          }}>
+          So it's your first time here, huh? Choose your nick.
+        </Text>
         <TextInput
           style={{
             justifyContent: 'center',
+            padding: 5,
+            fontSize: 20,
           }}
           placeholder="Username"
           name="username"
@@ -80,7 +92,13 @@ export default class CreateUserScreen extends React.Component {
           value={this.state.username}
         />
         <Text>{this.state.errorMessage}</Text>
-        <Button title="Submit" onPress={() => this.writeUserToFB()} />
+        <Button titleStyle={{
+            width: '80%',
+          }}
+          buttonStyle={{ bottom: '5%' }}
+          title="Submit"
+          onPress={() => this.writeUserToFB()}
+        />
       </View>
     );
   }

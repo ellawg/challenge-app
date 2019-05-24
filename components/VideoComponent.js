@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
-import { Avatar } from 'react-native-elements';
-import { Permissions, ImagePicker } from 'expo';
+import { Avatar, Button } from 'react-native-elements';
+import { Permissions, ImagePicker, Video } from 'expo';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import uuid from 'uuid';
@@ -12,9 +12,8 @@ export default class ImageComponent extends Component {
     this.state = {
       image: null,
       loading: true,
-      data: {},
-      marker: {},
       user: {},
+      data: {},
     };
   }
 
@@ -22,6 +21,7 @@ export default class ImageComponent extends Component {
     if (this.props.profile) {
       let user = await this.getData(this.props.userid, 'users');
       let profilePic = user.image;
+      this.setState({ user });
       this.setState({ image: profilePic });
       this.setState({ data: user });
       this.setState({ loading: false });
@@ -32,12 +32,7 @@ export default class ImageComponent extends Component {
       this.setState({ image: challengePic });
       this.setState({ data: marker });
       this.setState({ loading: false });
-    }
-    if (this.props.challengeproof) {
-      let marker = await this.getData(this.props.markerid, 'markers');
-      let user = await this.getData(this.props.userid, 'users');
-      this.setState({ marker });
-      this.setState({ user });
+      console.log(this.state.data);
     }
   }
 
@@ -70,7 +65,7 @@ export default class ImageComponent extends Component {
       let pickerResult = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
         aspect: [4, 3],
-        mediaTypes: 'All',
+        mediaTypes: 'Videos',
       });
 
       this.handleImagePicked(pickerResult);
@@ -84,39 +79,35 @@ export default class ImageComponent extends Component {
       if (!pickerResult.cancelled) {
         let uploadUrl = await uploadImageAsync(pickerResult.uri);
         this.setState({ image: uploadUrl });
-        if (this.props.marker || this.props.profile) {
-          let coll = '';
-          let docu = '';
-          if (this.props.profile) {
-            coll = 'users';
-            docu = this.props.userid;
-          }
-          if (this.props.marker) {
-            coll = 'markers';
-            docu = this.props.markerid;
-          }
-          this.setState({
-            data: {
-              ...this.state.data,
-              image: uploadUrl,
-            },
-          });
-          this.setState({
-            data: Object.assign({}, this.state.data, {
-              image: uploadUrl,
-            }),
-          });
-          let thedata = this.state.data;
-          let db = await firebase.firestore();
-          db.collection(coll)
-            .doc(docu)
-            .set(thedata)
-            .catch(function(error) {
-              console.error('Error adding document: ', error);
-            });
-        } else {
-          
+        let coll = '';
+        let docu = '';
+        if (this.props.profile) {
+          coll = 'users';
+          docu = this.props.userid;
         }
+        if (this.props.marker) {
+          coll = 'markers';
+          docu = this.props.markerid;
+        }
+        this.setState({
+          data: {
+            ...this.state.data,
+            image: uploadUrl,
+          },
+        });
+        this.setState({
+          data: Object.assign({}, this.state.data, {
+            image: uploadUrl,
+          }),
+        });
+        let thedata = this.state.data;
+        let db = await firebase.firestore();
+        db.collection(coll)
+          .doc(docu)
+          .set(thedata)
+          .catch(function(error) {
+            console.error('Error adding document: ', error);
+          });
       }
     } catch (e) {
       console.log(e);
@@ -138,13 +129,17 @@ export default class ImageComponent extends Component {
           width: '100%',
           height: '100%',
         }}>
-        <Avatar
-          onPress={() => this.pickImage()}
+        <Video
           source={{ uri: image }}
-          style={{ width: '100%', height: '100%', borderRadius: 5, overflow: 'hidden' }}
-          showEditButton
-          size={'xlarge'}
+          rate={1.0}
+          volume={1.0}
+          isMuted={false}
+          resizeMode="cover"
+          shouldPlay
+          isLooping
+          style={{ width: 300, height: 300 }}
         />
+        <Button title="hej" onPress={() => this.pickImage()} />
       </View>
     );
   };
