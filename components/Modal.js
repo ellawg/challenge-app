@@ -38,19 +38,19 @@ export default class CustomModal extends React.Component {
               shadowOpacity: 0.8,
               shadowRadius: 2,
             }}>
-            <View style={{ margin: '10%', maxHeight: '80%' }}>
-              <Input
-                style={{}}
-                multiline
-                placeholder={this.state.inputText}
-                onChangeText={inputText => this.setState({ inputText })}
-              />
+            <View style={{ margin: '10%', maxHeight: '90%' }}>
+              <View style={{ maxHeight: '60%' }}>
+                <Input
+                  multiline
+                  placeholder={this.state.inputText}
+                  onChangeText={inputText => this.setState({ inputText })}
+                />
+              </View>
               <View
                 style={{
                   width: '100%',
-                  marginLeft: '25%',
-                  marginBottom: '5%',
-                  marginTop: '3%',
+                  marginBottom: '3%',
+                  marginTop: '5%',
                 }}>
                 <Button
                   title="Cancel"

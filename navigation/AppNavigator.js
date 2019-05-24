@@ -26,7 +26,7 @@ const AppNavigator = createStackNavigator(
     },
     place: {
       screen: PlaceChallengeScreen,
-      params: { title: '', description: '', image: '', level: '' },
+      params: { title: '', description: '', images: [''], level: '' },
     },
     confirm: {
       screen: ConfirmChallengeScreen,
