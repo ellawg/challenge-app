@@ -113,21 +113,21 @@ export default class ProfileScreen extends React.Component {
         </View>
         <View style={styles.container}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nameHead}>{this.state.user.username}</Text>
+            <Text style={styles.titleText}>{this.state.user.username}</Text>
           </View>
           <View style={{ flex: 3, height: undefined, width: undefined }}>
             <ImageComponent userid={this.state.user.id} profile />
           </View>
 
-          <View style={{ flex: 2, marginBottom: '2%', marginTop: '2%' }}>
+          <View style={{ flex: 3, marginBottom: '2%', marginTop: '2%' }}>
             <CustomModal
               placeholder={'Upload some information about yourself'}
               callbackFromParent={this.componentCallback}
             />
           </View>
           <View style={{ flex: 3 }}>
-            <Text style={styles.completedHead}>COMPLETED CHALLENGES</Text>
-            <Text style={styles.bodyText}>Crazy awesome challenges! Frekkin rad shit..</Text>
+            <Text style={styles.labelText}>COMPLETED CHALLENGES</Text>
+            <Text>Crazy awesome challenges! Frekkin rad shit..</Text>
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -175,24 +175,26 @@ const styles = StyleSheet.create({
     flex: 9,
     width: '70%',
   },
-  nameHead: {
-    color: '#282829',
-    fontSize: 32,
-  },
   avatar: {
     flex: 5,
     height: undefined,
     width: '80%',
   },
-  bodyText: {
-    fontSize: 16,
-    height: undefined,
-    textAlign: 'left',
-    color: '#282829',
-    fontStyle: 'italic',
-  },
   completedHead: {
     color: '#282829',
     fontSize: 22,
+  },
+  titleText: {
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    fontSize: 20,
+    textTransform: 'uppercase',
+    margin: 5,
+  },
+  labelText: {
+    fontFamily: 'Raleway-SemiBold',
+    fontSize: 13,
+    textTransform: 'uppercase',
+    marginTop: '5%',
   },
 });
