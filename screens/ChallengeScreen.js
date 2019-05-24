@@ -86,10 +86,8 @@ export default class LoginScreen extends React.Component {
             style={{ flex: 1 }}
             region={this.state.region}
             onRegionChange={this.onRegionChange}
-            showsUserLocation
             loadingEnabled>
             <CustomMarker
-              popUp
               key={id}
               title={title}
               latLang={latLang}
