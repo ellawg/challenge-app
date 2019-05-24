@@ -78,13 +78,14 @@ export default class LoginScreen extends React.Component {
     const { navigation } = this.props;
     const title = navigation.getParam('title');
     const description = navigation.getParam('description');
+    const challengeImg = navigation.getParam('img');
+    const level = navigation.getParam('level');
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <ImageBackground
-            style={{ flex: 1, width: undefined, backgroundColor: 'green' }}
-            source={require('../assets/images/coolcroc.jpg')}
-            resizeMode="contain">
+            style={{ flex: 1, width: undefined, backgroundColor: '#6d6d6d' }}
+            source={challengeImg}>
             <Button
               style={{ top: '30%', left: '4%' }}
               title="<"
@@ -96,14 +97,13 @@ export default class LoginScreen extends React.Component {
           </ImageBackground>
         </View>
         <View style={{ flex: 2, margin: 45, marginTop: 20 }}>
-          <Text style={styles.titleText}>Challenge name</Text>
-          <Text>{title}</Text>
+          <Text style={styles.titleText}>{title}</Text>
           <Text style={styles.labelText}>Level</Text>
+          <Text>{level}</Text>
           <Text style={styles.labelText}>Description</Text>
           <Text>{description}</Text>
         </View>
         <View style={{ flex: 1, alignItems: 'center' }}>
-
           <Button
             title="See who nailed this challenge"
             titleStyle={{ fontSize: 12, color: 'black' }}
@@ -138,7 +138,6 @@ export default class LoginScreen extends React.Component {
             flexDirection: 'row',
             margin: '5%',
           }}>
-
           <Button
             title="Nailed it"
             onPress={() => this.props.navigation.navigate('confirm', { confirmState: 'nailed' })}
