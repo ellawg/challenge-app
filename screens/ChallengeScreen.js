@@ -70,11 +70,14 @@ export default class LoginScreen extends React.Component {
         </View>
         <View style={{ flex: 2, margin: 45, marginTop: 20 }}>
           <Text style={styles.titleText}>{title}</Text>
-          <Text style={styles.labelText}>Level</Text>
-          <Text>{level}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+            <Text style={styles.labelText}>Level: </Text>
+            <Text>{level}</Text>
+          </View>
+
           <Text style={styles.labelText}>Description</Text>
           <ScrollView style={{ height: '100%' }}>
-          <Text>{description}</Text>
+            <Text>{description}</Text>
           </ScrollView>
           <ScoreModal />
         </View>
@@ -136,7 +139,7 @@ const styles = StyleSheet.create({
   },
   labelText: {
     fontFamily: 'Raleway-SemiBold',
-    fontSize: 12,
+    fontSize: 13,
     textTransform: 'uppercase',
     marginTop: '5%',
   },

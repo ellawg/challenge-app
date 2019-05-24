@@ -60,7 +60,7 @@ export default class CreateChallengeScreen extends React.Component {
             buttons={buttons}
             containerStyle={{ height: 50 }}
           />
-          <Text style={styles.labelText}>Description</Text>
+          <Text style={styles.labelText}>Description: </Text>
           <CustomModal
             placeholder={'Describe the challenge'}
             callbackFromParent={this.componentCallback}
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   labelText: {
     fontFamily: 'Raleway-SemiBold',
-    fontSize: 12,
+    fontSize: 13,
     textTransform: 'uppercase',
     marginTop: 25,
   },
