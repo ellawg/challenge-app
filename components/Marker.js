@@ -20,9 +20,10 @@ export default class CustomMarker extends Component {
           style={{ flex: 1 }}
           onPress={() => {
             alert('Du skickas nu vidare till nästa skärm');
-            {
-              /*this.props.navigation.navigate('challenge + {this.props.id}')*/
-            }
+            this.props.navigation.navigate('challenge', {
+              title: `${this.props.title}`,
+              description: `${this.props.description}`,
+            });
           }}>
           <View style={styles.popUpInfo}>
             <Text style={{ fontSize: 20 }}>{this.props.title}</Text>
