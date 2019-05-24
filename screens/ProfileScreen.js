@@ -16,15 +16,17 @@ import {
 } from 'react-native';
 import uuid from 'uuid';
 import CustomModal from '../components/Modal.js';
+import ImageComponent from '../components/ImageComponent';
 
 export default class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       permittedCameraRoll: false,
-      image: null,
+      user: {},
       uploading: false,
       submissionData: '',
+      userid: null,
     };
   }
 
@@ -36,11 +38,11 @@ export default class ProfileScreen extends React.Component {
     let db = await firebase.firestore();
     let user = await db
       .collection('users')
-      .doc('103617752635945553386')
+      .doc(id)
       .get()
       .then(docSnapshot => {
         if (docSnapshot.exists) {
-          return docSnapshot.data().pic;
+          return docSnapshot.data();
         } else {
           return false;
         }
@@ -48,12 +50,11 @@ export default class ProfileScreen extends React.Component {
     return user;
   };
 
-  async componentWillMount() {
-    console.log('hej');
-    let profilePic = await this.getUser();
-    this.state.image = profilePic;
-    console.log(this.state.image);
-    console.log(profilePic);
+  async componentDidMount() {
+    const { navigation } = this.props;
+    const userid = navigation.getParam('userid');
+    let user = await this.getUser(userid);
+    this.state.user = user;
   }
 
   pickImage = async () => {
@@ -111,15 +112,8 @@ export default class ProfileScreen extends React.Component {
           <View style={{ flex: 1 }}>
             <Text style={styles.nameHead}>Belinda Lovelace</Text>
           </View>
-          <View style={{ flex: 3, alignItems: 'center' }}>
-            <Avatar
-              source={{ uri: image }}
-              showEditButton
-              size={'xlarge'}
-              style={styles.avatar}
-              resizeMode="contain"
-              onPress={() => this.pickImage()}
-            />
+          <View style={{ flex: 3, height: undefined, width: undefined }}>
+            <ImageComponent userid={this.state.userid} profile />
           </View>
 
           <View style={{ flex: 2, marginBottom: '2%', marginTop: '2%' }}>

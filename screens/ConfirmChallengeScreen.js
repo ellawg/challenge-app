@@ -8,6 +8,7 @@ export default class LoginScreen extends React.Component {
     super();
     this.state = {
       submissionData: '',
+      confirmationData: '',
     };
   }
   setTextString(prop) {
@@ -18,10 +19,17 @@ export default class LoginScreen extends React.Component {
     this.setState({ submissionData: modalData });
   };
 
+  setConfirmationState = confirmState => {
+    this.setState({ confirmationData: confirmState });
+  };
+
   render() {
     const { navigation } = this.props;
     const confirmState = navigation.getParam('confirmState');
     const textString = this.setTextString(confirmState);
+
+    this.setConfirmationState(confirmState);
+
     return (
       <View style={{ flex: 1, marginTop: '10%', marginLeft: '4%' }}>
         <Button

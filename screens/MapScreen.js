@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { MarkerAnimated } from 'react-native-maps';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
 import CustomMarker from '../components/Marker';
 import 'firebase/firestore';
 
 const zoomLevel = 0.0822;
-const img = require('../assets/images/Testbild.jpg');
 
 export default class MapScreen extends Component {
   constructor(props) {
@@ -93,11 +92,12 @@ export default class MapScreen extends Component {
   };
 
   setIcon(marker) {
-    console.log(marker);
     return require('../assets/images/Stairs.png');
   }
 
   render() {
+    const { navigation } = this.props;
+    const userid = navigation.getParam('userid');
     return (
       <View style={{ flex: 1 }}>
         <MapView
@@ -105,7 +105,7 @@ export default class MapScreen extends Component {
           region={this.state.region}
           onRegionChange={this.onRegionChange}
           showsUserLocation
-          userLocationAnnotationTitle={''}
+          userLocationAnnotationTitle={'Your position'}
           loadingEnabled>
           {this.state.markers.map(marker => (
             <CustomMarker
@@ -115,8 +115,9 @@ export default class MapScreen extends Component {
               latLang={marker.latLang}
               description={marker.description}
               icon={marker.icon}
-              img={img}
+              img={marker.image}
               navigation={this.props.navigation}
+              level={marker.level}
             />
           ))}
         </MapView>
@@ -124,7 +125,7 @@ export default class MapScreen extends Component {
         <View style={styles.fab}>
           <Icon
             onPress={() => {
-              this.props.navigation.navigate('profile');
+              this.props.navigation.navigate('profile', { userid });
             }}
             reverse
             name="user"

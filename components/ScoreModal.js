@@ -1,19 +1,17 @@
 import React from 'react';
 import { Modal, Text, TouchableHighlight, View, Alert } from 'react-native';
-import { Input, Button } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 
 export default class CustomModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { modalVisible: false, inputText: 'Describe the challenge' };
-  }
-
   sendProps = () => {
     const listInfo = this.state.inputText;
     this.props.callbackFromParent(listInfo);
-    this.setModalVisible(!this.state.modalVisible);
   };
 
+  constructor(props) {
+    super(props);
+    this.state = { modalVisible: false, inputText: 'Tell us what happened' };
+  }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
@@ -30,9 +28,9 @@ export default class CustomModal extends React.Component {
           }}>
           <View
             style={{
-              marginTop: '30%',
+              marginTop: '20%',
               backgroundColor: 'white',
-              height: '40%',
+              height: '80%',
               margin: '5%',
               borderRadius: '10%',
               shadowColor: '#000',
@@ -41,13 +39,35 @@ export default class CustomModal extends React.Component {
               shadowRadius: 2,
             }}>
             <View style={{ margin: '10%', maxHeight: '90%' }}>
-              <View style={{ maxHeight: '60%' }}>
-                <Input
-                  multiline
-                  placeholder={this.state.inputText}
-                  onChangeText={inputText => this.setState({ inputText })}
-                />
-              </View>
+              <Text
+                style={{
+                  fontStyle: 'italic',
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  textTransform: 'uppercase',
+                  margin: 5,
+                }}>
+                Scoreboard
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'Raleway-SemiBold',
+                  fontSize: 12,
+                  textTransform: 'uppercase',
+                  marginTop: 25,
+                }}>
+                Nailed it
+              </Text>
+
+              <Text
+                style={{
+                  fontFamily: 'Raleway-SemiBold',
+                  fontSize: 12,
+                  textTransform: 'uppercase',
+                  marginTop: 25,
+                }}>
+                Bailed it
+              </Text>
               <View
                 style={{
                   width: '100%',
@@ -55,17 +75,10 @@ export default class CustomModal extends React.Component {
                   marginTop: '5%',
                 }}>
                 <Button
-                  title="Cancel"
+                  title="Done"
                   style={{ maxWidth: '100%' }}
                   onPress={() => {
                     this.setModalVisible(!this.state.modalVisible);
-                  }}
-                />
-                <Button
-                  title="Submit"
-                  style={{ maxWidth: '100%' }}
-                  onPress={() => {
-                    this.sendProps();
                   }}
                 />
               </View>
@@ -76,7 +89,9 @@ export default class CustomModal extends React.Component {
           onPress={() => {
             this.setModalVisible(true);
           }}>
-          <Text style={{ backgroundColor: '#D3D3D3', height: '55%' }}>{this.state.inputText}</Text>
+          <Text style={{ color: '#6d6d6d', justifyContent: 'center', fontStyle: 'italic' }}>
+            Challenge scores
+          </Text>
         </TouchableHighlight>
       </View>
     );

@@ -5,7 +5,6 @@ import MapView from 'react-native-maps';
 import * as firebase from 'firebase';
 import CustomMarker from '../components/Marker';
 import 'firebase/firestore';
-import uuid from 'uuid';
 
 const { width, height } = Dimensions.get('window');
 const aspectRatio = width / height;
@@ -99,24 +98,25 @@ export default class PlaceChallengeScreen extends React.Component {
   }
 
   sendToDb = async () => {
-    console.log(this.props.navigation.getParam('images'));
     let latLang = {
       latitude: this.state.marker.coordinate.latitude,
       longitude: this.state.marker.coordinate.longitude,
     };
     let db = await firebase.firestore();
-    let id = uuid.v4();
+    let id = this.props.navigation.getParam('id');
     db.collection('markers')
       .doc(id)
-      .set({
-        id,
-        title: this.props.navigation.getParam('title'),
-        description: this.props.navigation.getParam('description'),
-        latLang,
-        image: 'url',
-        icon: this.state.chosenMarker.name,
-        level: this.props.navigation.getParam('level'),
-      })
+      .set(
+        {
+          id,
+          title: this.props.navigation.getParam('title'),
+          description: this.props.navigation.getParam('description'),
+          latLang,
+          icon: this.state.chosenMarker.name,
+          level: this.props.navigation.getParam('level'),
+        },
+        { merge: true }
+      )
       .catch(function(error) {
         console.error('Error adding document: ', error);
       });
@@ -161,7 +161,7 @@ export default class PlaceChallengeScreen extends React.Component {
           </View>
           <View style={{ flex: 2 }}>
             <Button
-              style={{ alignSelf: 'center', marginBottom: 40, width: '80%' }}
+              style={{ alignSelf: 'center', marginBottom: '5%', width: '80%' }}
               title="Submit challenge"
               onPress={() => {
                 this.sendToDb();

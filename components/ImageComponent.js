@@ -115,7 +115,7 @@ export default class ImageComponent extends Component {
               console.error('Error adding document: ', error);
             });
         } else {
-          
+
         }
       }
     } catch (e) {
@@ -198,6 +198,4 @@ async function uploadImageAsync(uri) {
   return await snapshot.ref.getDownloadURL();
 }
 
-const styles = StyleSheet.create({
-
-});
+const styles = StyleSheet.create({});

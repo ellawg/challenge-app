@@ -26,7 +26,7 @@ const AppNavigator = createStackNavigator(
     },
     place: {
       screen: PlaceChallengeScreen,
-      params: { title: '', description: '', images: [''], level: '' },
+      params: { id: null, title: '', description: '', images: [''], level: '' },
     },
     confirm: {
       screen: ConfirmChallengeScreen,
@@ -37,11 +37,9 @@ const AppNavigator = createStackNavigator(
     createUser: {
       screen: CreateUserScreen,
     },
-
     profile: {
       screen: ProfileScreen,
     },
-
   },
   {
     headerMode: 'none',
