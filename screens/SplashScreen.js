@@ -87,7 +87,7 @@ export default class SplashScreen extends React.Component {
     let response = await userInfoResponse.json();
     let user = await this.getUser(response.id);
     if (user) {
-      //this.props.navigation.navigate('map', { userid: response.id });
+      this.props.navigation.navigate('map', { userid: response.id });
     } else {
       this.props.navigation.navigate('createUser', { googleData: response });
     }
