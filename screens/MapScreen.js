@@ -8,7 +8,6 @@ import 'firebase/firestore';
 
 const zoomLevel = 0.0822;
 const img = require('../assets/images/Testbild.jpg');
-const icon = require('../assets/images/Stairs.png');
 
 export default class MapScreen extends Component {
   constructor(props) {
