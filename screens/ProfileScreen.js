@@ -13,6 +13,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 import uuid from 'uuid';
 import CustomModal from '../components/Modal.js';
@@ -24,7 +25,7 @@ export default class ProfileScreen extends React.Component {
     this.state = {
       permittedCameraRoll: false,
       user: {},
-      uploading: false,
+      uploading: true,
       submissionData: '',
       userid: 0,
     };
@@ -59,6 +60,7 @@ export default class ProfileScreen extends React.Component {
 
     console.log(this.state.user.id);
     console.log(this.state.user.username);
+    this.setState({ uploading: false });
   }
 
   pickImage = async () => {
@@ -100,6 +102,21 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
+    if (this.state.uploading) {
+      return (
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: 5,
+            backgroundColor: 'rgba(0,0,0,0.4)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <ActivityIndicator color="#fff" animating size="large" />
+        </View>
+      );
+    }
     return (
       <KeyboardAvoidingView behavior="padding" enabled style={styles.background}>
         <View style={{ flex: 1, alignSelf: 'flex-start', marginTop: '10%', marginLeft: '4%' }}>
