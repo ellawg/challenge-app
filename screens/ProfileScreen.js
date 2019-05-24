@@ -49,11 +49,8 @@ export default class ProfileScreen extends React.Component {
   };
 
   async componentWillMount() {
-    console.log('hej');
     let profilePic = await this.getUser();
     this.state.image = profilePic;
-    console.log(this.state.image);
-    console.log(profilePic);
   }
 
   pickImage = async () => {
