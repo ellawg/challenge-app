@@ -23,9 +23,10 @@ export default class ProfileScreen extends React.Component {
     super(props);
     this.state = {
       permittedCameraRoll: false,
-      user: null,
+      user: {},
       uploading: false,
       submissionData: '',
+      userid: null,
     };
   }
 
@@ -49,8 +50,10 @@ export default class ProfileScreen extends React.Component {
     return user;
   };
 
-  async componentWillMount() {
-    let user = await this.getUser();
+  async componentDidMount() {
+    const { navigation } = this.props;
+    const userid = navigation.getParam('userid');
+    let user = await this.getUser(userid);
     this.state.user = user;
   }
 
@@ -110,7 +113,7 @@ export default class ProfileScreen extends React.Component {
             <Text style={styles.nameHead}>Belinda Lovelace</Text>
           </View>
           <View style={{ flex: 3, height: undefined, width: undefined }}>
-            <ImageComponent userid={'103617752635945553386'} profile />
+            <ImageComponent userid={this.state.userid} profile />
           </View>
 
           <View style={{ flex: 2, marginBottom: '2%', marginTop: '2%' }}>
