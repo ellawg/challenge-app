@@ -8,7 +8,6 @@ import 'firebase/firestore';
 
 const zoomLevel = 0.0822;
 const img = require('../assets/images/Testbild.jpg');
-const icon = require('../assets/images/Stairs.png');
 
 export default class MapScreen extends Component {
   constructor(props) {
@@ -117,6 +116,7 @@ export default class MapScreen extends Component {
               description={marker.description}
               icon={marker.icon}
               img={img}
+              navigation={this.props.navigation}
             />
           ))}
         </MapView>
@@ -124,10 +124,7 @@ export default class MapScreen extends Component {
         <View style={styles.fab}>
           <Icon
             onPress={() => {
-              alert('Till profilsidan');
-              {
-                /*this.props.navigation.navigate('user')*/
-              }
+              this.props.navigation.navigate('profile');
             }}
             reverse
             name="user"
