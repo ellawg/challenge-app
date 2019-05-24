@@ -1,18 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, Image, AsyncStorage } from 'react-native';
-import { Button, ThemeProvider } from 'react-native-elements';
+import { StyleSheet, View, ActivityIndicator, Image, AsyncStorage } from 'react-native';
+import { Button } from 'react-native-elements';
 import { Permissions, ImagePicker } from 'expo';
 import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import uuid from 'uuid';
+import ImageComponent from '../components/ImageComponent';
 
 export default class LoginScreen extends React.Component {
-  state = {
-    permittedCameraRoll: false,
-    image: null,
-    uploading: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      permittedCameraRoll: false,
+      image: false,
+      uploading: false,
+    };
+  }
 
   config = {
     issuer: 'https://accounts.google.com',
@@ -24,19 +28,10 @@ export default class LoginScreen extends React.Component {
   storageKey = '@ChallengeMe:GoogleOAuthKey';
 
   async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    if (status === 'granted') {
-      this.state.permittedCameraRoll = true;
-    } else {
-      /*eslint-disable*/
-      alert('Camera Roll permission not granted, we will need it!');
-      /*eslint-enable*/
-    }
     const authState = await this.getCachedAuthAsync();
     if (authState) {
-      if (this.checkIfTokenExpired(authState)) {
-      } else {
-        this.props.navigation.navigate('map');
+      if (!this.checkIfTokenExpired(authState)) {
+        this.checkUserExists(authState);
       }
     }
   }
@@ -46,8 +41,8 @@ export default class LoginScreen extends React.Component {
     await this.cacheAuthAsync(authState);
     if (this.checkIfTokenExpired(authState)) {
     } else {
-      this.writeUserToFB(authState);
-      this.props.navigation.navigate('map');
+      this.checkUserExists(authState);
+      //this.props.navigation.navigate('map');
     }
   };
 
@@ -131,23 +126,34 @@ export default class LoginScreen extends React.Component {
     }
   };
 
-  writeUserToFB = async authState => {
+  checkUserExists = async authState => {
     let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
       headers: { Authorization: `Bearer ${authState.accessToken}` },
     });
 
     let response = await userInfoResponse.json();
+    let user = await this.getUser(response.id);
+    if (user) {
+      this.props.navigation.navigate('map', { userid: response.id });
+    } else {
+      this.props.navigation.navigate('createUser', { googleData: response });
+    }
+  };
+
+  getUser = async id => {
     let db = await firebase.firestore();
-    db.collection('users')
-      .doc(response.id)
-      .set({
-        id: response.id,
-        name: response.name,
-        pic: response.picture,
-      })
-      .catch(function(error) {
-        console.error('Error adding document: ', error);
+    let user = await db
+      .collection('users')
+      .doc(id)
+      .get()
+      .then(docSnapshot => {
+        if (docSnapshot.exists) {
+          return docSnapshot.data().username;
+        } else {
+          return false;
+        }
       });
+    return user;
   };
 
   //IMAGE/VIDEO UPLOAD
@@ -200,13 +206,23 @@ export default class LoginScreen extends React.Component {
   };
 
   pickImage = async () => {
-    let pickerResult = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-      mediaTypes: 'All',
-    });
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status === 'granted') {
+      this.setState({ permittedCameraRoll: true });
+    } else {
+      /*eslint-disable*/
+      alert('Camera Roll permission not granted, we will need it!');
+      /*eslint-enable*/
+    }
+    if (this.state.permittedCameraRoll) {
+      let pickerResult = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        mediaTypes: 'All',
+      });
 
-    this.handleImagePicked(pickerResult);
+      this.handleImagePicked(pickerResult);
+    }
   };
 
   handleImagePicked = async pickerResult => {
@@ -229,13 +245,15 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={styles.loginText}>Hej Looogiiin</Text>
-        <Button title="Sign in" onPress={() => this.signInAsync()} />
-        <Button title="Sign out" onPress={() => this.signOut()} />
-        <Button title="Pick an image from camera roll" onPress={() => this.pickImage()} />
-        {this.maybeRenderImage()}
-        {this.maybeRenderUploadingOverlay()}
+      <View
+        style={{
+          flexDirection: 'column',
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Button title="Sign in with Google" onPress={() => this.signInAsync()} />
+        <ImageComponent userid={'103617752635945553386'} />
       </View>
     );
   }
@@ -272,6 +290,9 @@ async function uploadImageAsync(uri) {
 
 const styles = StyleSheet.create({
   loginText: {
+    fontSize: 20,
+  },
+  butt: {
     fontSize: 20,
   },
 });

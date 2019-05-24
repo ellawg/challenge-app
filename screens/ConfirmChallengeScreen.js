@@ -1,11 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { ThemeProvider, Button } from 'react-native-elements';
+import CustomModal from '../components/Modal.js';
 
 export default class LoginScreen extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      submissionData: '',
+    };
+  }
   setTextString(prop) {
     return prop === 'nailed' ? 'Nailed it, huh?' : 'Bailed it, huh?';
   }
+
+  componentCallback = modalData => {
+    this.setState({ submissionData: modalData });
+  };
+
   render() {
     const { navigation } = this.props;
     const confirmState = navigation.getParam('confirmState');
@@ -40,10 +52,9 @@ export default class LoginScreen extends React.Component {
                 height: 150,
               }}
             />
-            <TextInput
-              placeholder="Tell us what happened..."
-              placeholderTextColor="#6d6d6d"
-              style={{ height: 40, borderColor: 'black', borderWidth: 1, marginTop: 20 }}
+            <CustomModal
+              placeholder={'Tell us what happened'}
+              callbackFromParent={this.componentCallback}
             />
           </View>
         </View>

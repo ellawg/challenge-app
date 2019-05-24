@@ -3,14 +3,18 @@ import { Modal, Text, TouchableHighlight, View, Alert } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 
 export default class CustomModal extends React.Component {
-  state = {
-    modalVisible: false,
+  sendProps = () => {
+    const listInfo = this.state.inputText;
+    this.props.callbackFromParent(listInfo);
   };
 
+  constructor(props) {
+    super(props);
+    this.state = { modalVisible: false, inputText: 'Tell us what happened' };
+  }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
-
   render() {
     return (
       <View style={{ marginTop: 22 }}>
@@ -35,7 +39,12 @@ export default class CustomModal extends React.Component {
               shadowRadius: 2,
             }}>
             <View style={{ margin: '10%', maxHeight: '80%' }}>
-              <Input style={{}} multiline={4} placeholder="Give your challenge a name" />
+              <Input
+                style={{}}
+                multiline
+                placeholder={this.state.inputText}
+                onChangeText={inputText => this.setState({ inputText })}
+              />
               <View
                 style={{
                   width: '100%',
@@ -61,12 +70,11 @@ export default class CustomModal extends React.Component {
             </View>
           </View>
         </Modal>
-
         <TouchableHighlight
           onPress={() => {
             this.setModalVisible(true);
           }}>
-          <Text>Show Modal</Text>
+          <Text>{this.props.placeholder}</Text>
         </TouchableHighlight>
       </View>
     );

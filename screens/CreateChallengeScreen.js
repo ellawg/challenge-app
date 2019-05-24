@@ -2,18 +2,23 @@ import React from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Input, ButtonGroup, Button } from 'react-native-elements';
 import CustomModal from '../components/Modal.js';
+
 export default class CreateChallengeScreen extends React.Component {
   constructor() {
     super();
     this.state = {
       selectedIndex: 1,
+      submissionData: '',
     };
     this.updateIndex = this.updateIndex.bind(this);
   }
-
   updateIndex(selectedIndex) {
     this.setState({ selectedIndex });
   }
+
+  componentCallback = modalData => {
+    this.setState({ submissionData: modalData });
+  };
 
   render() {
     const buttons = ['Easy', 'Average', 'Difficult'];
@@ -51,15 +56,23 @@ export default class CreateChallengeScreen extends React.Component {
             containerStyle={{ height: 50 }}
           />
           <Text style={styles.labelText}>Description</Text>
-          <Input
-            style={{
-              justifyContent: 'center',
-            }}
-            placeholder="Describe challenge"
+          <CustomModal
+            placeholder={'Describe the challenge'}
+            callbackFromParent={this.componentCallback}
           />
-          <CustomModal />
         </View>
-        <Button style={{ alignSelf: 'center', bottom: 40 }} title="Submit" />
+        <Button
+          style={{ alignSelf: 'center', bottom: 40 }}
+          title="Next step"
+          onPress={() => {
+            this.props.navigation.navigate('place', {
+              title: '',
+              description: '',
+              image: '',
+              level: '',
+            });
+          }}
+        />
       </View>
     );
   }
