@@ -6,7 +6,7 @@ import CustomMarker from '../components/Marker';
 import ScoreModal from '../components/ScoreModal';
 import 'firebase/firestore';
 
-const zoomLevel = 0.0822;
+const zoomLevel = 0.0092;
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
