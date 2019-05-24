@@ -98,6 +98,8 @@ export default class MapScreen extends Component {
   }
 
   render() {
+    const { navigation } = this.props;
+    const userid = navigation.getParam('userid');
     return (
       <View style={{ flex: 1 }}>
         <MapView
@@ -125,7 +127,7 @@ export default class MapScreen extends Component {
         <View style={styles.fab}>
           <Icon
             onPress={() => {
-              this.props.navigation.navigate('profile', { userid: this.props.userid });
+              this.props.navigation.navigate('profile', { userid });
             }}
             reverse
             name="user"
