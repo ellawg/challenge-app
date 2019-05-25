@@ -4,9 +4,9 @@ import MapView, { Callout } from 'react-native-maps';
 
 /* Must be used inside <Mapview> to create marker
 PROPS
-id: int 
+id: int
 title: string
-description: string 
+description: string
 latLang {latitude: float, longitude: float}
 img: path to image
 icon: path to icon
@@ -24,6 +24,7 @@ export default class CustomMarker extends Component {
               title: this.props.title,
               description: this.props.description,
               img: this.props.img,
+              vid: this.props.vid,
               level: this.props.level,
               id: this.props.id,
               icon: this.props.icon,

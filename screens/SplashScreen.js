@@ -96,7 +96,6 @@ export default class SplashScreen extends React.Component {
   };
 
   checkUserExists = async authState => {
-    this.setState({ loading: true });
     let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
       headers: { Authorization: `Bearer ${authState.accessToken}` },
     });

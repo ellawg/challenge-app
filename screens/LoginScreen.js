@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ActivityIndicator, Image, AsyncStorage } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Image, AppRegistry, AsyncStorage, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Permissions, ImagePicker } from 'expo';
 import { AppAuth } from 'expo-app-auth';
@@ -8,6 +8,7 @@ import 'firebase/firestore';
 import uuid from 'uuid';
 import ImageComponent from '../components/ImageComponent';
 import VideoComponent from '../components/VideoComponent';
+import Swiper from 'react-native-swiper';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -188,10 +189,21 @@ export default class LoginScreen extends React.Component {
         }}>
         <Button title="Sign in with Google" onPress={() => this.signInAsync()} />
         <View style={{ width: '100%', height: '70%' }}>
-          <ImageComponent
+
+          {/*<ImageComponent
             userid={'102210254945080113294'}
             profile
-          />
+          />*/}
+          <Swiper style={styles.wrapper} showsButtons={true}>
+            <ImageComponent
+              markerid={'07b28144-77d3-4e0e-834d-08c6320887ac'}
+              marker
+            />
+            <VideoComponent
+              markerid={'07b28144-77d3-4e0e-834d-08c6320887ac'}
+              marker
+            />
+          </Swiper>
         </View>
       </View>
     );
@@ -235,5 +247,29 @@ const styles = StyleSheet.create({
   },
   butt: {
     fontSize: 20,
+  },
+  wrapper: {},
+  slide1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#9DD6EB',
+  },
+  slide2: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#97CAE5',
+  },
+  slide3: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#92BBD9',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: 'bold',
   },
 });

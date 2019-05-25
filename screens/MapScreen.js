@@ -116,6 +116,7 @@ export default class MapScreen extends Component {
               description={marker.description}
               icon={marker.icon}
               img={marker.image}
+              vid={marker.video}
               navigation={this.props.navigation}
               level={marker.level}
             />

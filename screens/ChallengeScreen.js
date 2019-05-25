@@ -5,6 +5,8 @@ import { Button } from 'react-native-elements';
 import CustomMarker from '../components/Marker';
 import ScoreModal from '../components/ScoreModal';
 import 'firebase/firestore';
+import Swiper from 'react-native-swiper';
+import { Video } from 'expo';
 
 const zoomLevel = 0.0092;
 
@@ -44,6 +46,7 @@ export default class LoginScreen extends React.Component {
     const title = navigation.getParam('title');
     const description = navigation.getParam('description');
     const img = navigation.getParam('img');
+    const vid = navigation.getParam('vid');
     const level = navigation.getParam('level');
     const icon = navigation.getParam('icon');
     const id = navigation.getParam('id');
@@ -54,7 +57,18 @@ export default class LoginScreen extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 2 }}>
+        <View style={{ zIndex: 1, top: '3%', left: '3%' }}>
+          <Button
+            style={{ position: 'absolute', zIndex: 1 }}
+            title="<"
+            type="clear"
+            buttonStyle={{ borderWidth: 0, maxWidth: '100%' }}
+            titleStyle={{ fontSize: 30 }}
+            onPress={() => this.props.navigation.goBack()}
+          />
+        </View>
+        <View style={{ flex: 2, zIndex: 0 }}>
+        {/*
           <ImageBackground
             style={{ flex: 1, width: undefined, backgroundColor: '#6d6d6d' }}
             source={{ uri: img }}>
@@ -67,6 +81,22 @@ export default class LoginScreen extends React.Component {
               onPress={() => this.props.navigation.goBack()}
             />
           </ImageBackground>
+          */}
+          <Swiper style={styles.wrapper} showsButtons={false} >
+            <ImageBackground
+              style={{ flex: 1, width: undefined, backgroundColor: '#6d6d6d' }}
+              source={{ uri: img }} />
+            <Video
+              source={{ uri: vid }}
+              rate={1.0}
+              volume={1.0}
+              isMuted
+              resizeMode="cover"
+              shouldPlay
+              isLooping
+              style={{ width: '100%', height: '100%' }}
+            />
+          </Swiper>
         </View>
         <View style={{ flex: 2, margin: 45, marginTop: 20 }}>
           <Text style={styles.titleText}>{title}</Text>

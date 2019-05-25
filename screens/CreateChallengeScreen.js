@@ -4,6 +4,8 @@ import { Input, ButtonGroup, Button } from 'react-native-elements';
 import uuid from 'uuid';
 import CustomModal from '../components/Modal.js';
 import ImageComponent from '../components/ImageComponent';
+import VideoComponent from '../components/VideoComponent';
+import Swiper from 'react-native-swiper';
 
 export default class CreateChallengeScreen extends React.Component {
   constructor() {
@@ -49,7 +51,11 @@ export default class CreateChallengeScreen extends React.Component {
           onPress={() => this.props.navigation.goBack()}
         />*/}
         <View style={{ flex: 1, position: 'absolue', top: 0 }}>
-          <ImageComponent markerid={this.state.id} marker />
+          {/*<ImageComponent markerid={this.state.id} marker />*/}
+          <Swiper style={styles.wrapper} showsButtons={true}>
+            <ImageComponent markerid={this.state.id} marker />
+            <VideoComponent markerid={this.state.id} marker />
+          </Swiper>
         </View>
 
         <View style={{ flex: 2, margin: 45, marginTop: 20 }}>

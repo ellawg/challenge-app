@@ -87,7 +87,7 @@ export default class ImageComponent extends Component {
       let pickerResult = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
         aspect: [4, 3],
-        mediaTypes: 'All',
+        mediaTypes: 'Photos',
       });
 
       this.handleImagePicked(pickerResult);
@@ -108,7 +108,7 @@ export default class ImageComponent extends Component {
       let pickerResult = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
         aspect: [4, 3],
-        mediaTypes: 'All',
+        mediaTypes: 'Images',
       });
 
       this.handleImagePicked(pickerResult);
