@@ -19,7 +19,6 @@ export default class CustomModal extends React.Component {
     const total = this.props.nails + this.props.bails;
     const nails = this.props.nails;
     const bails = this.props.bails;
-    console.log(nails);
     return (
       <View style={{ marginTop: 22 }}>
         <Modal
@@ -98,6 +97,8 @@ export default class CustomModal extends React.Component {
           </View>
         </Modal>
         <TouchableHighlight
+          underlayColor={'white'}
+          style={{ height: '100%' }}
           onPress={() => {
             this.setModalVisible(true);
           }}>
