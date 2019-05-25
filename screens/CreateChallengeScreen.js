@@ -38,17 +38,16 @@ export default class CreateChallengeScreen extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        {/*
-        <Button
-          style={{ position: 'absolue', top: '30%', left: '4%', zIndex: 10 }}
-          title="<"
-          type="clear"
-          buttonStyle={{ borderWidth: 0, maxWidth: '10%' }}
-          titleStyle={{ fontSize: 30 }}
-          onPress={() => this.props.navigation.goBack()}
-        />*/}
-        <View style={{ flex: 1, position: 'absolue', top: 0 }}>
+        <View style={{ flex: 1 }}>
           <ImageComponent markerid={this.state.id} marker />
+          <Button
+            style={{ top: '0%', left: '0%' }}
+            title="<"
+            type="clear"
+            buttonStyle={{ borderWidth: 0, maxWidth: '10%', backgroundColor: 'transparent' }}
+            titleStyle={{ fontSize: 30, color: 'black' }}
+            onPress={() => this.props.navigation.goBack()}
+          />
         </View>
 
         <View style={{ flex: 2, margin: 45, marginTop: 20 }}>
