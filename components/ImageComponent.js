@@ -15,14 +15,15 @@ export default class ImageComponent extends Component {
       showPopUp: false,
       user: {},
       data: {},
+      challenges: {},
+      challengers: {},
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     if (this.props.profile) {
       let user = await this.getData(this.props.userid, 'users');
       let profilePic = user.image;
-      this.setState({ user });
       this.setState({ image: profilePic });
       this.setState({ data: user });
       this.setState({ loading: false });
@@ -33,7 +34,18 @@ export default class ImageComponent extends Component {
       this.setState({ image: challengePic });
       this.setState({ data: marker });
       this.setState({ loading: false });
-      //console.log(this.state.data);
+    }
+    if (this.props.challengeproof) {
+      let marker = await this.getData(this.props.markerid, 'markers');
+      let user = await this.getData(this.props.userid, 'users');
+      let challenges = user.challenges;
+      let challengers = marker.challengers;
+      this.setState({ challenges });
+      this.setState({ challengers });
+      this.setState({ image: 'image' });
+      this.setState({ loading: false });
+      console.log(this.state.challenges);
+      console.log(this.state.challengers);
     }
   }
 
@@ -111,35 +123,72 @@ export default class ImageComponent extends Component {
       if (!pickerResult.cancelled) {
         let uploadUrl = await uploadImageAsync(pickerResult.uri);
         this.setState({ image: uploadUrl });
-        let coll = '';
-        let docu = '';
-        if (this.props.profile) {
-          coll = 'users';
-          docu = this.props.userid;
-        }
-        if (this.props.marker) {
-          coll = 'markers';
-          docu = this.props.markerid;
-        }
-        this.setState({
-          data: {
-            ...this.state.data,
-            image: uploadUrl,
-          },
-        });
-        this.setState({
-          data: Object.assign({}, this.state.data, {
-            image: uploadUrl,
-          }),
-        });
-        let thedata = this.state.data;
-        let db = await firebase.firestore();
-        db.collection(coll)
-          .doc(docu)
-          .set(thedata)
-          .catch(function(error) {
-            console.error('Error adding document: ', error);
+        if (this.props.marker || this.props.profile) {
+          let coll = '';
+          let docu = '';
+          if (this.props.profile) {
+            coll = 'users';
+            docu = this.props.userid;
+          }
+          if (this.props.marker) {
+            coll = 'markers';
+            docu = this.props.markerid;
+          }
+          this.setState({
+            data: {
+              ...this.state.data,
+              image: uploadUrl,
+            },
           });
+          this.setState({
+            data: Object.assign({}, this.state.data, {
+              image: uploadUrl,
+            }),
+          });
+          let thedata = this.state.data;
+          let db = await firebase.firestore();
+          db.collection(coll)
+            .doc(docu)
+            .set(thedata)
+            .catch(function(error) {
+              console.error('Error adding document: ', error);
+            });
+        } else {
+          let db = await firebase.firestore();
+          let marker = this.props.markerid;
+          let challenges = {
+            nailed: {},
+            bailed: {},
+          };
+          if (this.props.nailorbail === 'nail') {
+            challenges.nailed = { [marker]: uploadUrl };
+          } else {
+            challenges.bailed = { [marker]: uploadUrl };
+          }
+          console.log(challenges);
+          db.collection('users')
+            .doc(this.props.userid)
+            .set({ challenges }, { merge: true })
+            .catch(function(error) {
+              console.error('Error adding document: ', error);
+            });
+          let user = this.props.userid;
+          let challengers = {
+            nailed: {},
+            bailed: {},
+          };
+          if (this.props.nailorbail === 'nail') {
+            challengers.nailed = { [user]: uploadUrl };
+          } else {
+            challengers.bailed = { [user]: uploadUrl };
+          }
+          db.collection('markers')
+            .doc(this.props.markerid)
+            .set({ challengers }, { merge: true })
+            .catch(function(error) {
+              console.error('Error adding document: ', error);
+            });
+        }
       }
     } catch (e) {
       console.log(e);

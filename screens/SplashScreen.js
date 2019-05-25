@@ -13,16 +13,19 @@ import {
 import { AppAuth } from 'expo-app-auth';
 
 export default class SplashScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+    };
+  }
+
   config = {
     issuer: 'https://accounts.google.com',
     scopes: ['openid', 'profile'],
     /* This is the CLIENT_ID generated from a Firebase project */
     clientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
   };
-  constructor(props) {
-    super(props);
-    this.state = { loading: false };
-  }
 
   storageKey = '@ChallengeMe:GoogleOAuthKey';
 
@@ -30,7 +33,7 @@ export default class SplashScreen extends React.Component {
     const authState = await this.getCachedAuthAsync();
     if (authState) {
       if (!this.checkIfTokenExpired(authState)) {
-        this.checkUserExists(authState);
+        await this.checkUserExists(authState);
       } else {
         await this.refreshAuthAsync(authState.refreshToken);
         if (!this.checkIfTokenExpired(authState)) {
@@ -38,6 +41,7 @@ export default class SplashScreen extends React.Component {
         }
       }
     }
+    this.setState({ loading: false });
   }
 
   cacheAuthAsync = authState => {

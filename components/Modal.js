@@ -5,7 +5,7 @@ import { Input, Button } from 'react-native-elements';
 export default class CustomModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { modalVisible: false, inputText: 'Describe the challenge' };
+    this.state = { modalVisible: false, inputText: this.props.placeholder };
   }
 
   sendProps = () => {

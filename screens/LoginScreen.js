@@ -7,6 +7,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import uuid from 'uuid';
 import ImageComponent from '../components/ImageComponent';
+import VideoComponent from '../components/VideoComponent';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -42,7 +43,6 @@ export default class LoginScreen extends React.Component {
     if (this.checkIfTokenExpired(authState)) {
     } else {
       this.checkUserExists(authState);
-      //this.props.navigation.navigate('map');
     }
   };
 
@@ -255,9 +255,14 @@ export default class LoginScreen extends React.Component {
         <Button title="Sign in with Google" onPress={() => this.signInAsync()} />
         <View style={{
             width: '100%',
-            height: 250,
+            height: '70%',
           }}>
-          <ImageComponent userid={'103617752635945553386'} profile />
+          <ImageComponent
+            userid={'102210254945080113294'}
+            challengeproof
+            markerid={'0f968e10-0a61-472a-a5ec-4d2164e0496f'}
+            nailorbail={'nail'}
+          />
         </View>
       </View>
     );
