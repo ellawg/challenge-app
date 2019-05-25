@@ -127,6 +127,13 @@ export default class ProfileScreen extends React.Component {
             titleStyle={{ fontSize: 30 }}
             onPress={() => this.props.navigation.goBack()}
           />
+          <Button
+            title="<"
+            type="clear"
+            buttonStyle={{ borderWidth: 0, maxWidth: '100%' }}
+            titleStyle={{ fontSize: 30 }}
+            onPress={() => this.props.navigation.goBack()}
+          />
         </View>
         <View style={styles.container}>
           <View style={{ flex: 1 }}>
