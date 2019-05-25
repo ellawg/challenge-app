@@ -130,7 +130,7 @@ export default class PlaceChallengeScreen extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <Button
-          style={{ top: '30%', left: '4%' }}
+          style={{ top: '30%'  }}
           title="<"
           type="clear"
           buttonStyle={{ borderWidth: 0, maxWidth: '10%', backgroundColor: 'transparent' }}

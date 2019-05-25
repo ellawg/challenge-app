@@ -61,12 +61,12 @@ export default class LoginScreen extends React.Component {
     //this.setConfirmationState(confirmState); Todo: Tha app explodes so fix this
 
     return (
-      <View style={{ flex: 1, marginTop: '10%', marginLeft: '4%' }}>
+      <View style={{ flex: 1, marginTop: '10%'  }}>
         <Button
           title="<"
           type="clear"
-          buttonStyle={{ borderWidth: 0, maxWidth: '15%' }}
-          titleStyle={{ fontSize: 30 }}
+          buttonStyle={{ borderWidth: 0, maxWidth: '15%', backgroundColor: 'transparent' }}
+          titleStyle={{ fontSize: 30, color: 'black' }}
           onPress={() => this.props.navigation.goBack()}
         />
         <View style={styles.container}>

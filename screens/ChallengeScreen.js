@@ -61,11 +61,10 @@ export default class LoginScreen extends React.Component {
             style={{ flex: 1, width: undefined, backgroundColor: '#6d6d6d' }}
             source={{ uri: img }}>
             <Button
-              style={{ top: '30%', left: '4%' }}
               title="<"
               type="clear"
-              buttonStyle={{ borderWidth: 0, maxWidth: '10%' }}
-              titleStyle={{ fontSize: 30 }}
+              buttonStyle={{ borderWidth: 0, maxWidth: '10%', backgroundColor: 'transparent' }}
+              titleStyle={{ fontSize: 30, color: 'black' }}
               onPress={() => this.props.navigation.goBack()}
             />
           </ImageBackground>
