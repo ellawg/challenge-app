@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Text, TouchableHighlight, View, Alert } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Slider } from 'react-native-elements';
 
 export default class CustomModal extends React.Component {
   sendProps = () => {
@@ -16,6 +16,10 @@ export default class CustomModal extends React.Component {
     this.setState({ modalVisible: visible });
   }
   render() {
+    const total = this.props.nails + this.props.bails;
+    const nails = this.props.nails;
+    const bails = this.props.bails;
+    console.log(nails);
     return (
       <View style={{ marginTop: 22 }}>
         <Modal
@@ -58,6 +62,10 @@ export default class CustomModal extends React.Component {
                 }}>
                 Nailed it
               </Text>
+              <Text>
+                {nails} out of {total}
+              </Text>
+              <Slider thumbTintColor={'black'} animateTransitions value={nails / total} disabled />
 
               <Text
                 style={{
@@ -68,6 +76,10 @@ export default class CustomModal extends React.Component {
                 }}>
                 Bailed it
               </Text>
+              <Text>
+                {bails} out of {total}
+              </Text>
+              <Slider thumbTintColor={'black'} animateTransitions value={bails / total} disabled />
               <View
                 style={{
                   width: '100%',
@@ -90,7 +102,7 @@ export default class CustomModal extends React.Component {
             this.setModalVisible(true);
           }}>
           <Text style={{ color: '#6d6d6d', justifyContent: 'center', fontStyle: 'italic' }}>
-            Challenge scores
+            Tap to se scoreboard
           </Text>
         </TouchableHighlight>
       </View>

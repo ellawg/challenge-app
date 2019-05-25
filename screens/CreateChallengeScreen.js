@@ -25,7 +25,6 @@ export default class CreateChallengeScreen extends React.Component {
   };
 
   done() {
-    console.log(this.state.submissionData);
     if (this.state.challengeName && this.state.submissionData) {
       return false;
     } else {

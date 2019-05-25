@@ -13,8 +13,8 @@ export default class MapScreen extends Component {
     super(props);
     this.state = {
       region: {
-        latitude: 0,
-        longitude: 0,
+        latitude: 59.334591,
+        longitude: 18.06324,
         latitudeDelta: zoomLevel,
         longitudeDelta: zoomLevel,
       },
@@ -111,6 +111,7 @@ export default class MapScreen extends Component {
             <CustomMarker
               popUp
               key={marker.id}
+              id={marker.id}
               title={marker.title}
               latLang={marker.latLang}
               description={marker.description}
@@ -118,6 +119,8 @@ export default class MapScreen extends Component {
               img={marker.image}
               navigation={this.props.navigation}
               level={marker.level}
+              nails={marker.challengers.nrOfNails}
+              bails={marker.challengers.nrOfBails}
             />
           ))}
         </MapView>
