@@ -8,7 +8,7 @@ import 'firebase/firestore';
 
 const { width, height } = Dimensions.get('window');
 const aspectRatio = width / height;
-const latitudeDelta = 0.0022; //zoomlevel
+const latitudeDelta = 0.0222; //zoomlevel
 const longitudeDelta = latitudeDelta * aspectRatio;
 
 export default class PlaceChallengeScreen extends React.Component {
@@ -21,7 +21,7 @@ export default class PlaceChallengeScreen extends React.Component {
         latitudeDelta,
         longitudeDelta,
       },
-      marker: { coordinate: { latitude: 0, longitude: 0 } },
+      marker: { coordinate: { latitude: 59.334591, longitude: 18.06324 } },
       markerStyles: [
         {
           name: 'Stairs',
