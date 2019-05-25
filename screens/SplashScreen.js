@@ -1,7 +1,15 @@
 import React from 'react';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import { StyleSheet, Text, View, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  AsyncStorage,
+  ActivityIndicator,
+} from 'react-native';
 import { AppAuth } from 'expo-app-auth';
 
 export default class SplashScreen extends React.Component {
@@ -11,6 +19,10 @@ export default class SplashScreen extends React.Component {
     /* This is the CLIENT_ID generated from a Firebase project */
     clientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
   };
+  constructor(props) {
+    super(props);
+    this.state = { loading: false };
+  }
 
   storageKey = '@ChallengeMe:GoogleOAuthKey';
 
@@ -80,6 +92,7 @@ export default class SplashScreen extends React.Component {
   };
 
   checkUserExists = async authState => {
+    this.setState({ loading: true });
     let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
       headers: { Authorization: `Bearer ${authState.accessToken}` },
     });
@@ -91,6 +104,7 @@ export default class SplashScreen extends React.Component {
     } else {
       this.props.navigation.navigate('createUser', { googleData: response });
     }
+    this.setState({ loading: false });
   };
 
   getUser = async id => {
@@ -110,6 +124,21 @@ export default class SplashScreen extends React.Component {
   };
 
   render() {
+    if (this.state.loading) {
+      return (
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: 5,
+            backgroundColor: '#282829',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <ActivityIndicator color="#fff" animating size="large" />
+        </View>
+      );
+    }
     return (
       <TouchableOpacity
         style={styles.background}
