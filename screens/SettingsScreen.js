@@ -88,7 +88,7 @@ export default class SettingsScreen extends React.Component {
           onPress={() => this.props.navigation.goBack()}
         />
         <Button
-          title="Log Out"
+          title="Sign Out"
           type="clear"
           buttonStyle={{ borderWidth: 0, maxWidth: '100%' }}
           titleStyle={{ fontSize: 30 }}
