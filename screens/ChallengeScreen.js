@@ -47,6 +47,8 @@ export default class LoginScreen extends React.Component {
     const level = navigation.getParam('level');
     const icon = navigation.getParam('icon');
     const id = navigation.getParam('id');
+    const nails = navigation.getParam('nails');
+    const bails = navigation.getParam('bails');
     let latLang = navigation.getParam('latLang');
     if (latLang === undefined) {
       latLang = { longitude: 0, latitude: 0 };
@@ -106,7 +108,14 @@ export default class LoginScreen extends React.Component {
           }}>
           <Button
             title="Nailed it"
-            onPress={() => this.props.navigation.navigate('confirm', { confirmState: 'nailed' })}
+            onPress={() =>
+              this.props.navigation.navigate('confirm', {
+                confirmState: 'nailed',
+                id,
+                nails,
+                bails,
+              })
+            }
           />
           <Button
             titleStyle={{ color: 'black' }}
@@ -118,7 +127,14 @@ export default class LoginScreen extends React.Component {
               backgroundColor: 'white',
             }}
             title="Bailed it"
-            onPress={() => this.props.navigation.navigate('confirm', { confirmState: 'bailed' })}
+            onPress={() =>
+              this.props.navigation.navigate('confirm', {
+                confirmState: 'bailed',
+                id,
+                nails,
+                bails,
+              })
+            }
             confirmState={'bailed'}
           />
         </View>

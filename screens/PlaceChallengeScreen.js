@@ -16,8 +16,8 @@ export default class PlaceChallengeScreen extends React.Component {
     super(props);
     this.state = {
       region: {
-        latitude: 0,
-        longitude: 0,
+        latitude: 59.334591,
+        longitude: 18.06324,
         latitudeDelta,
         longitudeDelta,
       },
@@ -111,6 +111,10 @@ export default class PlaceChallengeScreen extends React.Component {
           id,
           title: this.props.navigation.getParam('title'),
           description: this.props.navigation.getParam('description'),
+          challengers: {
+            nrOfBails: 0,
+            nrOfNails: 0,
+          },
           latLang,
           icon: this.state.chosenMarker.name,
           level: this.props.navigation.getParam('level'),

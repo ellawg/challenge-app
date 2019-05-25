@@ -20,6 +20,15 @@ const AppNavigator = createStackNavigator(
     },
     challenge: {
       screen: ChallengeScreen,
+      params: {
+        title: null,
+        description: null,
+        img: null,
+        level: null,
+        id: null,
+        icon: null,
+        latLang: null,
+      },
     },
     create: {
       screen: CreateChallengeScreen,
