@@ -81,7 +81,7 @@ export default class LoginScreen extends React.Component {
           <ScrollView style={{ height: '100%' }}>
             <Text>{description}</Text>
           </ScrollView>
-          <ScoreModal />
+          <ScoreModal nails={nails} bails={bails} />
         </View>
         <View style={{ flex: 1 }}>
           <MapView
