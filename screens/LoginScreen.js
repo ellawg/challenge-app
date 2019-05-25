@@ -98,34 +98,6 @@ export default class LoginScreen extends React.Component {
     return authState;
   };
 
-  /*
-   * To sign-out we want to revoke our tokens.
-   * This is what high-level auth solutions like FBSDK are doing behind the scenes.
-   */
-  signOut = async () => {
-    const authState = await this.getCachedAuthAsync();
-    const token = authState.accessToken;
-    this.signOutAsync(token);
-  };
-  signOutAsync = async accessToken => {
-    try {
-      await AppAuth.revokeAsync(this.config, {
-        token: accessToken,
-        isClientIdProvided: true,
-      });
-      /*
-       * We are removing the cached tokens so we can check on our auth state later.
-       * No tokens = Not Signed-In :)
-       */
-      await AsyncStorage.removeItem(this.storageKey);
-      return null;
-    } catch ({ message }) {
-      /*eslint-disable*/
-      alert(`Failed to revoke token: ${message}`);
-      /*eslint-enable*/
-    }
-  };
-
   checkUserExists = async authState => {
     let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
       headers: { Authorization: `Bearer ${authState.accessToken}` },
@@ -205,44 +177,6 @@ export default class LoginScreen extends React.Component {
     );
   };
 
-  pickImage = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    if (status === 'granted') {
-      this.setState({ permittedCameraRoll: true });
-    } else {
-      /*eslint-disable*/
-      alert('Camera Roll permission not granted, we will need it!');
-      /*eslint-enable*/
-    }
-    if (this.state.permittedCameraRoll) {
-      let pickerResult = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        aspect: [4, 3],
-        mediaTypes: 'All',
-      });
-
-      this.handleImagePicked(pickerResult);
-    }
-  };
-
-  handleImagePicked = async pickerResult => {
-    try {
-      this.setState({ uploading: true });
-
-      if (!pickerResult.cancelled) {
-        let uploadUrl = await uploadImageAsync(pickerResult.uri);
-        this.setState({ image: uploadUrl });
-      }
-    } catch (e) {
-      console.log(e);
-      /*eslint-disable*/
-      alert('Upload failed, sorry :(');
-      /*eslint-enable*/
-    } finally {
-      this.setState({ uploading: false });
-    }
-  };
-
   render() {
     return (
       <View
@@ -253,15 +187,10 @@ export default class LoginScreen extends React.Component {
           justifyContent: 'center',
         }}>
         <Button title="Sign in with Google" onPress={() => this.signInAsync()} />
-        <View style={{
-            width: '100%',
-            height: '70%',
-          }}>
+        <View style={{ width: '100%', height: '70%' }}>
           <ImageComponent
             userid={'102210254945080113294'}
-            challengeproof
-            markerid={'0f968e10-0a61-472a-a5ec-4d2164e0496f'}
-            nailorbail={'nail'}
+            profile
           />
         </View>
       </View>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Avatar, Input } from 'react-native-elements';
+import { Button, Avatar, Input, Icon } from 'react-native-elements';
 import { Permissions, ImagePicker } from 'expo';
 import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
@@ -127,13 +127,11 @@ export default class ProfileScreen extends React.Component {
             titleStyle={{ fontSize: 30 }}
             onPress={() => this.props.navigation.goBack()}
           />
-          <Button
-            title="<"
-            type="clear"
-            buttonStyle={{ borderWidth: 0, maxWidth: '100%' }}
-            titleStyle={{ fontSize: 30 }}
-            onPress={() => this.props.navigation.goBack()}
-          />
+
+          <Icon
+          name='cog'
+          type='font-awesome'
+          onPress={() => this.props.navigation.navigate('settings')} />
         </View>
         <View style={styles.container}>
           <View style={{ flex: 1 }}>

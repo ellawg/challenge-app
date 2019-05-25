@@ -8,6 +8,7 @@ import ChallengeScreen from '../screens/ChallengeScreen';
 import CreateChallengeScreen from '../screens/CreateChallengeScreen';
 import PlaceChallengeScreen from '../screens/PlaceChallengeScreen';
 import ConfirmChallengeScreen from '../screens/ConfirmChallengeScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 
 const AppNavigator = createStackNavigator(
   {
@@ -39,6 +40,9 @@ const AppNavigator = createStackNavigator(
     },
     profile: {
       screen: ProfileScreen,
+    },
+    settings: {
+      screen: SettingsScreen,
     },
   },
   {
