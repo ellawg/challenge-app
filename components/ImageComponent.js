@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
-import { Avatar } from 'react-native-elements';
+import { StyleSheet, View, ActivityIndicator, Modal, Alert } from 'react-native';
+import { Avatar, Button } from 'react-native-elements';
 import { Permissions, ImagePicker } from 'expo';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -12,6 +12,7 @@ export default class ImageComponent extends Component {
     this.state = {
       image: null,
       loading: true,
+      showPopUp: false,
       user: {},
       data: {},
     };
@@ -52,6 +53,36 @@ export default class ImageComponent extends Component {
     return user;
   };
 
+  takePicture = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status === 'granted') {
+      this.setState({ permittedCameraRoll: true });
+      const { status } = await Permissions.askAsync(Permissions.CAMERA);
+      if (status === 'granted') {
+        this.setState({ permittedCamera: true });
+      } else {
+        /*eslint-disable*/
+        alert('Camera permission not granted, go to settings and turn it on!');
+        /*eslint-enable*/
+      }
+    } else {
+      /*eslint-disable*/
+      alert('Camera Roll permission not granted, go to settings and turn it on!');
+      /*eslint-enable*/
+    }
+
+    if (this.state.permittedCamera) {
+      let pickerResult = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        mediaTypes: 'All',
+      });
+
+      this.handleImagePicked(pickerResult);
+    }
+    this.showPopUp(false);
+  };
+
   pickImage = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status === 'granted') {
@@ -70,6 +101,7 @@ export default class ImageComponent extends Component {
 
       this.handleImagePicked(pickerResult);
     }
+    this.showPopUp(false);
   };
 
   handleImagePicked = async pickerResult => {
@@ -119,6 +151,61 @@ export default class ImageComponent extends Component {
     }
   };
 
+  showPopUp(mode) {
+    this.setState({ showPopUp: mode });
+  }
+
+  popUp() {
+    if (this.state.showPopUp) {
+      return (
+        <Modal
+          animationType="slide"
+          transparent
+          formSheet
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <View
+            style={{
+              marginTop: '30%',
+              backgroundColor: 'white',
+              height: '40%',
+              margin: '5%',
+              borderRadius: '10%',
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+            }}>
+            <View style={{ margin: '10%', maxHeight: '90%' }}>
+              <Button
+                title="Take picture"
+                style={{ maxWidth: '100%', marginBottom: '5%' }}
+                onPress={() => {
+                  this.takePicture();
+                }}
+              />
+              <Button
+                title="Pick from library"
+                style={{ maxWidth: '100%', marginBottom: '5%' }}
+                onPress={() => {
+                  this.pickImage();
+                }}
+              />
+              <Button
+                title="Cancel"
+                style={{ maxWidth: '100%' }}
+                onPress={() => {
+                  this.showPopUp(false);
+                }}
+              />
+            </View>
+          </View>
+        </Modal>
+      );
+    }
+  }
   //IMAGE/VIDEO UPLOAD
   maybeRenderImage = () => {
     let { image } = this.state;
@@ -130,9 +217,9 @@ export default class ImageComponent extends Component {
           height: '100%',
         }}>
         <Avatar
-          onPress={() => this.pickImage()}
+          onPress={() => this.showPopUp(true)}
           source={{ uri: image }}
-          style={{ width: '100%', height: '100%', borderRadius: 5, overflow: 'hidden' }}
+          style={{ width: '100%', height: '100%', overflow: 'hidden' }}
           showEditButton
           size={'xlarge'}
         />
@@ -156,7 +243,12 @@ export default class ImageComponent extends Component {
         </View>
       );
     }
-    return <View>{this.maybeRenderImage()}</View>;
+    return (
+      <View>
+        <View>{this.popUp()}</View>
+        {this.maybeRenderImage()}
+      </View>
+    );
   }
 }
 

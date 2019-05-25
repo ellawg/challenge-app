@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   icon: {
-    width: 60,
-    height: 60,
+    width: 43,
+    height: 57,
     alignSelf: 'center',
   },
   popUpInfo: {
