@@ -1,10 +1,17 @@
 import React from 'react';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import { StyleSheet, Text, View, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, AsyncStorage, ActivityIndicator } from 'react-native';
 import { AppAuth } from 'expo-app-auth';
 
 export default class SplashScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+    };
+  }
+
   config = {
     issuer: 'https://accounts.google.com',
     scopes: ['openid', 'profile'],
@@ -18,7 +25,7 @@ export default class SplashScreen extends React.Component {
     const authState = await this.getCachedAuthAsync();
     if (authState) {
       if (!this.checkIfTokenExpired(authState)) {
-        this.checkUserExists(authState);
+        await this.checkUserExists(authState);
       } else {
         await this.refreshAuthAsync(authState.refreshToken);
         if (!this.checkIfTokenExpired(authState)) {
@@ -26,6 +33,7 @@ export default class SplashScreen extends React.Component {
         }
       }
     }
+    this.setState({ loading: false });
   }
 
   cacheAuthAsync = authState => {
@@ -87,7 +95,7 @@ export default class SplashScreen extends React.Component {
     let response = await userInfoResponse.json();
     let user = await this.getUser(response.id);
     if (user) {
-      //this.props.navigation.navigate('map', { userid: response.id });
+      this.props.navigation.navigate('map', { userid: response.id });
     } else {
       this.props.navigation.navigate('createUser', { googleData: response });
     }
@@ -110,6 +118,22 @@ export default class SplashScreen extends React.Component {
   };
 
   render() {
+    if (this.state.loading) {
+      console.log('loading');
+      return (
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: 5,
+            backgroundColor: 'rgba(0,0,0,0.4)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <ActivityIndicator color="#fff" animating size="large" />
+        </View>
+      );
+    }
     return (
       <TouchableOpacity
         style={styles.background}

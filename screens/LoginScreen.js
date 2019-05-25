@@ -257,7 +257,12 @@ export default class LoginScreen extends React.Component {
             width: '100%',
             height: '70%',
           }}>
-          <ImageComponent markerid={'07b28144-77d3-4e0e-834d-08c6320887ac'} marker />
+          <ImageComponent
+            userid={'102210254945080113294'}
+            challengeproof
+            markerid={'0f968e10-0a61-472a-a5ec-4d2164e0496f'}
+            nailorbail={'nail'}
+          />
         </View>
       </View>
     );
