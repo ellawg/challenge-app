@@ -28,7 +28,7 @@ export default class LoginScreen extends React.Component {
     const confirmState = navigation.getParam('confirmState');
     const textString = this.setTextString(confirmState);
 
-    this.setConfirmationState(confirmState);
+    //this.setConfirmationState(confirmState); Todo: Tha app explodes so fix this
 
     return (
       <View style={{ flex: 1, marginTop: '10%', marginLeft: '4%' }}>

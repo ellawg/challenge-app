@@ -13,6 +13,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 import uuid from 'uuid';
 import CustomModal from '../components/Modal.js';
@@ -24,9 +25,9 @@ export default class ProfileScreen extends React.Component {
     this.state = {
       permittedCameraRoll: false,
       user: {},
-      uploading: false,
+      uploading: true,
       submissionData: '',
-      userid: null,
+      userid: 0,
     };
   }
 
@@ -53,8 +54,13 @@ export default class ProfileScreen extends React.Component {
   async componentDidMount() {
     const { navigation } = this.props;
     const userid = navigation.getParam('userid');
+    this.setState({ userid });
     let user = await this.getUser(userid);
-    this.state.user = user;
+    this.setState({ user });
+
+    console.log(this.state.user.id);
+    console.log(this.state.user.username);
+    this.setState({ uploading: false });
   }
 
   pickImage = async () => {
@@ -96,7 +102,21 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
-    let { image } = this.state;
+    if (this.state.uploading) {
+      return (
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: 5,
+            backgroundColor: 'rgba(0,0,0,0.4)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <ActivityIndicator color="#fff" animating size="large" />
+        </View>
+      );
+    }
     return (
       <KeyboardAvoidingView behavior="padding" enabled style={styles.background}>
         <View style={{ flex: 1, alignSelf: 'flex-start', marginTop: '10%', marginLeft: '4%' }}>
@@ -110,21 +130,21 @@ export default class ProfileScreen extends React.Component {
         </View>
         <View style={styles.container}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nameHead}>Belinda Lovelace</Text>
+            <Text style={styles.titleText}>{this.state.user.username}</Text>
           </View>
           <View style={{ flex: 3, height: undefined, width: undefined }}>
-            <ImageComponent userid={this.state.userid} profile />
+            <ImageComponent userid={this.state.user.id} profile />
           </View>
 
-          <View style={{ flex: 2, marginBottom: '2%', marginTop: '2%' }}>
+          <View style={{ flex: 3, marginBottom: '2%', marginTop: '2%' }}>
             <CustomModal
               placeholder={'Upload some information about yourself'}
               callbackFromParent={this.componentCallback}
             />
           </View>
           <View style={{ flex: 3 }}>
-            <Text style={styles.completedHead}>COMPLETED CHALLENGES</Text>
-            <Text style={styles.bodyText}>Crazy awesome challenges! Frekkin rad shit..</Text>
+            <Text style={styles.labelText}>COMPLETED CHALLENGES</Text>
+            <Text>Crazy awesome challenges! Frekkin rad shit..</Text>
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -172,24 +192,26 @@ const styles = StyleSheet.create({
     flex: 9,
     width: '70%',
   },
-  nameHead: {
-    color: '#282829',
-    fontSize: 32,
-  },
   avatar: {
     flex: 5,
     height: undefined,
     width: '80%',
   },
-  bodyText: {
-    fontSize: 16,
-    height: undefined,
-    textAlign: 'left',
-    color: '#282829',
-    fontStyle: 'italic',
-  },
   completedHead: {
     color: '#282829',
     fontSize: 22,
+  },
+  titleText: {
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    fontSize: 20,
+    textTransform: 'uppercase',
+    margin: 5,
+  },
+  labelText: {
+    fontFamily: 'Raleway-SemiBold',
+    fontSize: 13,
+    textTransform: 'uppercase',
+    marginTop: '5%',
   },
 });
