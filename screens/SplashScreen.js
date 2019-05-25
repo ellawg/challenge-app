@@ -130,7 +130,6 @@ export default class SplashScreen extends React.Component {
           style={{
             width: '100%',
             height: '100%',
-            borderRadius: 5,
             backgroundColor: '#282829',
             alignItems: 'center',
             justifyContent: 'center',
