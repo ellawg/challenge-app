@@ -1,11 +1,7 @@
 import React from 'react';
 import { Button, Avatar, Input, Icon } from 'react-native-elements';
-import { Permissions, ImagePicker } from 'expo';
-import { AppAuth } from 'expo-app-auth';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
-
 import {
+  TouchableOpacity,
   StyleSheet,
   Text,
   View,
@@ -13,8 +9,13 @@ import {
   TextInput,
   KeyboardAvoidingView,
   AsyncStorage,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
+import { Permissions, ImagePicker } from 'expo';
+import { AppAuth } from 'expo-app-auth';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+
 import uuid from 'uuid';
 import CustomModal from '../components/Modal.js';
 import ImageComponent from '../components/ImageComponent';
@@ -118,41 +119,54 @@ export default class ProfileScreen extends React.Component {
       );
     }
     return (
-      <KeyboardAvoidingView behavior="padding" enabled style={styles.background}>
-        <View style={{ flex: 1, alignSelf: 'flex-start', marginTop: '10%', marginLeft: '4%' }}>
+      <View style={{ flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            marginTop: '5%',
+            justifyContent: 'space-between',
+          }}>
           <Button
             title="<"
             type="clear"
-            buttonStyle={{ borderWidth: 0, maxWidth: '100%' }}
-            titleStyle={{ fontSize: 30 }}
+            style={{ width: 50, height: 50 }}
+            buttonStyle={{
+              borderWidth: 0,
+              maxWidth: '100%',
+              backgroundColor: 'transparent',
+            }}
+            titleStyle={{ fontSize: 30, color: 'black' }}
             onPress={() => this.props.navigation.goBack()}
           />
-
-          <Icon
-          name='cog'
-          type='font-awesome'
-          onPress={() => this.props.navigation.navigate('settings')} />
+          <TouchableOpacity
+            style={{ marginRight: 20, alignSelf: 'center' }}
+            onPress={() => this.props.navigation.navigate('settings')}>
+            <Icon name="cog" type="font-awesome" />
+          </TouchableOpacity>
         </View>
-        <View style={styles.container}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.titleText}>{this.state.user.username}</Text>
-          </View>
-          <View style={{ flex: 3, height: undefined, width: undefined }}>
-            <ImageComponent userid={this.state.user.id} profile />
-          </View>
+        <KeyboardAvoidingView behavior="padding" enabled style={styles.background}>
+          <View style={styles.container}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.titleText}>{this.state.user.username}</Text>
+            </View>
+            <View style={{ flex: 3, height: undefined, width: undefined }}>
+              <ImageComponent userid={this.state.user.id} profile />
+            </View>
 
-          <View style={{ flex: 3, marginBottom: '2%', marginTop: '2%' }}>
-            <CustomModal
-              placeholder={'Upload some information about yourself'}
-              callbackFromParent={this.componentCallback}
-            />
+            <View style={{ flex: 3, marginBottom: '2%', marginTop: '2%' }}>
+              <CustomModal
+                placeholder={'Upload some information about yourself'}
+                callbackFromParent={this.componentCallback}
+              />
+            </View>
+            <View style={{ flex: 3 }}>
+              <Text style={styles.labelText}>COMPLETED CHALLENGES</Text>
+              <Text>Crazy awesome challenges! Frekkin rad shit..</Text>
+            </View>
           </View>
-          <View style={{ flex: 3 }}>
-            <Text style={styles.labelText}>COMPLETED CHALLENGES</Text>
-            <Text>Crazy awesome challenges! Frekkin rad shit..</Text>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </View>
     );
   }
 }
@@ -189,7 +203,7 @@ async function uploadImageAsync(uri) {
 const styles = StyleSheet.create({
   background: {
     backgroundColor: '#FDFCFA',
-    flex: 1,
+    flex: 9,
     flexDirection: 'column',
     alignItems: 'center',
   },

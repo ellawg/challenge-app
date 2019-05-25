@@ -29,6 +29,8 @@ export default class CustomMarker extends Component {
               id: this.props.id,
               icon: this.props.icon,
               latLang: this.props.latLang,
+              nails: this.props.nails,
+              bails: this.props.bails,
             })
           }>
           <View style={styles.popUpInfo}>

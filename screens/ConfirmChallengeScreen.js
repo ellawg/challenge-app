@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
-import { ThemeProvider, Button } from 'react-native-elements';
+import { Button } from 'react-native-elements';
+import * as firebase from 'firebase';
 import CustomModal from '../components/Modal.js';
+import 'firebase/firestore';
 
 export default class LoginScreen extends React.Component {
   constructor() {
@@ -23,6 +25,34 @@ export default class LoginScreen extends React.Component {
     this.setState({ confirmationData: confirmState });
   };
 
+  sendToDb = async confirmState => {
+    let db = await firebase.firestore();
+    let id = this.props.navigation.getParam('id');
+    let bails = this.props.navigation.getParam('bails');
+    let nails = this.props.navigation.getParam('nails');
+    console.log(this.props.navigation.getParam('nails'));
+    if (confirmState === 'nailed') {
+      nails += 1;
+    } else {
+      bails += 1;
+    }
+
+    db.collection('markers')
+      .doc(id)
+      .set(
+        {
+          challengers: {
+            nrOfBails: bails,
+            nrOfNails: nails,
+          },
+        },
+        { merge: true }
+      )
+      .catch(function(error) {
+        console.error('Error adding document: ', error);
+      });
+  };
+
   render() {
     const { navigation } = this.props;
     const confirmState = navigation.getParam('confirmState');
@@ -31,12 +61,12 @@ export default class LoginScreen extends React.Component {
     //this.setConfirmationState(confirmState); Todo: Tha app explodes so fix this
 
     return (
-      <View style={{ flex: 1, marginTop: '10%', marginLeft: '4%' }}>
+      <View style={{ flex: 1, marginTop: '10%'  }}>
         <Button
           title="<"
           type="clear"
-          buttonStyle={{ borderWidth: 0, maxWidth: '15%' }}
-          titleStyle={{ fontSize: 30 }}
+          buttonStyle={{ borderWidth: 0, maxWidth: '15%', backgroundColor: 'transparent' }}
+          titleStyle={{ fontSize: 30, color: 'black' }}
           onPress={() => this.props.navigation.goBack()}
         />
         <View style={styles.container}>
@@ -66,7 +96,14 @@ export default class LoginScreen extends React.Component {
             />
           </View>
         </View>
-        <Button style={styles.bottom} title="UPLOAD" />
+        <Button
+          onPress={() => {
+            this.sendToDb(confirmState);
+            this.props.navigation.navigate('map');
+          }}
+          style={styles.bottom}
+          title="UPLOAD"
+        />
       </View>
     );
   }

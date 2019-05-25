@@ -6,8 +6,7 @@ import { Button } from 'react-native-elements';
 export default class SettingsScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   config = {
@@ -79,21 +78,32 @@ export default class SettingsScreen extends React.Component {
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
     return (
-      <View style={{ flex: 1, alignSelf: 'flex-start', marginTop: '10%', marginLeft: '4%' }}>
-        <Button
-          title="<"
-          type="clear"
-          buttonStyle={{ borderWidth: 0, maxWidth: '100%' }}
-          titleStyle={{ fontSize: 30 }}
-          onPress={() => this.props.navigation.goBack()}
-        />
-        <Button
-          title="Sign Out"
-          type="clear"
-          buttonStyle={{ borderWidth: 0, maxWidth: '100%' }}
-          titleStyle={{ fontSize: 30 }}
-          onPress={() => this.signOut()}
-        />
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginTop: '5%', marginLeft: '4%', alignItems: 'flex-start' }}>
+          <Button
+            title="<"
+            type="clear"
+            buttonStyle={{ borderWidth: 0, maxWidth: '100%', backgroundColor: 'transparent' }}
+            titleStyle={{ fontSize: 30, color: 'black' }}
+            onPress={() => this.props.navigation.goBack()}
+          />
+        </View>
+        <View
+          style={{
+            flex: 8,
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            marginBottom: '10%',
+          }}>
+          <Button
+            title="Sign Out"
+            type="clear"
+            buttonStyle={{ borderWidth: 0, maxWidth: '100%' }}
+            titleStyle={{ fontSize: 30 }}
+            onPress={() => this.signOut()}
+          />
+        </View>
       </View>
     );
   }
