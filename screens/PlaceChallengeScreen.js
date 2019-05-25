@@ -154,7 +154,10 @@ export default class PlaceChallengeScreen extends React.Component {
 
           <View style={{ flex: 2, flexDirection: 'row', marginTop: 15, alignSelf: 'center' }}>
             {this.state.markerStyles.map(marker => (
-              <TouchableOpacity key={marker.name} onPress={() => this.markerSelected(marker.name)}>
+              <TouchableOpacity
+                style={{ marginHorizontal: 20 }}
+                key={marker.name}
+                onPress={() => this.markerSelected(marker.name)}>
                 <Image source={marker.image} style={marker.style} />
               </TouchableOpacity>
             ))}
@@ -195,11 +198,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   icon: {
-    width: 60,
-    height: 60,
+    width: 43,
+    height: 57,
   },
   iconChosen: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 79,
   },
 });

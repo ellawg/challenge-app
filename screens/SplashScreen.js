@@ -1,7 +1,15 @@
 import React from 'react';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import { StyleSheet, Text, View, TouchableOpacity, Image, AsyncStorage, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  AsyncStorage,
+  ActivityIndicator,
+} from 'react-native';
 import { AppAuth } from 'expo-app-auth';
 
 export default class SplashScreen extends React.Component {
@@ -88,6 +96,7 @@ export default class SplashScreen extends React.Component {
   };
 
   checkUserExists = async authState => {
+    this.setState({ loading: true });
     let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
       headers: { Authorization: `Bearer ${authState.accessToken}` },
     });
@@ -99,6 +108,7 @@ export default class SplashScreen extends React.Component {
     } else {
       this.props.navigation.navigate('createUser', { googleData: response });
     }
+    this.setState({ loading: false });
   };
 
   getUser = async id => {
@@ -119,14 +129,12 @@ export default class SplashScreen extends React.Component {
 
   render() {
     if (this.state.loading) {
-      console.log('loading');
       return (
         <View
           style={{
             width: '100%',
             height: '100%',
-            borderRadius: 5,
-            backgroundColor: 'rgba(0,0,0,0.4)',
+            backgroundColor: '#282829',
             alignItems: 'center',
             justifyContent: 'center',
           }}>
