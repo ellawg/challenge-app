@@ -16,9 +16,19 @@ export default class CustomModal extends React.Component {
     this.setState({ modalVisible: visible });
   }
   render() {
-    const total = this.props.nails + this.props.bails;
-    const nails = this.props.nails;
-    const bails = this.props.bails;
+    let bails = 0;
+    let nails = 0;
+    if (this.props.bails) {
+      bails = this.props.bails;
+    }
+    if (this.props.nails) {
+      bails = this.props.nails;
+    }
+    let total = nails + bails;
+    if (total === 0) {
+      total = 1;
+    }
+
     return (
       <View style={{ marginTop: 22 }}>
         <Modal
@@ -62,7 +72,7 @@ export default class CustomModal extends React.Component {
                 Nailed it
               </Text>
               <Text>
-                {nails} out of {total}
+                {nails} out of {nails + bails}
               </Text>
               <Slider thumbTintColor={'black'} animateTransitions value={nails / total} disabled />
 
@@ -76,7 +86,7 @@ export default class CustomModal extends React.Component {
                 Bailed it
               </Text>
               <Text>
-                {bails} out of {total}
+                {bails} out of {nails + bails}
               </Text>
               <Slider thumbTintColor={'black'} animateTransitions value={bails / total} disabled />
               <View

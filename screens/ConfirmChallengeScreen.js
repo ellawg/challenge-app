@@ -30,7 +30,6 @@ export default class LoginScreen extends React.Component {
     let id = this.props.navigation.getParam('id');
     let bails = this.props.navigation.getParam('bails');
     let nails = this.props.navigation.getParam('nails');
-    console.log(this.props.navigation.getParam('nails'));
     if (confirmState === 'nailed') {
       nails += 1;
     } else {
@@ -61,7 +60,7 @@ export default class LoginScreen extends React.Component {
     //this.setConfirmationState(confirmState); Todo: Tha app explodes so fix this
 
     return (
-      <View style={{ flex: 1, marginTop: '10%'  }}>
+      <View style={{ flex: 1, marginTop: '10%' }}>
         <Button
           title="<"
           type="clear"
