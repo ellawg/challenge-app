@@ -187,12 +187,12 @@ export default class LoginScreen extends React.Component {
           justifyContent: 'center',
         }}>
         <Button title="Sign in with Google" onPress={() => this.signInAsync()} />
-        <View style={{ width: '100%', height: '70%' }}>
+        {/*<View style={{ width: '100%', height: '70%' }}>
           <ImageComponent
             userid={'102210254945080113294'}
             profile
           />
-        </View>
+      </View>*/}
       </View>
     );
   }
