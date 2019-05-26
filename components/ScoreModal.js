@@ -22,7 +22,7 @@ export default class CustomModal extends React.Component {
       bails = this.props.bails;
     }
     if (this.props.nails) {
-      bails = this.props.nails;
+      nails = this.props.nails;
     }
     let total = nails + bails;
     if (total === 0) {
@@ -108,7 +108,7 @@ export default class CustomModal extends React.Component {
         </Modal>
         <TouchableHighlight
           underlayColor={'white'}
-          style={{ height: '100%' }}
+          style={{}}
           onPress={() => {
             this.setModalVisible(true);
           }}>
