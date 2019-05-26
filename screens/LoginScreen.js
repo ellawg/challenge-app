@@ -193,7 +193,8 @@ export default class LoginScreen extends React.Component {
           {/*<ImageComponent
             userid={'102210254945080113294'}
             profile
-          />*/}
+          />
+
           <Swiper style={styles.wrapper} showsButtons={true}>
             <ImageComponent
               markerid={'07b28144-77d3-4e0e-834d-08c6320887ac'}
@@ -204,6 +205,7 @@ export default class LoginScreen extends React.Component {
               marker
             />
           </Swiper>
+          */}
         </View>
       </View>
     );
