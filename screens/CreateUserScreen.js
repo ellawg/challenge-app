@@ -1,5 +1,13 @@
 import React from 'react';
-import { StyleSheet, TextInput, Text, View, ActivityIndicator, Image, AsyncStorage } from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  Text,
+  View,
+  ActivityIndicator,
+  Image,
+  AsyncStorage,
+} from 'react-native';
 import { Button, ThemeProvider } from 'react-native-elements';
 import { Permissions, ImagePicker } from 'expo';
 import { AppAuth } from 'expo-app-auth';
@@ -32,7 +40,7 @@ export default class CreateUserScreen extends React.Component {
           .set({
             id: userdata.id,
             name: userdata.name,
-            pic: userdata.picture,
+            image: userdata.picture,
             username: this.state.username,
           })
           .catch(function(error) {
@@ -71,7 +79,8 @@ export default class CreateUserScreen extends React.Component {
           height: '100%',
           width: '100%',
         }}>
-        <Text style={{
+        <Text
+          style={{
             fontSize: 15,
             margin: 10,
             textAlign: 'center',
@@ -92,7 +101,8 @@ export default class CreateUserScreen extends React.Component {
           value={this.state.username}
         />
         <Text>{this.state.errorMessage}</Text>
-        <Button titleStyle={{
+        <Button
+          titleStyle={{
             width: '80%',
           }}
           buttonStyle={{ bottom: '5%' }}
