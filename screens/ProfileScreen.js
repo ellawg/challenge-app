@@ -10,8 +10,9 @@ import {
   KeyboardAvoidingView,
   AsyncStorage,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
-import { Permissions, ImagePicker } from 'expo';
+import { Permissions, ImagePicker, Video } from 'expo';
 import { AppAuth } from 'expo-app-auth';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -58,9 +59,7 @@ export default class ProfileScreen extends React.Component {
     this.setState({ userid });
     let user = await this.getUser(userid);
     this.setState({ user });
-
-    console.log(this.state.user.id);
-    console.log(this.state.user.username);
+    console.log(user);
     this.setState({ uploading: false });
   }
 
@@ -103,6 +102,57 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
+    let nails = [];
+    let bails = [];
+    if (this.state.user.challenges) {
+
+      for (var property in this.state.user.challenges) {
+        if (property === 'nailed') {
+          let nailedobj = this.state.user.challenges[property];
+          for (var key in nailedobj) {
+            let vid = nailedobj[key];
+            let mark = key;
+            nails.push(
+              <View key={property} style={styles.videoView}>
+                <Text style={styles.labelText}>{mark}</Text>
+                <Video
+                  source={{ uri: vid }}
+                  rate={1.0}
+                  volume={1.0}
+                  isMuted
+                  resizeMode="cover"
+                  shouldPlay
+                  isLooping
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </View>
+            )
+          }
+        } else {
+          let bailedobj = this.state.user.challenges[property];
+          for (var key2 in bailedobj) {
+            let vid = bailedobj[key2];
+            let mark = key2;
+            bails.push(
+              <View key={property} style={styles.videoView}>
+                <Text style={styles.labelText}>{mark}</Text>
+                <Video
+                  source={{ uri: vid }}
+                  rate={1.0}
+                  volume={1.0}
+                  isMuted
+                  resizeMode="cover"
+                  shouldPlay
+                  isLooping
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </View>
+            )
+          }
+        }
+      }
+    }
+
     if (this.state.uploading) {
       return (
         <View
@@ -154,15 +204,19 @@ export default class ProfileScreen extends React.Component {
               <ImageComponent userid={this.state.user.id} profile />
             </View>
 
-            <View style={{ flex: 3, marginBottom: '2%', marginTop: '2%' }}>
+            <View style={{ flex: 3, marginTop: '2%' }}>
               <CustomModal
                 placeholder={'Upload some information about yourself'}
                 callbackFromParent={this.componentCallback}
               />
             </View>
-            <View style={{ flex: 3 }}>
-              <Text style={styles.labelText}>COMPLETED CHALLENGES</Text>
-              <Text>Crazy awesome challenges! Frekkin rad shit..</Text>
+            <View style={{ flex: 6, marginBottom:0 }}>
+              <ScrollView>
+                <Text style={styles.labelText}>NAILED CHALLENGES</Text>
+                {nails}
+                <Text style={styles.labelText}>BAILED CHALLENGES</Text>
+                {bails}
+              </ScrollView>
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -233,4 +287,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginTop: '5%',
   },
+  videoView: {
+    height: 200
+  }
 });

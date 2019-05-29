@@ -32,7 +32,7 @@ export default class CreateUserScreen extends React.Component {
           .set({
             id: userdata.id,
             name: userdata.name,
-            pic: userdata.picture,
+            image: userdata.picture,
             username: this.state.username,
           })
           .catch(function(error) {

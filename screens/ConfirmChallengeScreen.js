@@ -4,6 +4,7 @@ import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
 import CustomModal from '../components/Modal.js';
 import 'firebase/firestore';
+import VideoComponent from '../components/VideoComponent';
 
 export default class LoginScreen extends React.Component {
   constructor() {
@@ -57,11 +58,12 @@ export default class LoginScreen extends React.Component {
     const { navigation } = this.props;
     const confirmState = navigation.getParam('confirmState');
     const textString = this.setTextString(confirmState);
+    let id = this.props.navigation.getParam('id');
 
     //this.setConfirmationState(confirmState); Todo: Tha app explodes so fix this
 
     return (
-      <View style={{ flex: 1, marginTop: '10%'  }}>
+      <View style={{ flex: 1, marginTop: '10%' }}>
         <Button
           title="<"
           type="clear"
@@ -75,20 +77,11 @@ export default class LoginScreen extends React.Component {
             <Text style={styles.text}>Prove it</Text>
           </View>
           <View style={styles.inputContainer}>
-            <Button
-              title="+"
-              type="outline"
-              titleStyle={{ color: 'black' }}
-              buttonStyle={{
-                backgroundColor: 'white',
-                borderWidth: 1,
-                borderColor: 'black',
-                borderTopLeftRadius: 1,
-                borderStyle: 'solid',
-                maxWidth: '100%',
-                margin: 0,
-                height: 150,
-              }}
+            <VideoComponent
+              markerid={id}
+              challengeproof
+              userid='102210254945080113294'
+              nailorbail={confirmState}
             />
             <CustomModal
               placeholder={'Tell us what happened'}

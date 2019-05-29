@@ -41,9 +41,9 @@ export default class ImageComponent extends Component {
       let user = await this.getData(this.props.userid, 'users');
       let challenges = user.challenges;
       let challengers = marker.challengers;
+      this.setState({ data: marker });
       this.setState({ challenges });
       this.setState({ challengers });
-      this.setState({ video: 'image' });
       this.setState({ loading: false });
     }
   }
@@ -123,23 +123,23 @@ export default class ImageComponent extends Component {
             });
         } else {
           let db = await firebase.firestore();
-          let marker = this.props.markerid;
+          let marker = this.state.data.title;
           let challenges = {
             nailed: {},
             bailed: {},
           };
-          if (this.props.nailorbail === 'nail') {
+          if (this.props.nailorbail === 'nailed') {
             challenges.nailed = { [marker]: uploadUrl };
           } else {
             challenges.bailed = { [marker]: uploadUrl };
           }
-          console.log(challenges);
           db.collection('users')
             .doc(this.props.userid)
             .set({ challenges }, { merge: true })
             .catch(function(error) {
               console.error('Error adding document: ', error);
             });
+            /*
           let user = this.props.userid;
           let challengers = {
             nailed: {},
@@ -156,6 +156,7 @@ export default class ImageComponent extends Component {
             .catch(function(error) {
               console.error('Error adding document: ', error);
             });
+            */
         }
       }
     } catch (e) {
@@ -206,7 +207,6 @@ export default class ImageComponent extends Component {
           isLooping
           style={{ width: '100%', height: '100%' }}
         />
-        <Button title="hej" onPress={() => this.pickImage()} />
       </View>
     );
   };

@@ -103,7 +103,7 @@ export default class CustomModal extends React.Component {
             this.setModalVisible(true);
           }}>
           <Text style={{ color: '#6d6d6d', justifyContent: 'center', fontStyle: 'italic' }}>
-            Tap to se scoreboard
+            Tap to see scoreboard
           </Text>
         </TouchableHighlight>
       </View>
